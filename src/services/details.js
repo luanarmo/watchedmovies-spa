@@ -8,12 +8,20 @@ export const movieDetails = async ({ movieId }) => {
         const movie = await response.json()
         return {
             id: movie.id,
-            title: movie.title,
-            poster_url: movie.poster_url ? movie.poster_url : 'https://placehold.co/500x750?font=roboto',
-            backdrop_url: movie.backdrop_url ? movie.backdrop_url : 'https://placehold.co/1920x1080?font=roboto',
+            adult: movie.adult,
+            backdrop_path: movie.backdrop_path,
+            genre_ids: movie.genre_ids,
+            original_language: movie.original_language,
+            original_title: movie.original_title,
             overview: movie.overview,
+            popularity: movie.popularity,
+            poster_path: movie.poster_path,
+            title: movie.title,
+            video: movie.video,
+            vote_count: movie.vote_count,
+            poster_url: movie.poster_url ? movie.poster_url : 'https://placehold.co/500x750?font=roboto',
+            backdrop_url: movie.backdrop_url ? movie.backdrop_url : 'https://placehold.co/480x270?font=roboto',
             release_date: movie.release_date,
-            genres: movie.genres,
             vote_average: movie.vote_average,
         }
 

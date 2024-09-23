@@ -4,7 +4,7 @@ export function Footer() {
             <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
                 {/* Derechos de autor */}
                 <div className="mb-4 md:mb-0">
-                    <p className="text-sm">&copy; 2024 luanarmo. Todos los derechos reservados.</p>
+                    <p className="text-sm">&copy; 2024 luanarmo.</p>
                 </div>
 
                 {/* Enlaces a redes sociales */}
@@ -22,7 +22,7 @@ export function Footer() {
                         </li>
                         <li>
                             <a
-                                href="www.linkedin.com/in/luis-angel-arroyo-morales-31b25a1ab"
+                                href="https://www.linkedin.com/in/luis-angel-arroyo-morales-31b25a1ab"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="hover:text-blue-400"

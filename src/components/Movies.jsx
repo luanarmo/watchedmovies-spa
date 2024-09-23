@@ -34,7 +34,7 @@ export function NoResults() {
 export function Movies({ movies }) {
     const hasMovies = movies?.length > 0
     return (
-        <section className="container">
+        <section>
             {hasMovies ? (
                 <ListOfMovies movies={movies} />
             ) : (

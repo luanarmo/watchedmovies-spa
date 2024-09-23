@@ -1,12 +1,14 @@
 
-export function Search() {
+export function Search({ onChange, onSubmit, search, error }) {
+
     return (
         <section className="w-full bg-gradient-to-r from-indigo-700 to-indigo-400 p-4 text-white">
-            <h1 className="text-4xl font-bold mb-4 ">¡Bienvenido!</h1>
-            <form className="container flex items-center justify-center space-x-4">
+            <form className="container flex items-center justify-center space-x-4" onSubmit={onSubmit}>
                 <input
                     type="text"
                     placeholder="Busca una película ..."
+                    onChange={onChange}
+                    value={search}
                     className="flex-grow  sm:w-auto p-2 border text-black border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
                 />
                 <button

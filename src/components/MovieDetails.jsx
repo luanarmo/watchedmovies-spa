@@ -1,27 +1,86 @@
 import { useParams } from 'react-router-dom'
 import { useMovieDetails } from '../hooks/useMovieDetails'
-import { Navbar } from '../components/Navbar'
-import { useEffect } from 'react'
+import { Base } from '../components/Base'
+import { useEffect, useState, useCallback, useContext } from 'react'
+import { useWatched } from '../hooks/useWatched.js'
+import { Loading } from '../components/Loading.jsx'
+import { Modal } from '../components/Modal.jsx'
+import { ViewDetailsForm } from '../components/ViewDetailsForm.jsx'
+import { truncateText } from '../utils/truncateText.js'
+import { SesionContext } from '../context/sesion'
 
 export function Details({ movie }) {
+
+    const MAX_COMMENT_LENGTH = 300;
+
+    const { watched, loading, error, addWatched, fetchWatched } = useWatched()
+
+    const [isWatched, setIsWatched] = useState(false)
+
+    const [seeMore, setSeeMore] = useState(false)
+
+    const [isModalOpen, setIsModalOpen] = useState(false)
+
+    const { sesion } = useContext(SesionContext)
+
+    const handleOpenModal = () => setIsModalOpen(true)
+    const handleCloseModal = () => setIsModalOpen(false)
+
+    const handleSeeMore = () => setSeeMore(true)
+    const handleSeeLess = () => setSeeMore(false)
+
+    const handleAddToWatched = ({ payload, movie }) => {
+        addWatched(movie, payload)
+        setIsWatched(true)
+    }
+
+    const checkWatched = useCallback(() => {
+        setIsWatched(watched.some((watchedMovie) => watchedMovie.id === movie.id))
+    }, [watched])
+
+    useEffect(() => {
+        if (sesion.auth) {
+            fetchWatched()
+        }
+    }, [])
+
+    useEffect(() => {
+        if (sesion.auth) {
+            checkWatched()
+        }
+    }, [watched])
+
+    if (loading && sesion.auth) {
+        return <Loading />
+    }
+
+    if (error) {
+        return <div className='text-white'>{error}</div>
+    }
+
     return (
         <div className='flex flex-col lg:flew-row p-4 gap-2 justify-start items-center h-screen'>
             <h1 className='text-4xl '><strong>{movie.title}</strong></h1>
             <img src={movie.backdrop_url} alt={movie.title} className='h-auto' />
-            <section>
-                <p className='text-justify'>{movie.overview}</p>
-                <p><strong>Rating:</strong> {movie.vote_average}</p>
+            <section className='flex flex-col gap-2 items-center'>
+                {movie.overview.length > MAX_COMMENT_LENGTH ?
+                    seeMore ?
+                        <p>{movie.overview} <button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeLess}> Ver menos </button></p> :
+                        <p>{truncateText(movie.overview, MAX_COMMENT_LENGTH)}<button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeMore}> Ver más </button></p>
+                    : <p>{movie.overview}</p>
+                }
+                {
+                    sesion.auth &&
+                    (isWatched ?
+                        <button className='bg-purple-500 hover:bg-purple-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Vista de nuevo </button> :
+                        <button className='bg-blue-500 hover:bg-blue-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Agregar a vistas</button>)
+                }
             </section>
-        </div>
-    )
-}
+            <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+                <h2 className='text-xl'>Detalles de la vista</h2>
+                <ViewDetailsForm movie={movie} onClose={handleCloseModal} onSubmit={handleAddToWatched} />
+            </Modal>
 
-export function Loading() {
-    return (
-        <div className="flex items-center justify-center h-screen">
-            <h1 className="text-white text-4xl p-4">
-                <strong>Loading...</strong>
-            </h1>
         </div>
     )
 }
@@ -33,14 +92,16 @@ export default function MovieDetails() {
 
     useEffect(() => {
         getMovieDetails({ movieId })
-    }, [movieId])
+    }, [])
 
     return (
         <div className='bg-gradient-to-r from-slate-700 to-slate-500 text-white'>
-            {loading ? <Loading /> : <>
-                <Navbar />
-                <Details movie={movie} />
-            </>}
+            {loading ?
+                <Loading /> :
+                <Base>
+                    <Details movie={movie} />
+                </Base>
+            }
         </div>
     )
 }
