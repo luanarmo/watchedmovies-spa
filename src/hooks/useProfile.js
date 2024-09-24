@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useCallback } from 'react'
 import { getProfile } from '../services/profile'
 import { SesionContext } from '../context/sesion.jsx'
 
@@ -18,14 +18,14 @@ export const useProfile = () => {
         }
     })
 
-    const fetchProfile = async () => {
+    const fetchProfile = useCallback(async () => {
         try {
             const profile = await getProfile({ access: sesion.access })
             setProfile(profile)
         } catch (e) {
             console.error(e)
         }
-    }
+    })
 
     return { profile, fetchProfile }
 }
