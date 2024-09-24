@@ -28,7 +28,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     env:
-      BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
+      VITE_BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
 
     runs-on: ubuntu-latest
     steps:
