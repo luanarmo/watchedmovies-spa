@@ -16,7 +16,7 @@ function App() {
 
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.DEV ? '/' : '/watchedmovies-spa/'}>
       <Routes>
         <Route path="/" element={<SearchProvider><Home /> </SearchProvider>} />
         <Route path="/login" element={<Login />} />
