@@ -1,7 +1,7 @@
 {
   "name": "watchedmovies-spa",
   "homepage": "https://luanarmo.github.io/watchedmovies-spa/",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
