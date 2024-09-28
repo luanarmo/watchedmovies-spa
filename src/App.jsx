@@ -16,7 +16,7 @@ function App() {
 
 
   return (
-    <HashRouter basename='/watchedmovies-spa'>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<SearchProvider><Home /> </SearchProvider>} />
         <Route path="/login" element={<Login />} />
