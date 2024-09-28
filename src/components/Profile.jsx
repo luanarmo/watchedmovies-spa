@@ -14,7 +14,7 @@ export default function Profile() {
     return (
 
         <Base>
-            {loading ? <Loading /> : (
+            {loading ? <div className='bg-gradient-to-r from-slate-700 to-slate-500 text-white'><Loading /></div> : (
                 <div className='flex flex-col lg:flew-row p-4 gap-2 justify-start items-center h-screen bg-slate-950 text-white'>
                     <h1 className='text-4xl '><strong>{
                         profile.name ? profile.name : 'Perfil'
