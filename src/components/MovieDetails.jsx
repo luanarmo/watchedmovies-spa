@@ -61,7 +61,7 @@ export function Details({ movie }) {
     return (
         <div className='flex flex-col lg:flew-row p-4 gap-2 justify-start items-center h-screen'>
             <h1 className='text-4xl '><strong>{movie.title}</strong></h1>
-            <img src={movie.backdrop_url} alt={movie.title} className='h-auto' />
+            <img src={movie.backdrop_url} alt={movie.title} className='h-auto rounded-md' />
             <section className='flex flex-col gap-2 items-center'>
                 {movie.overview.length > MAX_COMMENT_LENGTH ?
                     seeMore ?
