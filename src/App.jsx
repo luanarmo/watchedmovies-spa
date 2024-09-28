@@ -10,13 +10,13 @@ import AdvancedSearch from './components/AdvancedSearch'
 import { SearchProvider } from './context/search.jsx'
 
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
 
 
   return (
-    <BrowserRouter basename='/watchedmovies-spa'>
+    <HashRouter basename='/watchedmovies-spa'>
       <Routes>
         <Route path="/" element={<SearchProvider><Home /> </SearchProvider>} />
         <Route path="/login" element={<Login />} />
@@ -27,7 +27,7 @@ function App() {
         <Route path="/watchedDetails/:movieId" element={<WatchedMovieDetails />} />
         <Route path="/search" element={<SearchProvider><AdvancedSearch /></SearchProvider>} />
       </Routes>
-    </BrowserRouter >
+    </HashRouter  >
   )
 }
 
