@@ -17,15 +17,20 @@ export const useProfile = () => {
             pk: '',
         }
     })
+    const [loading, setLoading] = useState(false)
+
 
     const fetchProfile = useCallback(async () => {
         try {
+            setLoading(true)
             const profile = await getProfile({ access: sesion.access })
             setProfile(profile)
         } catch (e) {
             console.error(e)
+        } finally {
+            setLoading(false)
         }
     })
 
-    return { profile, fetchProfile }
+    return { profile, loading, fetchProfile }
 }
