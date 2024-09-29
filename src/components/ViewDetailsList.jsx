@@ -1,38 +1,22 @@
-import { useState, useEffect, useContext, useCallback } from 'react';
-import { SesionContext } from '../context/sesion'
-import { getAllViewDetails } from '../services/viewDetails'
+import { useEffect } from 'react';
 import { BiCommentX } from "react-icons/bi";
 import { LuGanttChartSquare } from "react-icons/lu";
+import { FaTrash } from 'react-icons/fa';
 import { truncateText } from '../utils/truncateText'
+import { useViewDetails } from '../hooks/useViewDetails'
+
 
 export default function ViewDetailsList({ movieId }) {
 
-    const { sesion } = useContext(SesionContext)
-    const [viewDetails, setViewDetails] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const { viewDetails, loading, error, fetchViewDetails, removeViewDetails } = useViewDetails()
 
-
-    const fetchViewDetails = useCallback(async () => {
-        try {
-            const viewDetails = await getAllViewDetails({ access: sesion.access, watchedId: movieId })
-            setViewDetails(viewDetails)
-        } catch (error) {
-            setError("Error fetching view details")
-            console.error(error)
-        } finally {
-            setLoading(false)
-        }
-    }, [])
-
-    useEffect(() => {
-        fetchViewDetails()
-    }, [])
+    useEffect(
+        () => {
+            fetchViewDetails(movieId)
+        }, []
+    )
 
     const MAX_COMMENT_LENGTH = 70;
-
-
-
 
     if (loading) {
         return <div>Loading...</div>
@@ -52,6 +36,14 @@ export default function ViewDetailsList({ movieId }) {
                     <p>{viewDetail.watched_at}</p>
                     <p>{viewDetail.comment ? truncateText(viewDetail.comment, MAX_COMMENT_LENGTH) : <BiCommentX />}</p>
                     <p>{viewDetail.rating ? viewDetail.rating : <LuGanttChartSquare />}</p>
+                    <div className='flex mt-2'>
+                        <button
+                            className='text-red-500 hover:text-red-600'
+                            onClick={() => removeViewDetails(viewDetail.id)}
+                        >
+                            <FaTrash title='Eliminar vista de pelicula' />
+                        </button>
+                    </div>
                 </li>
             ))}
         </ul>
