@@ -59,3 +59,20 @@ export const getViewDetails = async ({ movieId, access }) => {
         throw new Error(`Error fetching view details ${e}`)
     }
 }
+
+export const deleteViewDetails = async ({ viewDetailsId, access }) => {
+
+    try {
+        await fetch(`${BASE_API_URL}/api/view-details/${viewDetailsId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access}`
+            }
+        })
+
+    } catch (e) {
+
+        throw new Error(`Error fetching view details ${e}`)
+    }
+}
