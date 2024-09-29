@@ -19,7 +19,7 @@ export default function WatchedMovieDetails() {
             {watchedDetails ? (
                 <div className='flex flex-col p-4 gap-2 justify-start items-center bg-slate-950 text-white h-screen'>
                     <h1 className='text-4xl '><strong>{watchedDetails.title}</strong></h1>
-                    <img src={watchedDetails.backdrop_url} alt={watchedDetails.title} className='h-auto' />
+                    <img src={watchedDetails.backdrop_url} alt={watchedDetails.title} className='h-auto rounded-md' />
                     <p className='text-justify'>{watchedDetails.overview}</p>
                     <h1 className='text-2xl font-semibold text-center'> Veces vistas </h1>
                     <div className="overflow-x-auto w-full">
