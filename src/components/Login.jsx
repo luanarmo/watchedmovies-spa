@@ -136,7 +136,7 @@ export default function Login() {
                     id='email'
                     autoComplete='email'
                     placeholder="Correo"
-                    className='w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
+                    className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
                     onChange={handleChange}
                 />
                 <span className='text-red-500'>{error.email}</span>
@@ -146,7 +146,7 @@ export default function Login() {
                     id='password'
                     autoComplete='current-password'
                     placeholder="Contraseña"
-                    className='w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
+                    className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
                     onChange={handleChange}
                 />
                 <span className='text-red-500'>{error.password}</span>
