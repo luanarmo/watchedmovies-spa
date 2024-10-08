@@ -16,11 +16,6 @@ export function ListOfMovies({ movies }) {
                             loading='lazy'
                         />
                     </Link>
-                    <div className="p-2">
-                        <Link to={`/movie/${movie.id}`}>
-                            <h2 className="text-lg font-semibold">{movie.title}</h2>
-                        </Link>
-                    </div>
                 </li>
             ))}
         </ul>
