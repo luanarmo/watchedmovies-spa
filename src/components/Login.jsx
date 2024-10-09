@@ -50,7 +50,7 @@ export default function Login() {
         if (form.email.length === 0) {
             setError({
                 ...error,
-                email: 'El correo es obligatorio'
+                email: 'The email is required'
             })
             return
         }
@@ -58,7 +58,7 @@ export default function Login() {
         if (!form.email.includes('@')) {
             setError({
                 ...error,
-                email: 'El correo no es válido'
+                email: 'The email is not valid'
             })
             return
         }
@@ -81,7 +81,7 @@ export default function Login() {
         if (form.password.length === 0) {
             setError({
                 ...error,
-                password: 'La contraseña es obligatoria'
+                password: 'The password is required'
             })
             return
         }
@@ -89,7 +89,7 @@ export default function Login() {
         if (form.password.length < 6) {
             setError({
                 ...error,
-                password: 'La contraseña debe tener al menos 6 caracteres'
+                password: 'The password must be at least 6 characters long'
             })
             return
         }
@@ -136,13 +136,13 @@ export default function Login() {
     return (
         <Base>
             <form onSubmit={handleSubmit} className='flex flex-col p-4 gap-4 items-center justify-start h-screen text-white bg-slate-900'>
-                <h1 className='text-4xl'><strong>Iniciar sesion</strong></h1>
+                <h1 className='text-4xl'><strong>Login</strong></h1>
                 <input
                     type="email"
                     name='email'
                     id='email'
                     autoComplete='email'
-                    placeholder="Correo"
+                    placeholder="Email"
                     className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
                     onChange={handleChange}
                 />
@@ -152,7 +152,7 @@ export default function Login() {
                     name='password'
                     id='password'
                     autoComplete='current-password'
-                    placeholder="Contraseña"
+                    placeholder="Password"
                     className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
                     onChange={handleChange}
                 />
@@ -163,7 +163,7 @@ export default function Login() {
                             type="submit"
                             className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
                         >
-                            Iniciar sesión
+                            Login
                         </button>
                         <ToastContainer />
                     </>
@@ -171,7 +171,7 @@ export default function Login() {
                         to="/register"
                         className='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
                     >
-                        Registrarse
+                        Sign up
                     </Link>
                 </div>
             </form>
