@@ -16,43 +16,49 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
 
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center gap-2">
-            <input type="number" min={1} max={10} step={1} name="rating" id="rating" placeholder="Califica la pelicula" className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none" />
-            <textarea name="comment" id="comment" cols="25" rows="4" placeholder="Agrega un comentario" className="resize-none w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none"></textarea>
+        <form onSubmit={handleSubmit} className="flex flex-col items-start justify-center gap-2">
+            <div className="flex flex-col w-full">
+                <input type="number" min={1} max={10} step={1} name="rating" id="rating" placeholder="Rate the movie" className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none" />
+                <span className="text-gray-500 text-xs">Optional</span>
+            </div>
+            <div className="flex flex-col w-full">
+                <textarea name="comment" id="comment" cols="25" rows="4" placeholder="Add a comment" className="resize-none w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none"></textarea>
+                <span className="text-gray-500 text-xs">Optional</span>
+            </div>
             <select name="language" id="language" defaultValue={"en"} className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
-                <option value="en">Ingles</option>
-                <option value="es">Español</option>
-                <option value="fr">Francia</option>
-                <option value="de">Alemania</option>
-                <option value="it">Italia</option>
-                <option value="pt">Portuges</option>
-                <option value="ru">Ruso</option>
-                <option value="ja">Japones</option>
-                <option value="zh">Chino</option>
-                <option value="ko">Corea</option>
-                <option value="ar">Árabe</option>
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="it">Italian</option>
+                <option value="pt">Portuguese</option>
+                <option value="ru">Russian</option>
+                <option value="ja">Japanese</option>
+                <option value="zh">Chinese</option>
+                <option value="ko">Korean</option>
+                <option value="ar">Arabic</option>
                 <option value="hi">Hindi</option>
-                <option value="other">Otro</option>
+                <option value="other">Other</option>
             </select>
             <select name="place" id="place" defaultValue={"cinema"} className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
-                <option value="home">Casa</option>
-                <option value="cinema">Cine</option>
-                <option value="friend">Casa de amigos</option>
-                <option value="other">Otro</option>
+                <option value="home">Home</option>
+                <option value="cinema">Cinema</option>
+                <option value="friend">Friends' house</option>
+                <option value="other">Other</option>
             </select>
             <div className='flex gap-4 mt-4'>
                 <button
                     type="submit"
                     className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
                 >
-                    Guardar
+                    Save
                 </button>
                 <button
                     type="submit"
                     className='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
                     onClick={onClose}
                 >
-                    Cancelar
+                    Cancel
                 </button>
             </div>
 
