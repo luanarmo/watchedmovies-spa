@@ -2,12 +2,10 @@ export function Footer() {
     return (
         <footer className="bg-gray-800 text-white py-6">
             <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
-                {/* Derechos de autor */}
                 <div className="mb-4 md:mb-0">
                     <p className="text-sm">&copy; 2024 luanarmo.</p>
                 </div>
 
-                {/* Enlaces a redes sociales */}
                 <div className="mb-4 md:mb-0">
                     <ul className="flex space-x-4">
                         <li>
@@ -41,9 +39,8 @@ export function Footer() {
                     </ul>
                 </div>
 
-                {/* Información adicional */}
                 <div>
-                    <p className="text-sm">Desarrollador FullStack</p>
+                    <p className="text-sm">FullStack Developer</p>
                 </div>
             </div>
         </footer>
