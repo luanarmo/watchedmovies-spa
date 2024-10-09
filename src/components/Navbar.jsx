@@ -13,7 +13,7 @@ export const Navbar = () => {
 
     return (
         <nav className="bg-gray-800 p-4">
-            <div className="container flex flex-row items-center justify-between gap-1 ">
+            <div className="flex flex-row items-center justify-between gap-1">
                 <div className="flex items-center justify-self-center gap-1  w-auto text-white">
                     <Link to="/"> <FaHome title='Inicio' /> </Link>
                     {sesion.auth && <Link to="/watched" className=" hover:text-blue-400">Películas vistas</Link>}
