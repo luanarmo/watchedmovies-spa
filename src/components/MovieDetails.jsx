@@ -65,19 +65,19 @@ export function Details({ movie }) {
             <section className='flex flex-col gap-2 items-center'>
                 {movie.overview.length > MAX_COMMENT_LENGTH ?
                     seeMore ?
-                        <p>{movie.overview} <button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeLess}> Ver menos </button></p> :
-                        <p>{truncateText(movie.overview, MAX_COMMENT_LENGTH)}<button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeMore}> Ver más </button></p>
+                        <p>{movie.overview} <button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeLess}> See less </button></p> :
+                        <p>{truncateText(movie.overview, MAX_COMMENT_LENGTH)}<button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeMore}> See more </button></p>
                     : <p>{movie.overview}</p>
                 }
                 {
                     sesion.auth &&
                     (isWatched ?
-                        <button className='bg-purple-500 hover:bg-purple-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Vista de nuevo </button> :
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Agregar a vistas</button>)
+                        <button className='bg-purple-500 hover:bg-purple-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Viewed again </button> :
+                        <button className='bg-blue-500 hover:bg-blue-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Add to views</button>)
                 }
             </section>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <h2 className='text-xl'>Detalles de la vista</h2>
+                <h2 className='text-xl'>Details of the movie viewed</h2>
                 <ViewDetailsForm movie={movie} onClose={handleCloseModal} onSubmit={handleAddToWatched} />
             </Modal>
 
