@@ -15,7 +15,7 @@ export default function Home() {
 
 
     return (
-        <div className="App items-center  h-screen w-screen">
+        <div className="h-screen">
             <Base>
                 <HomeSearch />
                 <Movies movies={popular} />
