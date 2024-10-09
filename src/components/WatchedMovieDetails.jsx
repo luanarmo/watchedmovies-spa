@@ -21,7 +21,7 @@ export default function WatchedMovieDetails() {
                     <h1 className='text-4xl '><strong>{watchedDetails.title}</strong></h1>
                     <img src={watchedDetails.backdrop_url} alt={watchedDetails.title} className='h-auto rounded-md' />
                     <p className='text-justify'>{watchedDetails.overview}</p>
-                    <h1 className='text-2xl font-semibold text-center'> Veces vistas </h1>
+                    <h1 className='text-2xl font-semibold text-center'> Viewed times </h1>
                     <div className="overflow-x-auto w-full">
                         <div className="flex space-x-4 p-0">
                             <ViewDetailsList movieId={movieId} />
