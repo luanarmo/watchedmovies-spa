@@ -123,11 +123,12 @@ export default function Login() {
             navigate('/')
 
         } catch (error) {
-            const onlyMessage = error.message.split(' ').slice(1).join(' ')
             console.log(error)
-            toast.error(`${onlyMessage}`, {
+            toast.dismiss()
+            toast.error(`${error.message}`, {
                 position: "top-center",
-                autoClose: 3000
+                closeButton: true,
+                autoClose: false,
             });
         }
     }
