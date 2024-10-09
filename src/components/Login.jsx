@@ -3,6 +3,8 @@ import { SesionContext } from '../context/sesion.jsx'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../services/login.js'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function Login() {
 
@@ -121,8 +123,12 @@ export default function Login() {
             navigate('/')
 
         } catch (error) {
+            const onlyMessage = error.message.split(' ').slice(1).join(' ')
             console.log(error)
-            alert(error)
+            toast.error(`${onlyMessage}`, {
+                position: "top-center",
+                autoClose: 3000
+            });
         }
     }
 
@@ -151,12 +157,15 @@ export default function Login() {
                 />
                 <span className='text-red-500'>{error.password}</span>
                 <div className='flex gap-4 mt-4'>
-                    <button
-                        type="submit"
-                        className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
-                    >
-                        Iniciar sesión
-                    </button>
+                    <>
+                        <button
+                            type="submit"
+                            className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
+                        >
+                            Iniciar sesión
+                        </button>
+                        <ToastContainer />
+                    </>
                     <Link
                         to="/register"
                         className='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
