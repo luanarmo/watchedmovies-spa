@@ -16,13 +16,13 @@ export const Navbar = () => {
             <div className="flex flex-row items-center justify-between gap-1">
                 <div className="flex items-center justify-self-center gap-1  w-auto text-white">
                     <Link to="/"> <FaHome title='Inicio' /> </Link>
-                    {sesion.auth && <Link to="/watched" className=" hover:text-blue-400">Películas vistas</Link>}
+                    {sesion.auth && <Link to="/watched" className=" hover:text-blue-400">Watched movies</Link>}
                 </div>
 
                 <div className="w-auto text-white flex flex-row gap-2" >
                     {sesion.auth ?
                         <div className='flex gap-2 items-center'>
-                            <Link to="/profile" className="hover:text-blue-400"> <FaUser title='Perfil' /> </Link>
+                            <Link to="/profile" className="hover:text-blue-400"> <FaUser title='Profile' /> </Link>
                             <button onClick={() => {
                                 setSesion({
                                     auth: false,
@@ -30,12 +30,12 @@ export const Navbar = () => {
                                     refresh: null
                                 })
                                 navigate('/')
-                            }} className="hover:text-blue-400"> <GoSignOut title='Cerrar Sesion' /> </button>
+                            }} className="hover:text-blue-400"> <GoSignOut title='Logout' /> </button>
                         </div>
                         :
                         <>
-                            <Link to="/login" className="hover:text-blue-400">Iniciar sesión</Link>
-                            <Link to="/register" className="hover:text-blue-400">Registrarse</Link>
+                            <Link to="/login" className="hover:text-blue-400">Login</Link>
+                            <Link to="/register" className="hover:text-blue-400">Sign up</Link>
                         </>
                     }
                 </div>
