@@ -41,7 +41,7 @@ export default function ViewDetailsList({ movieId }) {
                             className='text-red-500 hover:text-red-600'
                             onClick={() => removeViewDetails(viewDetail.id)}
                         >
-                            <FaTrash title='Eliminar vista de pelicula' />
+                            <FaTrash title='Remove viewed movie' />
                         </button>
                     </div>
                 </li>
