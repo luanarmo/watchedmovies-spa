@@ -1,5 +1,6 @@
 import { FaTrash, FaStar, FaCalendar, FaEye } from 'react-icons/fa';
 import { Link } from 'react-router-dom'
+import { WatchedField } from './WatchedField'
 
 export const WatchedMovie = ({ movie, onDelete }) => {
     return (
@@ -17,18 +18,9 @@ export const WatchedMovie = ({ movie, onDelete }) => {
                 <Link to={`/watchedDetails/${movie.id}`}>
                     <h2 className="text-xl font-bold">{movie.title}</h2>
                 </Link>
-                <div className='flex items-center gap-2'>
-                    <FaCalendar />
-                    <p>{movie.release_date}</p>
-                </div>
-                <div className='flex items-center gap-2'>
-                    <FaEye />
-                    <p>{movie.total_views}</p>
-                </div>
-                <div className='flex items-center gap-2'>
-                    <FaStar className='text-yellow-400' />
-                    <p>{movie.average_rating}</p>
-                </div>
+                <WatchedField field={movie.release_date} icon={<FaCalendar />} />
+                <WatchedField field={movie.total_views} icon={<FaEye />} />
+                <WatchedField field={movie.average_rating} icon={<FaStar className='text-yellow-400' />} />
                 <div className="mt-4 space-x-4">
                     <button
                         onClick={() => onDelete(movie.id)}
