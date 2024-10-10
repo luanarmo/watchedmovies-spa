@@ -59,10 +59,10 @@ export function Details({ movie }) {
     }
 
     return (
-        <div className='flex flex-col lg:flew-row p-4 gap-2 justify-start items-center h-screen'>
+        <div className='flex flex-col p-4 gap-2 justify-start items-center min-h-screen'>
             <h1 className='text-4xl '><strong>{movie.title}</strong></h1>
-            <img src={movie.backdrop_url} alt={movie.title} className='h-auto rounded-md' />
-            <section className='flex flex-col gap-2 items-center'>
+            <img src={movie.backdrop_url} alt={movie.title} className='max-w-full h-auto rounded-md' />
+            <section className='flex flex-col gap-2 items-center w-full'>
                 {movie.overview.length > MAX_COMMENT_LENGTH ?
                     seeMore ?
                         <p>{movie.overview} <button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeLess}> See less </button></p> :
