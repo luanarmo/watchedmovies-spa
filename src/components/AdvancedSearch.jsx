@@ -52,7 +52,7 @@ export default function AdvancedSearch() {
     }, [search])
 
     return (
-        <div className="items-center  h-screen w-screen text-white bg-slate-950">
+        <div className="items-center text-white bg-slate-950">
             <Base>
                 <Search
                     onChange={handleChange}
