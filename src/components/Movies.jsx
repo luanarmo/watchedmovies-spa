@@ -12,7 +12,7 @@ export function ListOfMovies({ movies }) {
                         <img
                             src={movie.poster_url}
                             alt={movie.title}
-                            className="w-full h-auto object-cover"
+                            className="w-full h-full object-cover"
                             loading='lazy'
                         />
                     </Link>
