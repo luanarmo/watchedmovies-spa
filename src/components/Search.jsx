@@ -3,7 +3,7 @@ export function Search({ onChange, onSubmit, search, error }) {
 
     return (
         <section className="w-full bg-gradient-to-r from-indigo-700 to-indigo-400 p-4 text-white">
-            <form className="container flex items-center justify-center space-x-4" onSubmit={onSubmit}>
+            <form className="flex items-center justify-center space-x-4" onSubmit={onSubmit}>
                 <input
                     type="text"
                     placeholder="Search a movie ..."
