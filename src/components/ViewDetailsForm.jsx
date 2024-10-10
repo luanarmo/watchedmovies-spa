@@ -18,7 +18,20 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-start justify-center gap-2">
             <div className="flex flex-col w-full">
-                <input type="number" min={1} max={10} step={1} name="rating" id="rating" placeholder="Rate the movie" className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none" />
+                {/* <input type="number" min={1} max={10} step={1} name="rating" id="rating" placeholder="Rate the movie" className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none" /> */}
+                <select name="rating" id="rating" className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
+                    <option value="">Rate the movie</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
                 <span className="text-gray-500 text-xs">Optional</span>
             </div>
             <div className="flex flex-col w-full">
