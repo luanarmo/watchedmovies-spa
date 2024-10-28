@@ -23,7 +23,7 @@ export function ListOfMovies({ movies }) {
 }
 
 export function NoResults() {
-    return <p className='min-h-screen gap-4 p-4 bg-slate-950'>No se encontraron resultados!</p>
+    return <p className='min-h-screen gap-4 p-4 bg-slate-950'>Results not found!</p>
 }
 
 export function Movies({ movies }) {
