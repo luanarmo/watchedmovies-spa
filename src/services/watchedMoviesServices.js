@@ -1,20 +1,24 @@
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL
 
 
-export const getWatched = async ({ access }) => {
+export const getWatched = async ({ access, page }) => {
     // Fetch watched movies from the API
 
     try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/`, {
+        const response = await fetch(`${BASE_API_URL}/api/watched-movies/?page=${page}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${access}`
             }
         })
 
-        const watched = await response.json()
+        const data = await response.json()
 
-        return watched.results.map((movie) => ({
+        if (!response.ok) {
+            return []
+        }
+
+        return data.results.map((movie) => ({
             id: movie.id,
             title: movie.title,
             poster_url: movie.poster_url ? movie.poster_url : 'https://placehold.co/500x750?font=roboto',
@@ -22,6 +26,7 @@ export const getWatched = async ({ access }) => {
             total_views: movie.total_views,
             average_rating: movie.average_rating ? movie.average_rating : 0,
         }))
+
     }
     catch (e) {
         throw new Error(`Error fetching watched movies ${e}`)
