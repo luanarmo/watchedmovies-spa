@@ -3,7 +3,7 @@ import { useState, useCallback, useContext } from 'react'
 import { getWatched, addWatched as addWatchedMovie, removeWatched as removeWatchedMovie, getWatchedDetails } from '../services/watchedMoviesServices'
 
 
-export function useWatched() {
+export const useWatched = () => {
     const [watched, setWatched] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -11,10 +11,10 @@ export function useWatched() {
 
     const { sesion } = useContext(SesionContext)
 
-    const fetchWatched = useCallback(async () => {
+    const fetchWatched = useCallback(async (page = 1) => {
         try {
-            const watched = await getWatched({ access: sesion.access })
-            setWatched(watched)
+            const watchedMapped = await getWatched({ access: sesion.access, page })
+            setWatched(watchedMapped)
         } catch (error) {
             setError("Error fetching watched movies")
             console.error(error)
