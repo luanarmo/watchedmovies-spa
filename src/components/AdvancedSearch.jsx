@@ -1,6 +1,7 @@
 import { Search } from './Search.jsx'
 import { Base } from './Base'
 import { Movies } from './Movies'
+import { MoviesSkeleton } from './MovieSkeleton.jsx'
 import { useState, useContext, useEffect, useCallback, useRef } from 'react'
 import { SearchContext } from '../context/search.jsx'
 import { searchMovies } from '../services/search.js'
@@ -13,15 +14,16 @@ export default function AdvancedSearch() {
     const prevSearch = useRef('')
 
     const [movies, setMovies] = useState([])
+    const [loading, setLoading] = useState(true)
 
 
     const getSearchedMovies = useCallback(async ({ search }) => {
-
+        setLoading(true)
         if (prevSearch.current === search) return
 
         const movies = await searchMovies({ query: search })
         setMovies(movies)
-
+        setLoading(false)
         prevSearch.current = search
 
     }, [])
@@ -47,6 +49,7 @@ export default function AdvancedSearch() {
     useEffect(() => {
         if (search === '') {
             setMovies([])
+            setLoading(false)
         }
 
     }, [search])
@@ -59,7 +62,7 @@ export default function AdvancedSearch() {
                     onSubmit={handleSubmit}
                     search={search}
                 />
-                <Movies movies={movies} />
+                {loading ? <MoviesSkeleton /> : <Movies movies={movies} />}
             </Base>
         </div>
     )
