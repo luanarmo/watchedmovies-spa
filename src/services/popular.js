@@ -5,6 +5,12 @@ export const popularMovies = async () => {
 
     try {
         const response = await fetch(`${BASE_API_URL}/api/tmdb/popular_movies/`)
+
+
+        if (!response.ok) {
+            return []
+        }
+
         const movies = await response.json()
         return movies.map((movie) => ({
             id: movie.id,
