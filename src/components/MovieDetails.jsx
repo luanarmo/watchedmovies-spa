@@ -8,6 +8,7 @@ import { Modal } from '../components/Modal.jsx'
 import { ViewDetailsForm } from '../components/ViewDetailsForm.jsx'
 import { truncateText } from '../utils/truncateText.js'
 import { SesionContext } from '../context/sesion'
+import { movieDetailsSkeleton } from './movieDetailsSkeleton.jsx'
 
 export function Details({ movie }) {
 
@@ -51,7 +52,7 @@ export function Details({ movie }) {
     }, [watched])
 
     if (loading && sesion.auth) {
-        return <Loading />
+        return movieDetailsSkeleton()
     }
 
     if (error) {
