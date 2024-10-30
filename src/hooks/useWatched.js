@@ -13,6 +13,7 @@ export const useWatched = () => {
 
     const fetchWatched = useCallback(async (page = 1) => {
         try {
+            setLoading(true)
             const watchedMapped = await getWatched({ access: sesion.access, page })
             setWatched(watchedMapped)
         } catch (error) {
@@ -21,7 +22,7 @@ export const useWatched = () => {
         } finally {
             setLoading(false)
         }
-    }, [])
+    }, [sesion.access])
 
     const addWatched = async (movie, payload) => {
         try {
