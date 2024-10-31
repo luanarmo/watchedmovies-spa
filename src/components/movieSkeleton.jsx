@@ -1,5 +1,5 @@
 export function MoviesSkeleton() {
-    const skeletonItems = Array.from({ length: 12 }); // Cambia el número según cuántos esqueléticos necesites
+    const skeletonItems = Array.from({ length: 20 });
 
     return (
         <section>
