@@ -1,7 +1,7 @@
 import { Base } from './Base.jsx'
 import { useWatched } from '../hooks/useWatched.js'
 import { WatchedMovie } from './WatchedMovie.jsx'
-import { WatchedMovieSkeleton } from './WatchedMovieSkeleton.jsx'
+import { WatchedMovieSkeleton } from './watchedMovieSkeleton.jsx'
 import { useEffect } from 'react'
 
 export default function Watched() {
