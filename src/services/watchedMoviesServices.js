@@ -89,6 +89,10 @@ export const getWatchedDetails = async ({ movieId, access }) => {
             }
         })
 
+        if (!response.ok) {
+            return {}
+        }
+
         const watched = await response.json()
 
         return watched
