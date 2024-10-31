@@ -1,7 +1,7 @@
 import { HomeSearch } from './HomeSearch'
 import { Base } from './Base'
 import { Movies } from './Movies'
-import { MoviesSkeleton } from './movieSkeleton'
+import { MoviesSkeleton } from './MoviesSkeleton.jsx'
 import { useMovies } from '../hooks/useMovies'
 import { useEffect } from 'react'
 
