@@ -1,7 +1,7 @@
 import { Search } from './Search.jsx'
 import { Base } from './Base'
 import { Movies } from './Movies'
-import { MoviesSkeleton } from './MovieSkeleton.jsx'
+import { MoviesSkeleton } from './movieSkeleton.jsx'
 import { useState, useContext, useEffect, useCallback, useRef } from 'react'
 import { SearchContext } from '../context/search.jsx'
 import { searchMovies } from '../services/search.js'
