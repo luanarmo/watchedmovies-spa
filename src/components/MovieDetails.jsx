@@ -3,7 +3,6 @@ import { useMovieDetails } from '../hooks/useMovieDetails'
 import { Base } from '../components/Base'
 import { useEffect, useState, useCallback, useContext } from 'react'
 import { useWatched } from '../hooks/useWatched.js'
-import { Loading } from '../components/Loading.jsx'
 import { Modal } from '../components/Modal.jsx'
 import { ViewDetailsForm } from '../components/ViewDetailsForm.jsx'
 import { truncateText } from '../utils/truncateText.js'
@@ -14,7 +13,7 @@ export function Details({ movie }) {
 
     const MAX_COMMENT_LENGTH = 300;
 
-    const { watched, loading, error, addWatched, fetchWatched } = useWatched()
+    const { watchedDetails, loading, error, addWatched, getWatchedMovie } = useWatched()
 
     const [isWatched, setIsWatched] = useState(false)
 
@@ -36,12 +35,12 @@ export function Details({ movie }) {
     }
 
     const checkWatched = useCallback(() => {
-        setIsWatched(watched.some((watchedMovie) => watchedMovie.id === movie.id))
-    }, [watched])
+        setIsWatched(watchedDetails.id === movie.id)
+    }, [watchedDetails])
 
     useEffect(() => {
         if (sesion.auth) {
-            fetchWatched()
+            getWatchedMovie({ movieId: movie.id })
         }
     }, [])
 
@@ -49,7 +48,7 @@ export function Details({ movie }) {
         if (sesion.auth) {
             checkWatched()
         }
-    }, [watched])
+    }, [watchedDetails])
 
     if (loading && sesion.auth) {
         return <MovieDetailsSkeleton />
