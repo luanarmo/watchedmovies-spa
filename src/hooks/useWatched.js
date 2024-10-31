@@ -46,8 +46,10 @@ export const useWatched = () => {
 
     const getWatchedMovie = useCallback(async ({ movieId }) => {
         try {
+            setLoading(true)
             const watched = await getWatchedDetails({ movieId, access: sesion.access })
             setWatchedDetails(watched)
+            setLoading(false)
         } catch (error) {
             setError("Error fetching watched movie")
             console.error(error)
