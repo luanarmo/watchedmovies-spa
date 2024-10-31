@@ -87,7 +87,7 @@ export function Details({ movie }) {
 }
 
 export default function MovieDetails() {
-    const { movie, getMovieDetails, loading } = useMovieDetails()
+    const { movie, getMovieDetails } = useMovieDetails()
     const { movieId } = useParams()
 
 
@@ -97,12 +97,9 @@ export default function MovieDetails() {
 
     return (
         <div className='bg-gradient-to-r from-slate-700 to-slate-500 text-white'>
-            {loading ?
-                <Loading /> :
-                <Base>
-                    <Details movie={movie} />
-                </Base>
-            }
+            <Base>
+                <Details movie={movie} />
+            </Base>
         </div>
     )
 }
