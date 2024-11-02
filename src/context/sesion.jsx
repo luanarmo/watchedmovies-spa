@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
 
 export const SesionContext = createContext();
 
@@ -12,7 +11,6 @@ export const SesionProvider = ({ children }) => {
         expiresAt: null
     };
 
-    const navigate = useNavigate();
 
     const [sesion, setSesion] = useState(initialSesion);
 
@@ -22,7 +20,6 @@ export const SesionProvider = ({ children }) => {
         const interval = setInterval(() => {
             if (isExpired()) {
                 deleteSesionExpiredSession();
-                navigate('/login');
             }
         }, 60000);
 
