@@ -3,7 +3,7 @@ import { SesionContext } from '../context/sesion.jsx'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../services/login.js'
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
