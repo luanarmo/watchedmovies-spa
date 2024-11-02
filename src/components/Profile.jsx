@@ -1,13 +1,20 @@
 import { Base } from './Base'
-import { useEffect } from 'react'
+import { SesionContext } from '../context/sesion.jsx'
+import { useEffect, useContext } from 'react'
 import { useProfile } from '../hooks/useProfile'
 import { Loading } from '../components/Loading'
+import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
-
+    const { isExpired } = useContext(SesionContext)
     const { profile, loading, fetchProfile } = useProfile()
 
+    const navigate = useNavigate();
+
     useEffect(() => {
+        if (isExpired()) {
+            navigate('/login')
+        }
         fetchProfile()
     }, [])
 
