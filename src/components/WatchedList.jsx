@@ -9,17 +9,21 @@ import { useNavigate } from 'react-router-dom'
 
 export default function Watched() {
 
-    const { isExpired } = useContext(SesionContext)
+    const { sesion } = useContext(SesionContext)
     const { watched, loading, error, removeWatched, fetchWatched } = useWatched()
 
     const navigate = useNavigate()
 
     useEffect(() => {
+        const isExpired = () => {
+            return sesion.expiresAt ? Date.now() > sesion.expiresAt : true;
+        }
+
         if (isExpired()) {
             navigate('/login')
         }
         fetchWatched()
-    }, [fetchWatched, isExpired, navigate])
+    }, [])
 
     if (error) {
         return <div className='text-white'>{error}</div>
