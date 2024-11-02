@@ -1,16 +1,25 @@
 import { Base } from './Base.jsx'
+import { SesionContext } from '../context/sesion.jsx'
 import { useWatched } from '../hooks/useWatched.js'
 import { WatchedMovie } from './WatchedMovie.jsx'
 import { WatchedMovieSkeleton } from './watchedMovieSkeleton.jsx'
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 export default function Watched() {
 
+    const { isExpired } = useContext(SesionContext)
     const { watched, loading, error, removeWatched, fetchWatched } = useWatched()
 
+    const navigate = useNavigate()
+
     useEffect(() => {
+        if (isExpired()) {
+            navigate('/login')
+        }
         fetchWatched()
-    }, [fetchWatched])
+    }, [fetchWatched, isExpired, navigate])
 
     if (error) {
         return <div className='text-white'>{error}</div>
