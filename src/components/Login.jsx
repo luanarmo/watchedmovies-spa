@@ -3,6 +3,7 @@ import { SesionContext } from '../context/sesion.jsx'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../services/login.js'
+import jwtDecode from 'jwt-decode';
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -114,11 +115,16 @@ export default function Login() {
 
         try {
             const response = await login(form)
+
+            const { exp } = jwtDecode(response.access)
+            const expirationTime = exp * 1000
+
             setSesion({
                 ...sesion,
                 access: response.access,
                 refresh: response.refresh,
-                auth: true
+                auth: true,
+                expiresAt: expirationTime
             })
             navigate('/')
 
