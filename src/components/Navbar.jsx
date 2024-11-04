@@ -16,8 +16,7 @@ export const Navbar = () => {
             <div className="flex flex-row items-center justify-between gap-1">
                 <div className="flex items-center justify-self-center gap-1  w-auto text-white">
                     <Link to="/"> <FaHome title='Inicio' /> </Link>
-                    <FaGripLinesVertical />
-                    {sesion.auth && <Link to="/watched" className=" hover:text-blue-400">Watched movies</Link>}
+                    {sesion.auth && <Link to="/watched" className=" hover:text-blue-400"> <FaGripLinesVertical /> Watched movies</Link>}
                 </div>
 
                 <div className="w-auto text-white flex flex-row gap-2" >
