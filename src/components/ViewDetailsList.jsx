@@ -33,7 +33,7 @@ export default function ViewDetailsList({ movieId }) {
                 <li key={viewDetail.id} className='bg-slate-600 p-4 w-60 rounded-lg'>
                     <p>{viewDetail.place}</p>
                     <p>{viewDetail.language}</p>
-                    <p>{viewDetail.watched_at}</p>
+                    <p>{viewDetail.watched_date}</p>
                     <p>{viewDetail.comment ? truncateText(viewDetail.comment, MAX_COMMENT_LENGTH) : <BiCommentX />}</p>
                     <p>{viewDetail.rating ? viewDetail.rating : <LuGanttChartSquare />}</p>
                     <div className='flex mt-2'>
