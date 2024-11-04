@@ -29,6 +29,7 @@ jobs:
 
     env:
       VITE_BASE_API_URL: ${{ secrets.VITE_BASE_API_URL }}
+      VITE_CAPTCHA_SITE_KEY: ${{ secrets.VITE_CAPTCHA_SITE_KEY }}
 
     runs-on: ubuntu-latest
     steps:
