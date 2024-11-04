@@ -6,12 +6,16 @@ import { login } from '../services/login.js'
 import { jwtDecode } from "jwt-decode";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import ReCAPTCHA from "react-google-recaptcha";
+const CAPTCHA_SITE_KEY = import.meta.env.VITE_CAPTCHA_SITE_KEY
 
 export default function Login() {
 
     const { sesion, setSesion } = useContext(SesionContext)
 
     const navigate = useNavigate();
+
+    const [captchaValue, setCaptchaValue] = useState(null);
 
     const [error, setError] = useState({
         email: '',
@@ -32,6 +36,7 @@ export default function Login() {
 
     const isFirstInputPass = useRef(true)
     const isFirstInputEmail = useRef(true)
+    const chapchaRef = useRef(null)
 
 
     useEffect(() => {
@@ -105,6 +110,15 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
+        if (!captchaValue) {
+            toast.error('Please fill the form correctly', {
+                position: "top-center",
+                closeButton: true,
+                autoClose: 5000,
+            });
+            return
+        }
+
         if (error.email.length > 0
             || error.password.length > 0
             || isFirstInputEmail.current
@@ -114,7 +128,7 @@ export default function Login() {
         }
 
         try {
-            const response = await login(form)
+            const response = await login({ ...form, token: captchaValue })
 
             const { exp } = jwtDecode(response.access)
             const expirationTime = exp * 1000
@@ -129,7 +143,9 @@ export default function Login() {
             navigate('/')
 
         } catch (error) {
-            console.log(error)
+            setCaptchaValue(null)
+            chapchaRef.current.reset()
+
             toast.dismiss()
             toast.error(`${error.message}`, {
                 position: "top-center",
@@ -163,6 +179,11 @@ export default function Login() {
                     onChange={handleChange}
                 />
                 <span className='text-red-500'>{error.password}</span>
+                <ReCAPTCHA
+                    ref={chapchaRef}
+                    sitekey={CAPTCHA_SITE_KEY}
+                    onChange={setCaptchaValue}
+                />
                 <div className='flex gap-4 mt-4'>
                     <>
                         <button
