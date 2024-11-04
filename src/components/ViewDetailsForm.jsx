@@ -38,7 +38,8 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                 <textarea name="comment" id="comment" cols="25" rows="4" placeholder="Add a comment" className="resize-none w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none"></textarea>
                 <span className="text-gray-500 text-xs">Optional</span>
             </div>
-            <select name="language" id="language" defaultValue={"en"} className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
+            <select name="language" id="language" defaultValue={""} className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
+                <option value="">Language</option>
                 <option value="en">English</option>
                 <option value="es">Spanish</option>
                 <option value="fr">French</option>
@@ -53,12 +54,14 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                 <option value="hi">Hindi</option>
                 <option value="other">Other</option>
             </select>
-            <select name="place" id="place" defaultValue={"cinema"} className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
+            <select name="place" id="place" defaultValue={""} className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
+                <option value="">Where did you watch it?</option>
                 <option value="home">Home</option>
                 <option value="cinema">Cinema</option>
                 <option value="friend">Friends' house</option>
                 <option value="other">Other</option>
             </select>
+            <input type="date" name="watched_date" id="watched_date" className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm" />
             <div className='flex gap-4 mt-4'>
                 <button
                     type="submit"
