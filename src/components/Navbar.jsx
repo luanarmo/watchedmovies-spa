@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { SesionContext } from '../context/sesion.jsx'
 import { useContext } from 'react'
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaGripLinesVertical } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 import { GoSignOut } from "react-icons/go";
 
@@ -16,6 +16,7 @@ export const Navbar = () => {
             <div className="flex flex-row items-center justify-between gap-1">
                 <div className="flex items-center justify-self-center gap-1  w-auto text-white">
                     <Link to="/"> <FaHome title='Inicio' /> </Link>
+                    <FaGripLinesVertical />
                     {sesion.auth && <Link to="/watched" className=" hover:text-blue-400">Watched movies</Link>}
                 </div>
 
