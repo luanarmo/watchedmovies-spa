@@ -10,24 +10,25 @@ const BASE_API_URL = import.meta.env.VITE_BASE_API_URL
  * @param {Object} credentials - Las credenciales del usuario.
  * @param {string} credentials.email - La dirección de correo electrónico del usuario.
  * @param {string} credentials.password - La contraseña del usuario.
+ * @param {string} credentials.token - El token de reCAPTCHA
  * @returns {Promise<Object>} Los datos del usuario si la autenticación es exitosa.
  * @throws {Error} Lanza un error si la autenticación falla o si ocurre un problema
  * durante la petición.
  */
-export const login = async ({ email, password }) => {
+export const login = async ({ email, password, token }) => {
 
     const response = await fetch(`${BASE_API_URL}/api/auth/login/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password, token })
     })
 
     const data = await response.json()
 
     if (!response.ok) {
-        throw new Error(data.detail || "Error desconocido!")
+        throw new Error(data.detail || "An unexpected error occurred")
     }
 
     return data
