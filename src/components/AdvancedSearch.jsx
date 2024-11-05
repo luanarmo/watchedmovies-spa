@@ -19,7 +19,10 @@ export default function AdvancedSearch() {
 
     const getSearchedMovies = useCallback(async ({ search }) => {
         setLoading(true)
-        if (prevSearch.current === search) return
+        if (prevSearch.current === search) {
+            setLoading(false)
+            return
+        }
 
         const movies = await searchMovies({ query: search })
         setMovies(movies)
@@ -40,6 +43,7 @@ export default function AdvancedSearch() {
         const newSearch = e.target.value
         setSearch(newSearch)
         debouncedGetSearchedMovies(newSearch)
+        setLoading(false)
     }
 
     useEffect(() => {
