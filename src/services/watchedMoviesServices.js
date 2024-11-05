@@ -24,7 +24,7 @@ export const getWatched = async ({ access, page }) => {
             poster_url: movie.poster_url ? movie.poster_url : 'https://placehold.co/500x750?font=roboto',
             release_date: movie.release_date ? movie.release_date : 'Unknown',
             total_views: movie.total_views,
-            average_rating: movie.average_rating ? movie.average_rating : 0,
+            average_rating: movie.vote_average ? movie.vote_average : 0,
         }))
 
     }
