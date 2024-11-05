@@ -29,7 +29,7 @@ export function NoResults() {
 export function Movies({ movies }) {
     const hasMovies = movies?.length > 0
     return (
-        <section>
+        <section className='min-h-screen'>
             {hasMovies ? (
                 <ListOfMovies movies={movies} />
             ) : (
