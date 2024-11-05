@@ -6,6 +6,7 @@ import Profile from './components/Profile'
 import MovieDetails from './components/MovieDetails'
 import WatchedMovieDetails from './components/WatchedMovieDetails'
 import AdvancedSearch from './components/AdvancedSearch'
+import { EmailVerification } from './components/EmailVerification.jsx'
 
 import { SearchProvider } from './context/search.jsx'
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="/movie/:movieId" element={<MovieDetails />} />
         <Route path="/watchedDetails/:movieId" element={<WatchedMovieDetails />} />
         <Route path="/search" element={<SearchProvider><AdvancedSearch /></SearchProvider>} />
+        <Route path="/verify/:uid/:token" element={<EmailVerification></EmailVerification>} />
       </Routes>
     </HashRouter  >
   )
