@@ -12,7 +12,6 @@ export function EmailVerification() {
 
     const { uid, token } = useParams()
 
-
     useEffect(() => {
         console.log(uid, token)
         verifyEmail({ uid, token })
@@ -29,18 +28,21 @@ export function EmailVerification() {
 
     return (
         <Base>
-            <div className="flex items-start justify-center min-h-screen bg-slate-950">
-                <h1 className="text-white text-2xl p-4">
-                    {loading && <strong> Verifying email...</strong>}
-                    {error && <strong>{error}</strong>}
-                    {success &&
-                        <div className='flex flex-col items-center justify-center'>
-                            <strong className='text-4xl'>Email verified!</strong>
-                            <p>Now you can login with your account</p>
-                            <p>Go to <Link to='/login' className='text-blue-500'>login</Link></p>
-                        </div>
-                    }
-                </h1>
+            <div className="flex items-center justify-center min-h-screen bg-slate-900 p-6">
+                <div className="bg-slate-800 text-center p-8 rounded-lg shadow-lg w-full max-w-lg">
+                    <h1 className="text-3xl font-semibold text-white mb-4">
+                        {loading && <span>🔄 Verifying your email...</span>}
+                        {error && <span className="text-red-400">{error}</span>}
+                        {success &&
+                            <div>
+                                <span className="text-4xl text-green-400">✅ Email Verified!</span>
+                                <p className="mt-4 text-xl text-gray-300">Your email has been successfully verified. 🎉</p>
+                                <p className="mt-6 text-lg">
+                                    You can now <Link to='/login' className="text-blue-400 underline">log in</Link> with your account. 🚀
+                                </p>
+                            </div>}
+                    </h1>
+                </div>
             </div>
         </Base>
     )
