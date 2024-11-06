@@ -3,44 +3,53 @@ import { createContext, useState, useEffect } from 'react';
 export const SesionContext = createContext();
 
 export const SesionProvider = ({ children }) => {
-    // Cargar sesión desde localStorage o usar valores por defecto
-    const initialSesion = JSON.parse(localStorage.getItem('sesion')) || {
+    const [sesion, setSesion] = useState({
         auth: false,
         access: null,
         refresh: null,
         expiresAt: null
-    };
+    });
 
-
-    const [sesion, setSesion] = useState(initialSesion);
-
-    // Guardar sesión en localStorage cada vez que cambie
     useEffect(() => {
-        localStorage.setItem('sesion', JSON.stringify(sesion));
-        const interval = setInterval(() => {
-            if (isExpired()) {
-                deleteSesionExpiredSession();
-            }
-        }, 60000);
+        const storedSesion = localStorage.getItem('sesion');
+        if (storedSesion) {
+            const parsedSesion = JSON.parse(storedSesion);
+            setSesion(parsedSesion);
+        }
+    }, []); // Solo se ejecuta una vez al montar el componente
 
-        return () => clearInterval(interval);
+    useEffect(() => {
+        if (sesion.auth) {
+            localStorage.setItem('sesion', JSON.stringify(sesion));
+        }
+    }, [sesion]); // Solo se actualiza si la sesión cambia
 
-    }, [sesion]);
-
-
+    const isExpired = () => {
+        if (sesion.expiresAt) {
+            return Date.now() > sesion.expiresAt;
+        }
+        return true; // Si no hay fecha de expiración, consideramos que ha expirado
+    };
 
     const deleteSesionExpiredSession = () => {
         localStorage.removeItem('sesion');
         setSesion({
             auth: false,
             access: null,
-            refresh: null
+            refresh: null,
+            expiresAt: null
         });
-    }
+    };
 
-    const isExpired = () => {
-        return sesion.expiresAt ? Date.now() > sesion.expiresAt : true;
-    }
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (isExpired()) {
+                deleteSesionExpiredSession();
+            }
+        }, 60000); // Cada 60 segundos
+
+        return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonta
+    }, [sesion]);
 
     return (
         <SesionContext.Provider value={{ sesion, setSesion, deleteSesionExpiredSession }}>
