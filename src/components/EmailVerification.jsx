@@ -33,7 +33,13 @@ export function EmailVerification() {
                 <h1 className="text-white text-2xl p-4">
                     {loading && <strong> Verifying email...</strong>}
                     {error && <strong>{error}</strong>}
-                    {success && <div className='flex flex-col items-center justify-center'><strong className='text-4xl'>Email verified!</strong><p>Go to <Link to='/login' className='text-blue-500'>login</Link></p></div>}
+                    {success &&
+                        <div className='flex flex-col items-center justify-center'>
+                            <strong className='text-4xl'>Email verified!</strong>
+                            <p>Now you can login with your account</p>
+                            <p>Go to <Link to='/login' className='text-blue-500'>login</Link></p>
+                        </div>
+                    }
                 </h1>
             </div>
         </Base>
