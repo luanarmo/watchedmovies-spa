@@ -162,6 +162,12 @@ export default function Register() {
 
         try {
             const data = await register({ ...form, token: captchaValue })
+            toast.dismiss()
+            toast.success("User created successfully, please check your email to verify your account", {
+                position: "top-center",
+                closeButton: true,
+                autoClose: 5000,
+            })
             navigate('/login')
 
         } catch (error) {
