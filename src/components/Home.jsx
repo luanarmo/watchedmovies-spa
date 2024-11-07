@@ -16,11 +16,9 @@ export default function Home() {
 
 
     return (
-        <div className="h-screen">
-            <Base>
-                <HomeSearch />
-                {loading ? <MoviesSkeleton /> : <Movies movies={popular} />}
-            </Base>
-        </div>
+        <Base>
+            <HomeSearch />
+            {loading ? <MoviesSkeleton /> : <Movies movies={popular} />}
+        </Base>
     )
 }
