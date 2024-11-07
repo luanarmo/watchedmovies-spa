@@ -4,23 +4,19 @@ import { WatchedField } from './WatchedField'
 
 export const WatchedMovie = ({ movie, onDelete }) => {
     return (
-        <div className="flex rounded-xl bg-slate-600">
+        <li className="flex flex-col bg-slate-600 text-white shadow-lg rounded-lg overflow-hidden">
             <Link to={`/watchedDetails/${movie.id}`}>
-                <div className='w-32'>
-                    <img
-                        src={movie.poster_url}
-                        alt={movie.title}
-                        className="object-cover rounded-l-xl"
-                    />
-                </div>
+                <img
+                    src={movie.poster_url}
+                    alt={movie.title}
+                    className="w-full h-full object-cover"
+                    loading='lazy'
+                />
             </Link>
-            <div className="p-2">
-                <Link to={`/watchedDetails/${movie.id}`}>
-                    <h2 className="text-xl font-bold">{movie.title}</h2>
-                </Link>
+            <div className="flex gap-2 items-center justify-center min-h-10">
                 <WatchedField field={movie.total_views} icon={<FaEye />} />
                 <WatchedField field={movie.average_rating} icon={<FaStar className='text-yellow-400' />} />
-                <div className="mt-4 space-x-4">
+                <div className='flex items-center gap-2'>
                     <button
                         onClick={() => onDelete(movie.id)}
                         className="text-red-500 hover:text-red-600"
@@ -29,6 +25,6 @@ export const WatchedMovie = ({ movie, onDelete }) => {
                     </button>
                 </div>
             </div>
-        </div>
+        </li>
     );
 };
