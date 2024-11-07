@@ -5,6 +5,7 @@ import { getWatched, addWatched as addWatchedMovie, removeWatched as removeWatch
 
 export const useWatched = () => {
     const [watched, setWatched] = useState([])
+    const [pagination, setPagination] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [watchedDetails, setWatchedDetails] = useState({})
@@ -14,8 +15,9 @@ export const useWatched = () => {
     const fetchWatched = useCallback(async (page = 1) => {
         try {
             setLoading(true)
-            const watchedMapped = await getWatched({ access: sesion.access, page })
+            const { watchedMapped, count, next, previous } = await getWatched({ access: sesion.access, page })
             setWatched(watchedMapped)
+            setPagination({ count, next, previous })
         } catch (error) {
             setError("Error fetching watched movies")
             console.error(error)
@@ -56,5 +58,5 @@ export const useWatched = () => {
         }
     }, [])
 
-    return { watched, watchedDetails, loading, error, addWatched, removeWatched, fetchWatched, getWatchedMovie }
+    return { watched, pagination, watchedDetails, loading, error, addWatched, removeWatched, fetchWatched, getWatchedMovie }
 }
