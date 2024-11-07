@@ -2,17 +2,25 @@ import { Base } from './Base.jsx'
 import { SesionContext } from '../context/sesion.jsx'
 import { useWatched } from '../hooks/useWatched.js'
 import { WatchedMovie } from './WatchedMovie.jsx'
+import { Pagination } from './Pagination.jsx'
 import { WatchedMovieSkeleton } from './watchedMovieSkeleton.jsx'
-import { useEffect, useContext } from 'react'
+import { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 
 export default function Watched() {
 
     const { sesion } = useContext(SesionContext)
-    const { watched, loading, error, removeWatched, fetchWatched } = useWatched()
+    const { watched, pagination, loading, error, removeWatched, fetchWatched } = useWatched()
+    const [page, setPage] = useState(1)
 
     const navigate = useNavigate()
+
+    const handlePage = (newPage) => {
+        setPage(newPage)
+        fetchWatched(newPage)
+    }
+
 
     useEffect(() => {
         const isExpired = () => {
@@ -20,9 +28,10 @@ export default function Watched() {
         }
 
         if (isExpired()) {
+            sesion.auth = false
             navigate('/login')
         }
-        fetchWatched()
+        fetchWatched(page)
     }, [])
 
     if (error) {
@@ -33,13 +42,24 @@ export default function Watched() {
         <Base>
             <div className='flex flex-col gap-2 p-2 bg-slate-950 text-white h-screen overflow-y-auto max-h-[calc(100vh-8rem)]'>
                 {loading ? (
-                    Array.from({ length: 10 }).map((_, index) => <WatchedMovieSkeleton key={index} />)
+                    <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
+                        {Array.from({ length: 25 }).map((_, index) => <WatchedMovieSkeleton key={index} />)}
+                    </ul>
                 ) : (
-                    watched.map((movie) => (
-                        <WatchedMovie key={movie.id} movie={movie} onDelete={removeWatched} />
-                    ))
+                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
+                        {watched.map((movie) => (
+                            <WatchedMovie
+                                key={movie.id}
+                                movie={movie}
+                                onDelete={removeWatched}
+                            />
+                        ))}
+                    </ul>
                 )
                 }
+                <div className='flex items-center justify-center'>
+                    <Pagination page={page} pagination={pagination} handlePage={handlePage} />
+                </div>
             </div>
         </Base>
     )
