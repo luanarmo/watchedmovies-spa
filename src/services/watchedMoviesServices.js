@@ -18,7 +18,7 @@ export const getWatched = async ({ access, page }) => {
             return []
         }
 
-        return data.results.map((movie) => ({
+        const watchedMapped = data.results.map((movie) => ({
             id: movie.id,
             title: movie.title,
             poster_url: movie.poster_url ? movie.poster_url : 'https://placehold.co/500x750?font=roboto',
@@ -26,6 +26,8 @@ export const getWatched = async ({ access, page }) => {
             total_views: movie.total_views,
             average_rating: movie.vote_average ? movie.vote_average : 0,
         }))
+
+        return { watchedMapped, count: data.count, next: data.next, previous: data.previous }
 
     }
     catch (e) {
