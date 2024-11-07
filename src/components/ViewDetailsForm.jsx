@@ -60,7 +60,13 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                 <option value="friend">Friends' house</option>
                 <option value="other">Other</option>
             </select>
-            <input type="date" name="watched_date" id="watched_date" className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm" />
+            <input
+                type="date"
+                name="watched_date"
+                id="watched_date"
+                defaultValue={new Date().toISOString().split('T')[0]}
+                className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm"
+            />
             <div className='flex gap-4 mt-4'>
                 <button
                     type="submit"
