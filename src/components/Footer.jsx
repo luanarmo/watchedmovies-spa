@@ -3,7 +3,7 @@ export function Footer() {
         <footer className="bg-gray-800 text-white py-6">
             <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
                 <div className="mb-4 md:mb-0">
-                    <p className="text-sm">&copy; 2024 luanarmo.</p>
+                    <p className="text-base">luanarmo</p>
                 </div>
 
                 <div className="mb-4 md:mb-0">
