@@ -1,5 +1,6 @@
 import { useContext, useState, useCallback } from 'react'
 import { getProfile } from '../services/profile'
+import { getPosters } from '../services/watchedMoviesServices.js'
 import { SesionContext } from '../context/sesion.jsx'
 
 export const useProfile = () => {
@@ -32,5 +33,31 @@ export const useProfile = () => {
         }
     })
 
-    return { profile, loading, fetchProfile }
+    const fetchPoster = useCallback(async () => {
+        try {
+            setLoading(true);
+            console.log("Generating image");
+
+            // Llamar al servicio para obtener el Blob
+            const imageBlob = await getPosters({ access: sesion.access });
+
+            // Crear un objeto URL para el Blob
+            const url = URL.createObjectURL(imageBlob);
+
+            // Crear un enlace temporal para descargar la imagen
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'collage.jpeg'; // Nombre del archivo
+            a.click();
+
+            // Liberar la memoria del objeto URL
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error(e)
+        } finally {
+            setLoading(false)
+        }
+    })
+
+    return { profile, loading, fetchProfile, fetchPoster }
 }
