@@ -36,6 +36,31 @@ export const getWatched = async ({ access, page }) => {
 
 }
 
+export const getPosters = async ({ access }) => {
+    // Fetch watched movies from the API
+
+    try {
+        const response = await fetch(`${BASE_API_URL}/api/watched-movies/posters/`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access}`
+            }
+        })
+
+        if (!response.ok) {
+            throw new Error('Error fetching the image');
+        }
+
+        // Retornar el Blob directamente
+        return await response.blob();
+
+    }
+    catch (e) {
+        throw new Error(`Error fetching watched movies ${e}`)
+    }
+
+}
+
 export const addWatched = async ({ movie, payload, access }) => {
     // remove poster_url and backdrop_url from the movie object
 
