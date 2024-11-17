@@ -1,6 +1,6 @@
 import { useContext, useState, useCallback } from 'react'
 import { getProfile } from '../services/profile'
-import { getPosters } from '../services/watchedMoviesServices.js'
+import { getPosters, getYears } from '../services/watchedMoviesServices.js'
 import { SesionContext } from '../context/sesion.jsx'
 
 export const useProfile = () => {
@@ -18,6 +18,7 @@ export const useProfile = () => {
             pk: '',
         }
     })
+    const [years, setYears] = useState([])
     const [loading, setLoading] = useState(false)
 
 
@@ -59,5 +60,14 @@ export const useProfile = () => {
         }
     })
 
-    return { profile, loading, fetchProfile, fetchPoster }
+    const fetchYears = useCallback(async () => {
+        try {
+            const newYears = await getYears({ access: sesion.access })
+            setYears(newYears)
+        } catch (e) {
+            console.error(e)
+        }
+    })
+
+    return { profile, years, loading, fetchProfile, fetchPoster, fetchYears }
 }
