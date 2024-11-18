@@ -1,21 +1,23 @@
 import { SesionContext } from '../context/sesion'
 import { useState, useCallback, useContext } from 'react'
 import { getWatched, addWatched as addWatchedMovie, removeWatched as removeWatchedMovie, getWatchedDetails } from '../services/watchedMoviesServices'
-
+import { getYears } from '../services/watchedMoviesServices'
 
 export const useWatched = () => {
     const [watched, setWatched] = useState([])
     const [pagination, setPagination] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [ordering, setOrdering] = useState("-first_watched_date")
     const [watchedDetails, setWatchedDetails] = useState({})
+    const [years, setYears] = useState([])
 
     const { sesion } = useContext(SesionContext)
 
-    const fetchWatched = useCallback(async (page = 1) => {
+    const fetchWatched = useCallback(async (page = 1, ordering, year) => {
         try {
             setLoading(true)
-            const { watchedMapped, count, next, previous } = await getWatched({ access: sesion.access, page })
+            const { watchedMapped, count, next, previous } = await getWatched({ access: sesion.access, page, ordering, year })
             setWatched(watchedMapped)
             setPagination({ count, next, previous })
         } catch (error) {
@@ -58,5 +60,14 @@ export const useWatched = () => {
         }
     }, [])
 
-    return { watched, pagination, watchedDetails, loading, error, addWatched, removeWatched, fetchWatched, getWatchedMovie }
+    const fetchYears = useCallback(async () => {
+        try {
+            const newYears = await getYears({ access: sesion.access })
+            setYears(newYears)
+        } catch (e) {
+            console.error(e)
+        }
+    })
+
+    return { watched, pagination, ordering, watchedDetails, loading, error, years, addWatched, removeWatched, fetchWatched, getWatchedMovie, setOrdering, fetchYears }
 }
