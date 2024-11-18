@@ -68,14 +68,14 @@ export default function Watched() {
                 <div className='flex items-center justify-center'>
                     <label className="text-white px-4">Order by:</label>
                     <OrderOption
-                        className='flex items-center justify-center'
+                        className='flex sm:flex-col items-center justify-center'
                         options={WatchedDateOptions}
                         selectedOption={ordering}
                         handleOrderChange={handleOrderChange}
                     />
                     <label className='text-white px-4'>Filter by:</label>
                     <OrderOption
-                        className='flex items-center justify-center'
+                        className='flex sm:flex-col items-center justify-center'
                         options={years}
                         selectedOption={year || ''}
                         handleOrderChange={handleFilterChange}
