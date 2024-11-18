@@ -3,6 +3,7 @@ import { SesionContext } from '../context/sesion.jsx'
 import { useWatched } from '../hooks/useWatched.js'
 import { WatchedMovie } from './WatchedMovie.jsx'
 import { Pagination } from './Pagination.jsx'
+import { OrderOption } from './OrderOption.jsx'
 import { WatchedMovieSkeleton } from './watchedMovieSkeleton.jsx'
 import { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -11,14 +12,34 @@ import { useNavigate } from 'react-router-dom'
 export default function Watched() {
 
     const { sesion } = useContext(SesionContext)
-    const { watched, pagination, loading, error, removeWatched, fetchWatched } = useWatched()
+    const { watched, pagination, ordering, loading, years, error, removeWatched, fetchWatched, setOrdering, fetchYears } = useWatched()
     const [page, setPage] = useState(1)
+    const [year, setYear] = useState(null)
+
+    const WatchedDateOptions = [
+        {
+            key: "-first_watched_date", label: "Watched date (desc)"
+        },
+        {
+            key: "first_watched_date", label: "Watched date (asc)"
+        }
+    ]
 
     const navigate = useNavigate()
 
     const handlePage = (newPage) => {
         setPage(newPage)
-        fetchWatched(newPage)
+        fetchWatched(newPage, ordering, year)
+    }
+
+    const handleOrderChange = (option) => {
+        setOrdering(option)
+        fetchWatched(page, option, year)
+    }
+
+    const handleFilterChange = (option) => {
+        setYear(option)
+        fetchWatched(page, ordering, option)
     }
 
 
@@ -31,7 +52,10 @@ export default function Watched() {
             sesion.auth = false
             navigate('/login')
         }
-        fetchWatched(page)
+        const current_year = new Date().getFullYear()
+        setYear(current_year)
+        fetchWatched(page, ordering, current_year)
+        fetchYears()
     }, [])
 
     if (error) {
@@ -41,6 +65,22 @@ export default function Watched() {
     return (
         <Base>
             <div className='flex flex-col gap-2 p-2 bg-slate-950 text-white h-screen overflow-y-auto max-h-[calc(100vh-8rem)]'>
+                <div className='flex items-center justify-center'>
+                    <label className="text-white px-4">Order by:</label>
+                    <OrderOption
+                        className='flex items-center justify-center'
+                        options={WatchedDateOptions}
+                        selectedOption={ordering}
+                        handleOrderChange={handleOrderChange}
+                    />
+                    <label className='text-white px-4'>Filter by:</label>
+                    <OrderOption
+                        className='flex items-center justify-center'
+                        options={years}
+                        selectedOption={year || ''}
+                        handleOrderChange={handleFilterChange}
+                    />
+                </div>
                 {loading ? (
                     <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
                         {Array.from({ length: 25 }).map((_, index) => <WatchedMovieSkeleton key={index} />)}
