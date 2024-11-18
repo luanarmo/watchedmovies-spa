@@ -34,13 +34,13 @@ export const useProfile = () => {
         }
     })
 
-    const fetchPoster = useCallback(async () => {
+    const fetchPoster = useCallback(async ({ year, order }) => {
         try {
             setLoading(true);
             console.log("Generating image");
 
             // Llamar al servicio para obtener el Blob
-            const imageBlob = await getPosters({ access: sesion.access });
+            const imageBlob = await getPosters({ access: sesion.access, year, order });
 
             // Crear un objeto URL para el Blob
             const url = URL.createObjectURL(imageBlob);
