@@ -1,11 +1,11 @@
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL
 
 
-export const getWatched = async ({ access, page }) => {
+export const getWatched = async ({ access, page, ordering, year }) => {
     // Fetch watched movies from the API
 
     try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/?page=${page}`, {
+        const response = await fetch(`${BASE_API_URL}/api/watched-movies/?page=${page}&ordering=${ordering}&watched_date_year=${year}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${access}`
@@ -36,11 +36,11 @@ export const getWatched = async ({ access, page }) => {
 
 }
 
-export const getPosters = async ({ access }) => {
+export const getPosters = async ({ access, year, order }) => {
     // Fetch watched movies from the API
 
     try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/posters/`, {
+        const response = await fetch(`${BASE_API_URL}/api/watched-movies/posters/?ordering=${order}&watched_date_year=${year}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${access}`
