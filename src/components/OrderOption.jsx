@@ -1,4 +1,4 @@
-export const OrderOption = ({ options, selectedOption, handleOrderChange }) => {
+export const OrderOption = ({ options, selectedOption, handleOrderChange, suffix }) => {
     return (
         <div className="flex items-center justify-center rounded-full bg-gray-800">
             <select
@@ -12,7 +12,7 @@ export const OrderOption = ({ options, selectedOption, handleOrderChange }) => {
                     const label = typeof option === "string" || typeof option == "number" ? option : option.label;
                     return (
                         <option key={key} value={key} className="text-black">
-                            {label}
+                            {suffix ? ` ${suffix} ${label}` : label}
                         </option>
                     );
                 })}
