@@ -18,10 +18,10 @@ export default function Watched() {
 
     const WatchedDateOptions = [
         {
-            key: "-first_watched_date", label: "Watched date (desc)"
+            key: "-first_watched_date", label: "Date (desc)"
         },
         {
-            key: "first_watched_date", label: "Watched date (asc)"
+            key: "first_watched_date", label: "Date (asc)"
         }
     ]
 
@@ -65,21 +65,26 @@ export default function Watched() {
     return (
         <Base>
             <div className='flex flex-col gap-2 p-2 bg-slate-950 text-white h-screen overflow-y-auto max-h-[calc(100vh-8rem)]'>
-                <div className='flex items-center justify-center'>
-                    <label className="text-white px-4">Order by:</label>
-                    <OrderOption
-                        className='flex sm:flex-col items-center justify-center'
-                        options={WatchedDateOptions}
-                        selectedOption={ordering}
-                        handleOrderChange={handleOrderChange}
-                    />
-                    <label className='text-white px-4'>Filter by:</label>
-                    <OrderOption
-                        className='flex sm:flex-col items-center justify-center'
-                        options={years}
-                        selectedOption={year || ''}
-                        handleOrderChange={handleFilterChange}
-                    />
+                <div className='flex items-center justify-center gap-2'>
+                    <div className='flex flex-col items-center justify-center lg:flex-row gap-2'>
+                        <label className="text-white px-4">Order by:</label>
+                        <OrderOption
+                            className='flex items-center justify-center'
+                            options={WatchedDateOptions}
+                            selectedOption={ordering}
+                            handleOrderChange={handleOrderChange}
+                        />
+                    </div>
+                    <div className='flex flex-col items-center justify-center lg:flex-row gap-2'>
+                        <label className='text-white px-4'>Filter by:</label>
+                        <OrderOption
+                            className='flex sm:flex-col items-center justify-center'
+                            options={years}
+                            selectedOption={year || ''}
+                            suffix={'Year'}
+                            handleOrderChange={handleFilterChange}
+                        />
+                    </div>
                 </div>
                 {loading ? (
                     <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
