@@ -62,7 +62,7 @@ export function Details({ movie }) {
         <div className='flex flex-col p-4 gap-2 justify-start items-center min-h-screen'>
             <h1 className='text-4xl '><strong>{movie.title}</strong></h1>
             <img src={movie.backdrop_url} alt={movie.title} className='max-w-full h-auto rounded-md' />
-            <section className='flex flex-col gap-2 items-center w-full'>
+            <section className='flex flex-col gap-2 items-center w-full md:w-1/2'>
                 {movie.overview.length > MAX_COMMENT_LENGTH ?
                     seeMore ?
                         <p>{movie.overview} <button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeLess}> See less </button></p> :
