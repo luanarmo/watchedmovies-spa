@@ -14,6 +14,18 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
         onClose()
     }
 
+    const getCurrentDate = () => {
+        const formatter = new Intl.DateTimeFormat('es-MX', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        })
+
+        const parts = formatter.formatToParts(new Date())
+        const formattedDate = `${parts.find(p => p.type === 'year').value}-${parts.find(p => p.type === 'month').value}-${parts.find(p => p.type === 'day').value}`;
+        return formattedDate
+    }
+
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-start justify-center gap-2">
@@ -64,7 +76,7 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                 type="date"
                 name="watched_date"
                 id="watched_date"
-                defaultValue={new Date().toISOString().split('T')[0]}
+                defaultValue={getCurrentDate()}
                 className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm"
             />
             <div className='flex gap-4 mt-4'>
