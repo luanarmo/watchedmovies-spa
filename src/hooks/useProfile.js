@@ -1,5 +1,5 @@
 import { useContext, useState, useCallback } from 'react'
-import { getProfile } from '../services/profile'
+import { getProfile, updateProfile } from '../services/profile'
 import { getPosters, getYears } from '../services/watchedMoviesServices.js'
 import { SesionContext } from '../context/sesion.jsx'
 
@@ -33,6 +33,19 @@ export const useProfile = () => {
             setLoading(false)
         }
     })
+
+    const partialUpdateProfile = useCallback(async (payload) => {
+        try {
+            setLoading(true)
+            const profile = await updateProfile({ access: sesion.access, payload })
+            setProfile(profile)
+        } catch (e) {
+            console.error(e)
+        } finally {
+            setLoading(false)
+        }
+    }, [sesion.access])
+
 
     const fetchPoster = useCallback(async ({ year, order }) => {
         try {
@@ -69,5 +82,5 @@ export const useProfile = () => {
         }
     })
 
-    return { profile, years, loading, fetchProfile, fetchPoster, fetchYears }
+    return { profile, years, loading, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, setProfile }
 }
