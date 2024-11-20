@@ -65,9 +65,9 @@ export default function Profile() {
                     <Loading />
                 </div>
             ) : (
-                <section className="flex flex-col p-6 gap-6 items-center h-screen bg-slate-950 text-white">
-                    <h1 className="text-4xl font-bold">{profile.name || 'Profile'}</h1>
+                <section className="flex flex-col lg:flex-row p-6 gap-6 items-center lg:items-start justify-center min-h-screen bg-slate-950 text-white">
                     <form className="bg-slate-800 p-6 rounded-lg shadow-lg w-full max-w-lg flex flex-col gap-6" onSubmit={handleOnSubmit}>
+                        <h2 className="text-2xl font-bold">{profile.name || 'Profile'}</h2>
                         <div className="flex items-center gap-4">
                             <FaEnvelope className="text-blue-400 h-6 w-6" title='email' />
                             <h2 className="text-lg font-semibold">{profile.email}</h2>
@@ -122,6 +122,7 @@ export default function Profile() {
                             handleGenerateImage(payload)
                         }}
                     >
+                        <h2 className="text-2xl font-bold">Posters movies collage</h2>
                         <label htmlFor="year" className="text-lg font-medium">
                             Select Year:
                         </label>
