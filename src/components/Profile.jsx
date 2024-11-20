@@ -4,12 +4,12 @@ import { useEffect, useContext } from 'react';
 import { useProfile } from '../hooks/useProfile';
 import { Loading } from '../components/Loading';
 import { useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaBirthdayCake } from 'react-icons/fa';
+import { FaEnvelope, FaBirthdayCake, FaUser } from 'react-icons/fa';
 import { BiSolidMessageSquare } from "react-icons/bi";
 
 export default function Profile() {
     const { sesion } = useContext(SesionContext);
-    const { profile, years, loading, fetchProfile, fetchPoster, fetchYears } = useProfile();
+    const { profile, years, loading, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, setProfile } = useProfile();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,6 +30,34 @@ export default function Profile() {
         fetchPoster(payload);
     };
 
+    const handleOnChangeNameEvent = (e) => {
+
+        const { name, value } = e.target;
+        console.log(name, value);
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            [name]: value
+        }));
+    };
+
+    const handleProfileOnChangeEvent = (e) => {
+
+        const { name, value } = e.target;
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            profile: {
+                ...prevProfile.profile,
+                [name]: value
+            }
+        }));
+    }
+
+    const handleOnSubmit = (e) => {
+        e.preventDefault();
+        partialUpdateProfile(profile);
+    }
+
+
     return (
         <Base>
             {loading ? (
@@ -37,24 +65,54 @@ export default function Profile() {
                     <Loading />
                 </div>
             ) : (
-                <div className="flex flex-col p-6 gap-6 items-center h-screen bg-slate-950 text-white">
+                <section className="flex flex-col p-6 gap-6 items-center h-screen bg-slate-950 text-white">
                     <h1 className="text-4xl font-bold">{profile.name || 'Profile'}</h1>
-                    <section className="bg-slate-800 p-6 rounded-lg shadow-lg w-full max-w-lg flex flex-col gap-6">
+                    <form className="bg-slate-800 p-6 rounded-lg shadow-lg w-full max-w-lg flex flex-col gap-6" onSubmit={handleOnSubmit}>
                         <div className="flex items-center gap-4">
                             <FaEnvelope className="text-blue-400 h-6 w-6" title='email' />
                             <h2 className="text-lg font-semibold">{profile.email}</h2>
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <BiSolidMessageSquare className="text-green-400 h-6 w-6" title='biography' />
-                            <h2 className="text-lg font-semibold">{profile.profile.bio}</h2>
+                            <FaUser className="text-green-400 h-6 w-6" title='name' />
+                            <input
+                                id='name'
+                                name='name'
+                                className="w-full px-3 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                                type="text" value={profile.name}
+                                onChange={handleOnChangeNameEvent}
+                            />
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <FaBirthdayCake className="text-yellow-400 h-6 w-6" title='birth date' />
-                            <h2 className="text-lg font-semibold">{profile.profile.birth_date}</h2>
+                            <BiSolidMessageSquare className="text-blue-400 h-6 w-6" title='biography' />
+                            <input
+                                id='bio'
+                                name='bio'
+                                className="w-full px-3 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                                type="text" value={profile.profile.bio}
+                                onChange={handleProfileOnChangeEvent}
+                            />
                         </div>
-                    </section>
+
+                        <div className="flex items-center gap-4">
+                            <FaBirthdayCake className="text-green-400 h-6 w-6" title='birth date' />
+                            <input
+                                id='birth_date'
+                                name='birth_date'
+                                className='w-full px-3 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500'
+                                type="date"
+                                value={profile.profile.birth_date}
+                                onChange={handleProfileOnChangeEvent}
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-blue-500 transition"
+                        >
+                            Update profile
+                        </button>
+                    </form>
                     <form
                         className="bg-slate-800 p-4 rounded-lg shadow-lg w-full max-w-lg flex flex-col gap-4"
                         onSubmit={(e) => {
@@ -94,7 +152,7 @@ export default function Profile() {
                             Generate Image
                         </button>
                     </form>
-                </div>
+                </section>
             )}
         </Base>
     );
