@@ -18,3 +18,29 @@ export const getProfile = async ({ access }) => {
     }
 
 }
+
+
+export const updateProfile = async ({ access, payload }) => {
+
+    try {
+        const response = await fetch(`${BASE_API_URL}/api/users/partial_update_user/`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${access}`
+            },
+            body: JSON.stringify(payload)
+        })
+
+        if (!response.ok) {
+            throw new Error(`Error updating profile ${response.statusText}`)
+        }
+
+        const data = await response.json()
+        return data
+
+    } catch (e) {
+        throw new Error(`Error updating profile ${e}`)
+    }
+
+}
