@@ -15,7 +15,8 @@ export default function Login() {
 
     const navigate = useNavigate();
 
-    const [captchaValue, setCaptchaValue] = useState(null);
+    const [captchaValue, setCaptchaValue] = useState(null)
+    const [showPassword, setShowPassword] = useState(false)
 
     const [error, setError] = useState({
         email: '',
@@ -32,6 +33,10 @@ export default function Login() {
             ...form,
             [e.target.name]: e.target.value
         })
+    }
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prevState) => !prevState)
     }
 
     const isFirstInputPass = useRef(true)
@@ -170,14 +175,22 @@ export default function Login() {
                 />
                 <span className='text-red-500'>{error.email}</span>
                 <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name='password'
                     id='password'
                     autoComplete='current-password'
                     placeholder="Password"
-                    className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
                     onChange={handleChange}
+                    className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
                 />
+                <div className='flex items-center gap-2'>
+                    <label htmlFor='show-password'>Show password</label>
+                    <input
+                        type='checkbox'
+                        onChange={togglePasswordVisibility}
+                        className='w-4 h-4 bg-gray-200 rounded cursor-pointer checked:bg-blue-500'
+                    />
+                </div>
                 <span className='text-red-500'>{error.password}</span>
                 <ReCAPTCHA
                     ref={chapchaRef}
@@ -202,6 +215,6 @@ export default function Login() {
                     </Link>
                 </div>
             </form>
-        </Base>
+        </Base >
     )
 }
