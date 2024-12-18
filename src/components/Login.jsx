@@ -3,6 +3,7 @@ import { SesionContext } from '../context/sesion.jsx'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../services/login.js'
+import { PasswordField } from './PasswordField.jsx'
 import { jwtDecode } from "jwt-decode";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -16,7 +17,6 @@ export default function Login() {
     const navigate = useNavigate();
 
     const [captchaValue, setCaptchaValue] = useState(null)
-    const [showPassword, setShowPassword] = useState(false)
 
     const [error, setError] = useState({
         email: '',
@@ -33,10 +33,6 @@ export default function Login() {
             ...form,
             [e.target.name]: e.target.value
         })
-    }
-
-    const togglePasswordVisibility = () => {
-        setShowPassword((prevState) => !prevState)
     }
 
     const isFirstInputPass = useRef(true)
@@ -174,23 +170,7 @@ export default function Login() {
                     onChange={handleChange}
                 />
                 <span className='text-red-500'>{error.email}</span>
-                <input
-                    type={showPassword ? "text" : "password"}
-                    name='password'
-                    id='password'
-                    autoComplete='current-password'
-                    placeholder="Password"
-                    onChange={handleChange}
-                    className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
-                />
-                <div className='flex items-center gap-2'>
-                    <label htmlFor='show-password'>Show password</label>
-                    <input
-                        type='checkbox'
-                        onChange={togglePasswordVisibility}
-                        className='w-4 h-4 bg-gray-200 rounded cursor-pointer checked:bg-blue-500'
-                    />
-                </div>
+                <PasswordField fieldHandleChange={handleChange} />
                 <span className='text-red-500'>{error.password}</span>
                 <ReCAPTCHA
                     ref={chapchaRef}
