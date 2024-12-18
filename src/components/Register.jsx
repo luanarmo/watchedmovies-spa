@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { register } from '../services/register.js'
+import { PasswordField } from './PasswordField.jsx'
 import ReCAPTCHA from "react-google-recaptcha";
 const CAPTCHA_SITE_KEY = import.meta.env.VITE_CAPTCHA_SITE_KEY
 
@@ -161,7 +162,7 @@ export default function Register() {
         }
 
         try {
-            const data = await register({ ...form, token: captchaValue })
+            await register({ ...form, token: captchaValue })
             navigate('/verifyEmail')
         } catch (error) {
             setCaptchaValue(null)
@@ -190,25 +191,9 @@ export default function Register() {
                     onChange={handleChange}
                 />
                 <span className='text-red-500'>{error.email}</span>
-                <input
-                    type="password"
-                    name='password'
-                    id='password'
-                    autoComplete='current-password'
-                    placeholder="Password"
-                    className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
-                    onChange={handleChange}
-                />
+                <PasswordField fieldHandleChange={handleChange} />
                 <span className='text-red-500'>{error.password}</span>
-                <input
-                    type="password"
-                    name='confirmPassword'
-                    id='confirmPassword'
-                    autoComplete='current-password'
-                    placeholder="Confirm Password"
-                    className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
-                    onChange={handleChange}
-                />
+                <PasswordField fieldHandleChange={handleChange} fieldName='confirmPassword' fieldId='confirmPassword' placeholder='Confirm Password' />
                 <span className='text-red-500'>{error.confirmPassword}</span>
                 <ReCAPTCHA
                     ref={captchaRef}
