@@ -20,7 +20,8 @@ export const useProfile = () => {
     })
     const [years, setYears] = useState([])
     const [loading, setLoading] = useState(false)
-
+    const [updatingProfile, setUpdatingProfile] = useState(false)
+    const [generatingCollage, setGeneratingCollage] = useState(false)
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -36,20 +37,20 @@ export const useProfile = () => {
 
     const partialUpdateProfile = useCallback(async (payload) => {
         try {
-            setLoading(true)
+            setUpdatingProfile(true)
             const profile = await updateProfile({ access: sesion.access, payload })
             setProfile(profile)
         } catch (e) {
             console.error(e)
         } finally {
-            setLoading(false)
+            setUpdatingProfile(false)
         }
     }, [sesion.access])
 
 
     const fetchPoster = useCallback(async ({ year, order }) => {
         try {
-            setLoading(true);
+            setGeneratingCollage(true);
             console.log("Generating image");
 
             // Llamar al servicio para obtener el Blob
@@ -69,7 +70,7 @@ export const useProfile = () => {
         } catch (e) {
             console.error(e)
         } finally {
-            setLoading(false)
+            setGeneratingCollage(false)
         }
     })
 
@@ -82,5 +83,5 @@ export const useProfile = () => {
         }
     })
 
-    return { profile, years, loading, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, setProfile }
+    return { profile, years, loading, updatingProfile, generatingCollage, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, setProfile }
 }
