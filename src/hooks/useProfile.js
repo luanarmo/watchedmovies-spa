@@ -23,6 +23,7 @@ export const useProfile = () => {
     const [loading, setLoading] = useState(false)
     const [updatingProfile, setUpdatingProfile] = useState(false)
     const [generatingCollage, setGeneratingCollage] = useState(false)
+    const [generatingWrapped, setGeneratingWrapped] = useState(false)
 
     const fetchProfile = useCallback(async () => {
         try {
@@ -86,6 +87,7 @@ export const useProfile = () => {
 
     const fetchWrapped = useCallback(async () => {
         try {
+            setGeneratingWrapped(true)
             const image = await getWrappedImage({ access: sesion.access })
             const url = URL.createObjectURL(image);
             const a = document.createElement('a');
@@ -93,10 +95,14 @@ export const useProfile = () => {
             a.href = url;
             a.download = 'wrapped.png';
             a.click();
+            URL.revokeObjectURL(url);
+
         } catch (e) {
             console.error(e)
+        } finally {
+            setGeneratingWrapped(false)
         }
     })
 
-    return { profile, years, loading, updatingProfile, generatingCollage, fetchProfile, partialUpdateProfile, fetchWrapped, fetchPoster, fetchYears, setProfile }
+    return { profile, years, loading, updatingProfile, generatingCollage, generatingWrapped, fetchProfile, partialUpdateProfile, fetchWrapped, fetchPoster, fetchYears, setProfile }
 }
