@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify'
 
 export default function Profile() {
     const { sesion } = useContext(SesionContext);
-    const { profile, years, loading, updatingProfile, generatingCollage, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, fetchWrapped, setProfile } = useProfile();
+    const { profile, years, loading, updatingProfile, generatingCollage, generatingWrapped, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, fetchWrapped, setProfile } = useProfile();
     const [profileUpdated, setProfileUpdated] = useState(false);
     const navigate = useNavigate();
 
@@ -182,7 +182,7 @@ export default function Profile() {
                         type='submit'
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
                     >
-                        Generate Wrapped Poster
+                        {generatingWrapped ? <Loading /> : 'Generate Wrapped Poster'}
                     </button>
                 </form>
 
