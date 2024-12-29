@@ -1,6 +1,6 @@
 import { useContext, useState, useCallback } from 'react'
 import { getProfile, updateProfile } from '../services/profile'
-import { getPosters, getYears } from '../services/watchedMoviesServices.js'
+import { getPosters, getYears, getWrappedImage } from '../services/watchedMoviesServices.js'
 import { SesionContext } from '../context/sesion.jsx'
 
 export const useProfile = () => {
@@ -18,6 +18,7 @@ export const useProfile = () => {
             pk: '',
         }
     })
+
     const [years, setYears] = useState([])
     const [loading, setLoading] = useState(false)
     const [updatingProfile, setUpdatingProfile] = useState(false)
@@ -83,5 +84,19 @@ export const useProfile = () => {
         }
     })
 
-    return { profile, years, loading, updatingProfile, generatingCollage, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, setProfile }
+    const fetchWrapped = useCallback(async () => {
+        try {
+            const image = await getWrappedImage({ access: sesion.access })
+            const url = URL.createObjectURL(image);
+            const a = document.createElement('a');
+
+            a.href = url;
+            a.download = 'wrapped.png';
+            a.click();
+        } catch (e) {
+            console.error(e)
+        }
+    })
+
+    return { profile, years, loading, updatingProfile, generatingCollage, fetchProfile, partialUpdateProfile, fetchWrapped, fetchPoster, fetchYears, setProfile }
 }
