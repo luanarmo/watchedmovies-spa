@@ -172,6 +172,17 @@ export default function Login() {
                 <span className='text-red-500'>{error.email}</span>
                 <PasswordField fieldHandleChange={handleChange} />
                 <span className='text-red-500'>{error.password}</span>
+
+                <section
+                    className='flex flex-row items-center justify-end w-full md:w-1/2'>
+                    <Link
+                        to="/forgotPassword"
+                        className='text-blue-500'
+                    >
+                        Forgot your password?
+                    </Link>
+                </section>
+
                 <ReCAPTCHA
                     ref={chapchaRef}
                     sitekey={CAPTCHA_SITE_KEY}
