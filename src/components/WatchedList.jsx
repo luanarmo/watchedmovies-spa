@@ -97,6 +97,7 @@ export default function Watched() {
                                 key={movie.id}
                                 movie={movie}
                                 onDelete={removeWatched}
+                                redirect={'watchedDetails'}
                             />
                         ))}
                     </ul>
