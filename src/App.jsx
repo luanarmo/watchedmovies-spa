@@ -2,6 +2,7 @@ import Home from './components/Home'
 import Login from './components/Login'
 import Register from './components/Register'
 import Watched from './components/WatchedList.jsx'
+import Plan from './components/PlanList.jsx'
 import Profile from './components/Profile'
 import MovieDetails from './components/MovieDetails'
 import WatchedMovieDetails from './components/WatchedMovieDetails'
@@ -33,7 +34,7 @@ function App() {
         <Route path="/verifyEmail" element={<VerifyEmail></VerifyEmail>} />
         <Route path="/forgotPassword" element={<ForgotPasswordForm></ForgotPasswordForm>} />
         <Route path="/resetPassword/:uid/:token" element={<ResetPassword></ResetPassword>} />
-
+        <Route path="/plan" element={<Plan />} />
       </Routes>
     </HashRouter  >
   )
