@@ -2,10 +2,10 @@ import { FaTrash, FaStar, FaEye } from 'react-icons/fa';
 import { Link } from 'react-router-dom'
 import { WatchedField } from './WatchedField'
 
-export const WatchedMovie = ({ movie, onDelete }) => {
+export const WatchedMovie = ({ movie, onDelete, redirect }) => {
     return (
         <li className="flex flex-col bg-slate-600 text-white shadow-lg rounded-lg overflow-hidden">
-            <Link to={`/watchedDetails/${movie.id}`}>
+            <Link to={`/${redirect}/${movie.id}`}>
                 <img
                     src={movie.poster_url}
                     alt={movie.title}
