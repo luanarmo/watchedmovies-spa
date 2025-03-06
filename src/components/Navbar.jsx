@@ -19,6 +19,8 @@ export const Navbar = () => {
                     {sesion.auth && <div className='flex flex-row gap-1 justify-center items-center'>
                         <FaGripLinesVertical />
                         <Link to="/watched" className=" hover:text-blue-400"> Watched movies</Link>
+                        <FaGripLinesVertical />
+                        <Link to="/plan" className=" hover:text-blue-400"> Plan to Watch</Link>
                     </div>}
                 </div>
 
