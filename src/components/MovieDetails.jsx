@@ -3,6 +3,7 @@ import { useMovieDetails } from '../hooks/useMovieDetails'
 import { Base } from '../components/Base'
 import { useEffect, useState, useCallback, useContext } from 'react'
 import { useWatched } from '../hooks/useWatched.js'
+import { usePlan } from '../hooks/usePlan.js'
 import { Modal } from '../components/Modal.jsx'
 import { ViewDetailsForm } from '../components/ViewDetailsForm.jsx'
 import { truncateText } from '../utils/truncateText.js'
@@ -14,8 +15,10 @@ export function Details({ movie }) {
     const MAX_COMMENT_LENGTH = 300;
 
     const { watchedDetails, loading, error, addWatched, getWatchedMovie } = useWatched()
+    const { planDetails, addPlan, getPlan } = usePlan()
 
     const [isWatched, setIsWatched] = useState(false)
+    const [isPlan, setIsPlan] = useState(false)
 
     const [seeMore, setSeeMore] = useState(false)
 
@@ -34,13 +37,23 @@ export function Details({ movie }) {
         setIsWatched(true)
     }
 
+    const handleAddPlan = () => {
+        addPlan(movie)
+        setIsPlan(true)
+    }
+
     const checkWatched = useCallback(() => {
         setIsWatched(watchedDetails.id === movie.id)
     }, [watchedDetails])
 
+    const checkPlan = useCallback(() => {
+        setIsPlan(planDetails !== null)
+    }, [planDetails])
+
     useEffect(() => {
         if (sesion.auth) {
             getWatchedMovie({ movieId: movie.id })
+            getPlan({ movieId: movie.id })
         }
     }, [])
 
@@ -49,6 +62,12 @@ export function Details({ movie }) {
             checkWatched()
         }
     }, [watchedDetails])
+
+    useEffect(() => {
+        if (sesion.auth) {
+            checkPlan()
+        }
+    }, [planDetails])
 
     if (loading && sesion.auth) {
         return <MovieDetailsSkeleton />
@@ -69,12 +88,50 @@ export function Details({ movie }) {
                         <p>{truncateText(movie.overview, MAX_COMMENT_LENGTH)}<button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeMore}> See more </button></p>
                     : <p>{movie.overview}</p>
                 }
-                {
+                {/* {
                     sesion.auth &&
                     (isWatched ?
                         <button className='bg-purple-500 hover:bg-purple-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Viewed again </button> :
                         <button className='bg-blue-500 hover:bg-blue-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Add to views</button>)
+
                 }
+                {
+                    sesion.auth &&
+                    (isPlan ?
+                        <></> :
+                        <button className='bg-emerald-500 hover:bg-emerald-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleAddPlan}> 📅 Add to plan</button>
+                    )
+                } */}
+                {sesion.auth && (
+                    <>
+                        {isWatched ? (
+                            <button
+                                className="bg-purple-500 hover:bg-purple-700 text-white w-1/2 font-bold py-2 px-4 rounded"
+                                onClick={handleOpenModal}
+                            >
+                                🔖 Viewed again
+                            </button>
+                        ) : (
+                            <>
+                                <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white w-1/2 font-bold py-2 px-4 rounded"
+                                    onClick={handleOpenModal}
+                                >
+                                    🔖 Add to views
+                                </button>
+                                {!isPlan && (
+                                    <button
+                                        className="bg-emerald-500 hover:bg-emerald-700 text-white w-1/2 font-bold py-2 px-4 rounded"
+                                        onClick={handleAddPlan}
+                                    >
+                                        📅 Add to plan
+                                    </button>
+                                )}
+                            </>
+                        )}
+                    </>
+                )}
+
             </section>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
                 <h2 className='text-xl'>Details of the movie viewed</h2>
