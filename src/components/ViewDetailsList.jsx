@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { BiCommentX } from "react-icons/bi";
-import { LuGanttChartSquare } from "react-icons/lu";
+import { FaRegChartBar } from "react-icons/fa6";
 import { FaTrash } from 'react-icons/fa';
 import { truncateText } from '../utils/truncateText'
 import { useViewDetails } from '../hooks/useViewDetails'
@@ -35,7 +35,7 @@ export default function ViewDetailsList({ movieId }) {
                     <p>{viewDetail.language}</p>
                     <p>{viewDetail.watched_date}</p>
                     <p>{viewDetail.comment ? truncateText(viewDetail.comment, MAX_COMMENT_LENGTH) : <BiCommentX />}</p>
-                    <p>{viewDetail.rating ? viewDetail.rating : <LuGanttChartSquare />}</p>
+                    <p>{viewDetail.rating ? viewDetail.rating : <FaRegChartBar />}</p>
                     <div className='flex mt-2'>
                         <button
                             className='text-red-500 hover:text-red-600'
