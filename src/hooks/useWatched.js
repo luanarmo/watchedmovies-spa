@@ -63,6 +63,12 @@ export const useWatched = () => {
     const fetchYears = useCallback(async () => {
         try {
             const newYears = await getYears({ access: sesion.access })
+            const currentYear = new Date().getFullYear()
+
+            if (!newYears.includes(currentYear)) {
+                newYears.unshift(currentYear)
+            }
+
             setYears(newYears)
         } catch (e) {
             console.error(e)
