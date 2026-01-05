@@ -91,16 +91,22 @@ export default function Watched() {
                         {Array.from({ length: 25 }).map((_, index) => <WatchedMovieSkeleton key={index} />)}
                     </ul>
                 ) : (
-                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
-                        {watched.map((movie) => (
-                            <WatchedMovie
-                                key={movie.id}
-                                movie={movie}
-                                onDelete={removeWatched}
-                                redirect={'watchedDetails'}
-                            />
-                        ))}
-                    </ul>
+                    watched.length === 0 && year === new Date().getFullYear() ? (
+                        <div className='flex items-center justify-center p-10'>
+                            <p className='text-xl text-white'>No watched movies recorded for this year.</p>
+                        </div>
+                    ) : (
+                        <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
+                            {watched.map((movie) => (
+                                <WatchedMovie
+                                    key={movie.id}
+                                    movie={movie}
+                                    onDelete={removeWatched}
+                                    redirect={'watchedDetails'}
+                                />
+                            ))}
+                        </ul>
+                    )
                 )
                 }
                 <div className='flex items-center justify-center'>
