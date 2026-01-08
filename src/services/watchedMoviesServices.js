@@ -87,11 +87,11 @@ export const getYears = async ({ access }) => {
 
 }
 
-export const getWrappedImage = async ({ access }) => {
+export const getWrappedImage = async ({ access, year }) => {
     // Fetch watched movies from the API
 
     try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/wrapped/`, {
+        const response = await fetch(`${BASE_API_URL}/api/watched-movies/wrapped/?watched_date_year=${year}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${access}`

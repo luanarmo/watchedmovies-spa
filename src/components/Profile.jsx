@@ -136,10 +136,16 @@ export default function Profile() {
                         e.preventDefault()
                         const formData = new FormData(e.target)
                         const payload = Object.fromEntries(formData)
-                        handleGenerateImage(payload)
+                        const action = e.nativeEvent.submitter.name
+
+                        if (action === 'poster') {
+                            handleGenerateImage(payload)
+                        } else if (action === 'wrapped') {
+                            fetchWrapped({ year: payload.year })
+                        }
                     }}
                 >
-                    <h2 className="text-2xl font-bold">Posters movies collage</h2>
+                    <h2 className="text-2xl font-bold">Generators</h2>
                     <label htmlFor="year" className="text-lg font-medium">
                         Select Year:
                     </label>
@@ -163,27 +169,22 @@ export default function Profile() {
                         <option value="first_watched_date">Watched date (asc)</option>
                     </select>
 
-                    <button
-                        type="submit"
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
-                    >
-                        {generatingCollage ? <Loading /> : 'Generate Image'}
-                    </button>
-                </form>
-
-                <form className="bg-slate-800 p-4 rounded-lg shadow-lg w-full max-w-lg flex flex-col gap-4"
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                        fetchWrapped()
-                    }}
-                >
-                    <h2 className="text-2xl font-bold">Wrapped Poster</h2>
-                    <button
-                        type='submit'
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
-                    >
-                        {generatingWrapped ? <Loading /> : 'Generate Wrapped Poster'}
-                    </button>
+                    <div className="flex gap-4">
+                        <button
+                            type="submit"
+                            name="poster"
+                            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
+                        >
+                            {generatingCollage ? <Loading /> : 'Generate Poster'}
+                        </button>
+                        <button
+                            type='submit'
+                            name="wrapped"
+                            className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition"
+                        >
+                            {generatingWrapped ? <Loading /> : 'Generate Wrapped'}
+                        </button>
+                    </div>
                 </form>
 
             </section>

@@ -85,10 +85,10 @@ export const useProfile = () => {
         }
     })
 
-    const fetchWrapped = useCallback(async () => {
+    const fetchWrapped = useCallback(async ({ year }) => {
         try {
             setGeneratingWrapped(true)
-            const image = await getWrappedImage({ access: sesion.access })
+            const image = await getWrappedImage({ access: sesion.access, year })
             const url = URL.createObjectURL(image);
             const a = document.createElement('a');
 
