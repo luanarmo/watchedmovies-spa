@@ -1,9 +1,9 @@
 export function Footer() {
     return (
-        <footer className="bg-gray-800 text-white py-6">
+        <footer className="bg-dusty-grape-900 text-dusty-grape-50 py-6 border-t border-dusty-grape-800">
             <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
                 <div className="mb-4 md:mb-0">
-                    <p className="text-base">luanarmo</p>
+                    <p className="text-base font-semibold text-dusty-grape-300">luanarmo</p>
                 </div>
 
                 <div className="mb-4 md:mb-0">
@@ -13,7 +13,7 @@ export function Footer() {
                                 href="https://github.com/luanarmo"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hover:text-blue-400"
+                                className="hover:text-dusty-grape-300 transition-colors"
                             >
                                 GitHub
                             </a>
@@ -23,7 +23,7 @@ export function Footer() {
                                 href="https://www.linkedin.com/in/luis-angel-arroyo-morales-31b25a1ab"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="hover:text-blue-400"
+                                className="hover:text-dusty-grape-300 transition-colors"
                             >
                                 LinkedIn
                             </a>
@@ -31,7 +31,7 @@ export function Footer() {
                         <li>
                             <a
                                 href="mailto:luisangel_arroyo@outlook.com"
-                                className="hover:text-blue-400"
+                                className="hover:text-dusty-grape-300 transition-colors"
                             >
                                 Email
                             </a>
@@ -40,7 +40,7 @@ export function Footer() {
                 </div>
 
                 <div>
-                    <p className="text-sm">FullStack Developer</p>
+                    <p className="text-sm text-dusty-grape-400">FullStack Developer</p>
                 </div>
             </div>
         </footer>

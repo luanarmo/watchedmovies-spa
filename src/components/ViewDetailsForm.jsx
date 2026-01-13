@@ -30,26 +30,19 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col items-start justify-center gap-2">
             <div className="flex flex-col w-full">
-                <select name="rating" id="rating" className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
+                <select name="rating" id="rating" className="w-full p-3 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
                     <option value="">Rate the movie</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
+                    {[...Array(10)].map((_, i) => (
+                        <option key={i + 1} value={i + 1}>{i + 1}</option>
+                    ))}
                 </select>
-                <span className="text-gray-500 text-xs">Optional</span>
+                <span className="text-dusty-grape-400 text-xs mt-1">Optional</span>
             </div>
             <div className="flex flex-col w-full">
-                <textarea name="comment" id="comment" cols="25" rows="4" placeholder="Add a comment" className="resize-none w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none"></textarea>
-                <span className="text-gray-500 text-xs">Optional</span>
+                <textarea name="comment" id="comment" cols="25" rows="4" placeholder="Add a comment" className="resize-none w-full p-3 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none transition-colors"></textarea>
+                <span className="text-dusty-grape-400 text-xs mt-1">Optional</span>
             </div>
-            <select name="language" id="language" defaultValue={""} className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
+            <select name="language" id="language" defaultValue={""} className="w-full p-3 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
                 <option value="">Language</option>
                 <option value="en">English</option>
                 <option value="es">Spanish</option>
@@ -65,7 +58,7 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                 <option value="hi">Hindi</option>
                 <option value="other">Other</option>
             </select>
-            <select name="place" id="place" defaultValue={""} className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm">
+            <select name="place" id="place" defaultValue={""} className="w-full p-3 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
                 <option value="">Where did you watch it?</option>
                 <option value="home">Home</option>
                 <option value="cinema">Cinema</option>
@@ -77,18 +70,18 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                 name="watched_date"
                 id="watched_date"
                 defaultValue={getCurrentDate()}
-                className="w-full p-2 border  text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none text-sm"
+                className="w-full p-3 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer"
             />
-            <div className='flex gap-4 mt-4'>
+            <div className='flex gap-4 mt-4 w-full'>
                 <button
                     type="submit"
-                    className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
+                    className='flex-1 bg-dusty-grape-600 text-white px-4 py-2 rounded hover:bg-dusty-grape-500 transition-colors font-semibold shadow-md'
                 >
                     Save
                 </button>
                 <button
-                    type="submit"
-                    className='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
+                    type="button"
+                    className='flex-1 bg-dusty-grape-700 text-dusty-grape-100 px-4 py-2 rounded hover:bg-dusty-grape-600 transition-colors font-semibold shadow-md border border-dusty-grape-600'
                     onClick={onClose}
                 >
                     Cancel

@@ -39,13 +39,16 @@ export default function PlanList() {
 
     return (
         <Base>
-            <div className='flex flex-col gap-2 p-2 bg-slate-950 text-white h-screen overflow-y-auto max-h-[calc(100vh-8rem)]'>
+            <div className='container mx-auto flex flex-col gap-6 p-4 w-full'>
+                <div className='bg-dusty-grape-800/50 p-4 rounded-xl border border-dusty-grape-700 backdrop-blur-sm mb-4'>
+                    <h2 className='text-2xl font-bold text-dusty-grape-100 text-center md:text-left'>Plan to Watch</h2>
+                </div>
                 {loading ? (
-                    <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
+                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
                         {Array.from({ length: 25 }).map((_, index) => <WatchedMovieSkeleton key={index} />)}
                     </ul>
                 ) : (
-                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
+                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
                         {plan.map((movie) => (
                             <WatchedMovie
                                 key={movie.id}
@@ -57,7 +60,7 @@ export default function PlanList() {
                     </ul>
                 )
                 }
-                <div className='flex items-center justify-center'>
+                <div className='flex items-center justify-center mt-8'>
                     <Pagination page={page} pagination={pagination} handlePage={handlePage} />
                 </div>
             </div>

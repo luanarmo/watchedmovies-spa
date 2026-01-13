@@ -179,32 +179,33 @@ export default function Register() {
 
     return (
         <Base>
-            <form onSubmit={handleSubmit} className='flex flex-col p-4 gap-4 items-center justify-start h-screen text-white bg-slate-900'>
-                <h1 className='text-4xl'><strong>Sign up</strong></h1>
+            <form onSubmit={handleSubmit} className='flex flex-col p-8 gap-6 items-center justify-center w-full max-w-md mx-auto bg-dusty-grape-800/80 rounded-xl shadow-2xl border border-dusty-grape-700 text-dusty-grape-50 my-12'>
+                <h1 className='text-4xl font-bold text-dusty-grape-100'>Sign up</h1>
                 <input
                     type="text"
                     name='email'
                     id='email'
                     autoComplete='email'
                     placeholder="Email"
-                    className='w-full md:w-1/2 p-2 border text-black border-gray-500 rounded focus:border-blue-500 focus:outline-none'
+                    className='w-full p-3 border bg-dusty-grape-50 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:ring-2 focus:ring-dusty-grape-500/50 focus:outline-none transition-all'
                     onChange={handleChange}
                 />
-                <span className='text-red-500'>{error.email}</span>
+                <span className='text-red-400 text-sm'>{error.email}</span>
                 <PasswordField fieldHandleChange={handleChange} />
-                <span className='text-red-500'>{error.password}</span>
+                <span className='text-red-400 text-sm'>{error.password}</span>
                 <PasswordField fieldHandleChange={handleChange} fieldName='confirmPassword' fieldId='confirmPassword' placeholder='Confirm Password' />
-                <span className='text-red-500'>{error.confirmPassword}</span>
+                <span className='text-red-400 text-sm'>{error.confirmPassword}</span>
                 <ReCAPTCHA
                     ref={captchaRef}
                     sitekey={CAPTCHA_SITE_KEY}
                     onChange={setCaptchaValue}
+                    theme="dark"
                 />
-                <div className='flex gap-4 mt-4'>
+                <div className='flex gap-4 w-full'>
                     <>
                         <button
                             type="submit"
-                            className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
+                            className='flex-1 bg-dusty-grape-600 text-white px-4 py-2 rounded hover:bg-dusty-grape-500 transition-colors font-semibold'
                         >
                             Sign up
                         </button>
@@ -212,7 +213,7 @@ export default function Register() {
                     </>
                     <Link
                         to="/login"
-                        className='bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600'
+                        className='flex-1 bg-dusty-grape-700 text-dusty-grape-100 px-4 py-2 rounded hover:bg-dusty-grape-600 transition-colors text-center font-semibold'
                     >
                         Login
                     </Link>

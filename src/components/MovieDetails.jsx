@@ -78,35 +78,27 @@ export function Details({ movie }) {
     }
 
     return (
-        <div className='flex flex-col p-4 gap-2 justify-start items-center min-h-screen'>
-            <h1 className='text-4xl '><strong>{movie.title}</strong></h1>
-            <img src={movie.backdrop_url} alt={movie.title} className='max-w-full h-auto rounded-md' />
-            <section className='flex flex-col gap-2 items-center w-full md:w-1/2'>
-                {movie.overview.length > MAX_COMMENT_LENGTH ?
-                    seeMore ?
-                        <p>{movie.overview} <button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeLess}> See less </button></p> :
-                        <p>{truncateText(movie.overview, MAX_COMMENT_LENGTH)}<button className='text-blue-500 hover:bg-blue-700' onClick={handleSeeMore}> See more </button></p>
-                    : <p>{movie.overview}</p>
-                }
-                {/* {
-                    sesion.auth &&
-                    (isWatched ?
-                        <button className='bg-purple-500 hover:bg-purple-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Viewed again </button> :
-                        <button className='bg-blue-500 hover:bg-blue-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleOpenModal}> 🔖 Add to views</button>)
+        <div className='flex flex-col p-4 gap-6 justify-start items-center w-full max-w-4xl mx-auto'>
+            <h1 className='text-4xl text-center text-dusty-grape-100 font-bold'>{movie.title}</h1>
+            <div className="relative w-full rounded-xl overflow-hidden shadow-2xl shadow-dusty-grape-950/50 border border-dusty-grape-700">
+                <img src={movie.backdrop_url} alt={movie.title} className='w-full h-auto object-cover' />
+                <div className="absolute inset-0 bg-gradient-to-t from-dusty-grape-950/90 to-transparent"></div>
+            </div>
+            <section className='flex flex-col gap-4 items-center w-full md:w-3/4 bg-dusty-grape-800/50 p-6 rounded-xl border border-dusty-grape-700 backdrop-blur-sm'>
+                <div className="text-dusty-grape-100 text-lg leading-relaxed text-justify">
+                    {movie.overview.length > MAX_COMMENT_LENGTH ?
+                        seeMore ?
+                            <p>{movie.overview} <button className='text-dusty-grape-300 hover:text-dusty-grape-100 font-semibold transition-colors ml-1' onClick={handleSeeLess}> See less </button></p> :
+                            <p>{truncateText(movie.overview, MAX_COMMENT_LENGTH)}<button className='text-dusty-grape-300 hover:text-dusty-grape-100 font-semibold transition-colors ml-1' onClick={handleSeeMore}> See more </button></p>
+                        : <p>{movie.overview}</p>
+                    }
+                </div>
 
-                }
-                {
-                    sesion.auth &&
-                    (isPlan ?
-                        <></> :
-                        <button className='bg-emerald-500 hover:bg-emerald-700 text-white w-1/2 font-bold py-2 px-4 rounded' onClick={handleAddPlan}> 📅 Add to plan</button>
-                    )
-                } */}
                 {sesion.auth && (
-                    <>
+                    <div className="flex gap-4 w-full mt-4">
                         {isWatched ? (
                             <button
-                                className="bg-purple-500 hover:bg-purple-700 text-white w-1/2 font-bold py-2 px-4 rounded"
+                                className="flex-1 bg-dusty-grape-600 hover:bg-dusty-grape-500 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all transform hover:scale-105"
                                 onClick={handleOpenModal}
                             >
                                 🔖 Viewed again
@@ -114,14 +106,14 @@ export function Details({ movie }) {
                         ) : (
                             <>
                                 <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white w-1/2 font-bold py-2 px-4 rounded"
+                                    className="flex-1 bg-dusty-grape-600 hover:bg-dusty-grape-500 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all transform hover:scale-105"
                                     onClick={handleOpenModal}
                                 >
                                     🔖 Add to views
                                 </button>
                                 {!isPlan && (
                                     <button
-                                        className="bg-emerald-500 hover:bg-emerald-700 text-white w-1/2 font-bold py-2 px-4 rounded"
+                                        className="flex-1 bg-teal-600 hover:bg-teal-500 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all transform hover:scale-105"
                                         onClick={handleAddPlan}
                                     >
                                         📅 Add to plan
@@ -129,12 +121,12 @@ export function Details({ movie }) {
                                 )}
                             </>
                         )}
-                    </>
+                    </div>
                 )}
 
             </section>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <h2 className='text-xl'>Details of the movie viewed</h2>
+                <h2 className='text-2xl font-bold text-dusty-grape-100 mb-4 border-b border-dusty-grape-700 pb-2'>Details of the movie viewed</h2>
                 <ViewDetailsForm movie={movie} onClose={handleCloseModal} onSubmit={handleAddToWatched} />
             </Modal>
 
@@ -152,7 +144,7 @@ export default function MovieDetails() {
     }, [])
 
     return (
-        <div className='bg-gradient-to-r from-slate-700 to-slate-500 text-white'>
+        <div className='bg-transparent text-dusty-grape-50'>
             {loading ?
                 <MovieDetailsSkeleton /> :
                 <Base>

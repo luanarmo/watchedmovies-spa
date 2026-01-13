@@ -64,39 +64,42 @@ export default function Watched() {
 
     return (
         <Base>
-            <div className='flex flex-col gap-2 p-2 bg-slate-950 text-white h-screen overflow-y-auto max-h-[calc(100vh-8rem)]'>
-                <div className='flex items-center justify-center gap-2'>
-                    <div className='flex flex-col items-center justify-center lg:flex-row gap-2'>
-                        <label className="text-white px-4">Order by:</label>
-                        <OrderOption
-                            className='flex items-center justify-center'
-                            options={WatchedDateOptions}
-                            selectedOption={ordering}
-                            handleOrderChange={handleOrderChange}
-                        />
-                    </div>
-                    <div className='flex flex-col items-center justify-center lg:flex-row gap-2'>
-                        <label className='text-white px-4'>Filter by:</label>
-                        <OrderOption
-                            className='flex sm:flex-col items-center justify-center'
-                            options={years}
-                            selectedOption={year || ''}
-                            suffix={'Year'}
-                            handleOrderChange={handleFilterChange}
-                        />
+            <div className='container mx-auto flex flex-col gap-6 p-4 w-full'>
+                <div className='flex flex-col md:flex-row items-center justify-between gap-4 bg-dusty-grape-800/50 p-4 rounded-xl border border-dusty-grape-700 backdrop-blur-sm'>
+                    <h2 className='text-2xl font-bold text-dusty-grape-100'>Watched Movies</h2>
+                    <div className='flex flex-wrap items-center justify-center gap-4'>
+                        <div className='flex items-center gap-2'>
+                            <label className="text-dusty-grape-300 font-medium">Order by:</label>
+                            <OrderOption
+                                className='flex items-center justify-center'
+                                options={WatchedDateOptions}
+                                selectedOption={ordering}
+                                handleOrderChange={handleOrderChange}
+                            />
+                        </div>
+                        <div className='flex items-center gap-2'>
+                            <label className='text-dusty-grape-300 font-medium'>Filter by:</label>
+                            <OrderOption
+                                className='flex sm:flex-col items-center justify-center'
+                                options={years}
+                                selectedOption={year || ''}
+                                suffix={'Year'}
+                                handleOrderChange={handleFilterChange}
+                            />
+                        </div>
                     </div>
                 </div>
                 {loading ? (
-                    <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
+                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
                         {Array.from({ length: 25 }).map((_, index) => <WatchedMovieSkeleton key={index} />)}
                     </ul>
                 ) : (
                     watched.length === 0 && year === new Date().getFullYear() ? (
-                        <div className='flex items-center justify-center p-10'>
-                            <p className='text-xl text-white'>No watched movies recorded for this year.</p>
+                        <div className='flex items-center justify-center p-20 border-2 border-dashed border-dusty-grape-800 rounded-xl'>
+                            <p className='text-xl text-dusty-grape-400'>No watched movies recorded for this year.</p>
                         </div>
                     ) : (
-                        <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 p-4 bg-slate-950'>
+                        <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
                             {watched.map((movie) => (
                                 <WatchedMovie
                                     key={movie.id}
@@ -109,7 +112,7 @@ export default function Watched() {
                     )
                 )
                 }
-                <div className='flex items-center justify-center'>
+                <div className='flex items-center justify-center mt-8'>
                     <Pagination page={page} pagination={pagination} handlePage={handlePage} />
                 </div>
             </div>

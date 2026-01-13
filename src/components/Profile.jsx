@@ -77,42 +77,42 @@ export default function Profile() {
 
     return (
         <Base>
-            <section className="flex flex-col lg:flex-row p-6 gap-6 items-center lg:items-start justify-center min-h-screen bg-slate-950 text-white">
-                <form className="bg-slate-800 p-6 rounded-lg shadow-lg w-full max-w-lg flex flex-col gap-6" onSubmit={handleOnSubmit}>
-                    <h2 className="text-2xl font-bold">{profile.name || 'Profile'}</h2>
+            <section className="flex flex-col lg:flex-row p-6 gap-6 items-center lg:items-start justify-center min-h-[80vh] w-full">
+                <form className="bg-dusty-grape-800/80 backdrop-blur-sm p-8 rounded-xl shadow-xl w-full max-w-lg flex flex-col gap-6 border border-dusty-grape-700" onSubmit={handleOnSubmit}>
+                    <h2 className="text-3xl font-bold text-dusty-grape-100 border-b border-dusty-grape-700 pb-2">{profile.name || 'Profile'}</h2>
                     <div className="flex items-center gap-4">
-                        <FaEnvelope className="text-blue-400 h-6 w-6" title='email' />
-                        <h2 className="text-lg font-semibold">{profile.email}</h2>
+                        <FaEnvelope className="text-dusty-grape-300 h-6 w-6" title='email' />
+                        <h2 className="text-lg font-semibold text-dusty-grape-200">{profile.email}</h2>
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <FaUser className="text-green-400 h-6 w-6" title='name' />
+                        <FaUser className="text-dusty-grape-300 h-6 w-6" title='name' />
                         <input
                             id='name'
                             name='name'
-                            className="w-full px-3 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            className="w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 transition-colors"
                             type="text" value={profile.name}
                             onChange={handleOnChangeNameEvent}
                         />
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <BiSolidMessageSquare className="text-blue-400 h-6 w-6" title='biography' />
+                        <BiSolidMessageSquare className="text-dusty-grape-300 h-6 w-6" title='biography' />
                         <input
                             id='bio'
                             name='bio'
-                            className="w-full px-3 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            className="w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 transition-colors"
                             type="text" value={profile.profile.bio}
                             onChange={handleProfileOnChangeEvent}
                         />
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <FaBirthdayCake className="text-green-400 h-6 w-6" title='birth date' />
+                        <FaBirthdayCake className="text-dusty-grape-300 h-6 w-6" title='birth date' />
                         <input
                             id='birth_date'
                             name='birth_date'
-                            className='w-full px-3 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500'
+                            className='w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 transition-colors'
                             type="date"
                             value={profile.profile.birth_date}
                             onChange={handleProfileOnChangeEvent}
@@ -122,8 +122,8 @@ export default function Profile() {
                         <button
                             type="submit"
                             className={profileUpdated ?
-                                'bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-blue-500 transition' :
-                                'bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed'}
+                                'bg-dusty-grape-600 text-white px-6 py-3 rounded-lg hover:bg-dusty-grape-500 transition-colors font-bold shadow-md' :
+                                'bg-dusty-grape-900 text-dusty-grape-500 px-6 py-3 rounded-lg cursor-not-allowed border border-dusty-grape-800'}
                         >
                             {updatingProfile ? <Loading /> : 'Update profile'}
                         </button>
@@ -131,7 +131,7 @@ export default function Profile() {
                     </>
                 </form>
                 <form
-                    className="bg-slate-800 p-4 rounded-lg shadow-lg w-full max-w-lg flex flex-col gap-4"
+                    className="bg-dusty-grape-800/80 backdrop-blur-sm p-8 rounded-xl shadow-xl w-full max-w-lg flex flex-col gap-6 border border-dusty-grape-700"
                     onSubmit={(e) => {
                         e.preventDefault()
                         const formData = new FormData(e.target)
@@ -145,42 +145,46 @@ export default function Profile() {
                         }
                     }}
                 >
-                    <h2 className="text-2xl font-bold">Generators</h2>
-                    <label htmlFor="year" className="text-lg font-medium">
-                        Select Year:
-                    </label>
+                    <h2 className="text-2xl font-bold text-dusty-grape-100 border-b border-dusty-grape-700 pb-2">Generators</h2>
+                    <div className='flex flex-col gap-2'>
+                        <label htmlFor="year" className="text-lg font-medium text-dusty-grape-200">
+                            Select Year:
+                        </label>
 
-                    <select name="year" id="year"
-                        className="w-full px-3 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    >
-                        {years.map((year) => (
-                            <option key={year} value={year}>{year}</option>
-                        ))}
-                    </select>
+                        <select name="year" id="year"
+                            className="w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 cursor-pointer"
+                        >
+                            {years.map((year) => (
+                                <option key={year} value={year} className="bg-dusty-grape-800">{year}</option>
+                            ))}
+                        </select>
+                    </div>
 
-                    <label htmlFor="order" className="text-lg font-medium">
-                        Order by:
-                    </label>
+                    <div className='flex flex-col gap-2'>
+                        <label htmlFor="order" className="text-lg font-medium text-dusty-grape-200">
+                            Order by:
+                        </label>
 
-                    <select name="order" id="order"
-                        className="w-full px-3 py-2 rounded-lg bg-slate-700 text-white border border-slate-600 focus:outline-none focus:ring-2 focus:ring-slate-500"
-                    >
-                        <option value="-first_watched_date">Watched date (desc)</option>
-                        <option value="first_watched_date">Watched date (asc)</option>
-                    </select>
+                        <select name="order" id="order"
+                            className="w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 cursor-pointer"
+                        >
+                            <option value="-first_watched_date" className="bg-dusty-grape-800">Watched date (desc)</option>
+                            <option value="first_watched_date" className="bg-dusty-grape-800">Watched date (asc)</option>
+                        </select>
+                    </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 mt-2">
                         <button
                             type="submit"
                             name="poster"
-                            className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition"
+                            className="flex-1 px-4 py-2 bg-dusty-grape-600 text-white rounded-lg hover:bg-dusty-grape-500 transition-colors shadow-md font-semibold"
                         >
                             {generatingCollage ? <Loading /> : 'Generate Poster'}
                         </button>
                         <button
                             type='submit'
                             name="wrapped"
-                            className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500 transition"
+                            className="flex-1 px-4 py-2 bg-dusty-grape-500 text-white rounded-lg hover:bg-dusty-grape-400 transition-colors shadow-md font-semibold"
                         >
                             {generatingWrapped ? <Loading /> : 'Generate Wrapped'}
                         </button>
