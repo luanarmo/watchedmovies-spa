@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export function ListOfMovies({ movies }) {
     return (
-        <ul className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6 p-4">
+        <ul className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6 p-4">
             {movies.map((movie) => (
                 <li
                     key={movie.id}

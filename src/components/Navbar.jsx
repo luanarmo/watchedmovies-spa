@@ -13,7 +13,7 @@ export const Navbar = () => {
 
     return (
         <nav className="bg-dusty-grape-950 py-3 px-4 border-b border-dusty-grape-800 shadow-md">
-            <div className="container mx-auto flex flex-row items-center justify-between gap-4">
+            <div className="flex flex-row items-center justify-between gap-4">
                 <div className="flex items-center justify-self-center gap-4 w-auto text-dusty-grape-50">
                     <Link to="/"> <FaHome title='Inicio' className="text-3xl hover:text-dusty-grape-300 transition-colors transform hover:scale-110" /> </Link>
                     {sesion.auth && <div className='flex flex-row gap-4 justify-center items-center ml-4'>

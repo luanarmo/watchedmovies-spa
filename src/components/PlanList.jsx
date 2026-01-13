@@ -44,11 +44,11 @@ export default function PlanList() {
                     <h2 className='text-2xl font-bold text-dusty-grape-100 text-center md:text-left'>Plan to Watch</h2>
                 </div>
                 {loading ? (
-                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
+                    <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
                         {Array.from({ length: 25 }).map((_, index) => <WatchedMovieSkeleton key={index} />)}
                     </ul>
                 ) : (
-                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
+                    <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
                         {plan.map((movie) => (
                             <WatchedMovie
                                 key={movie.id}

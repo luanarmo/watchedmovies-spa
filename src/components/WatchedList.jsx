@@ -90,7 +90,7 @@ export default function Watched() {
                     </div>
                 </div>
                 {loading ? (
-                    <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
+                    <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
                         {Array.from({ length: 25 }).map((_, index) => <WatchedMovieSkeleton key={index} />)}
                     </ul>
                 ) : (
@@ -99,7 +99,7 @@ export default function Watched() {
                             <p className='text-xl text-dusty-grape-400'>No watched movies recorded for this year.</p>
                         </div>
                     ) : (
-                        <ul className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
+                        <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
                             {watched.map((movie) => (
                                 <WatchedMovie
                                     key={movie.id}
