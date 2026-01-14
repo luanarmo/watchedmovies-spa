@@ -60,11 +60,11 @@ export const useProfile = () => {
 
             // Crear un objeto URL para el Blob
             const url = URL.createObjectURL(imageBlob);
-
+            const currentDate = new Date().toISOString().split('T')[0]
             // Crear un enlace temporal para descargar la imagen
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'collage.jpeg'; // Nombre del archivo
+            a.download = `collage-${currentDate}.jpeg`; // Nombre del archivo
             a.click();
 
             // Liberar la memoria del objeto URL
@@ -90,10 +90,11 @@ export const useProfile = () => {
             setGeneratingWrapped(true)
             const image = await getWrappedImage({ access: sesion.access, year })
             const url = URL.createObjectURL(image);
+            const currentDate = new Date().toISOString().split('T')[0]
             const a = document.createElement('a');
 
             a.href = url;
-            a.download = 'wrapped.png';
+            a.download = `wrapped-${currentDate}.png`;
             a.click();
             URL.revokeObjectURL(url);
 
