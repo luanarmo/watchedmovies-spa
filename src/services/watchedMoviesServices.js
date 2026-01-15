@@ -20,6 +20,7 @@ export const getWatched = async ({ access, page, ordering, year }) => {
 
         const watchedMapped = data.results.map((movie) => ({
             id: movie.id,
+            imdb_id: movie.id,
             title: movie.title,
             poster_url: movie.poster_url ? movie.poster_url : 'https://placehold.co/500x750?font=roboto',
             release_date: movie.release_date ? movie.release_date : 'Unknown',

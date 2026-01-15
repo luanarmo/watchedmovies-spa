@@ -21,7 +21,8 @@ export const getAllPlanMovies = async ({ access, page }) => {
 
         const movies = planMovies.results.map((movie) => {
             return {
-                id: movie.movie.id,
+                id: movie.id,
+                imdb_id: movie.movie.id,
                 title: movie.movie.title,
                 overview: movie.movie.overview,
                 poster_url: movie.movie.poster_url ? movie.movie.poster_url : 'https://placehold.co/500x750?font=roboto',
