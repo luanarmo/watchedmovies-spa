@@ -39,7 +39,7 @@ export default function PlanList() {
 
     return (
         <Base>
-            <div className='container mx-auto flex flex-col gap-6 p-4 w-full'>
+            <div className='mx-auto flex flex-col gap-6 p-4 w-full min-h-screen'>
                 <div className='bg-dusty-grape-800/50 p-4 rounded-xl border border-dusty-grape-700 backdrop-blur-sm mb-4'>
                     <h2 className='text-2xl font-bold text-dusty-grape-100 text-center md:text-left'>Plan to Watch</h2>
                 </div>
@@ -55,6 +55,7 @@ export default function PlanList() {
                                 movie={movie}
                                 onDelete={removePlan}
                                 redirect={'movie'}
+                                showWatchedFields={false}
                             />
                         ))}
                     </ul>

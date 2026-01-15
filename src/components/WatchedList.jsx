@@ -64,7 +64,7 @@ export default function Watched() {
 
     return (
         <Base>
-            <div className='container mx-auto flex flex-col gap-6 p-4 w-full'>
+            <div className=' mx-auto flex flex-col gap-6 p-4 w-full min-h-screen'>
                 <div className='flex flex-col md:flex-row items-center justify-between gap-4 bg-dusty-grape-800/50 p-4 rounded-xl border border-dusty-grape-700 backdrop-blur-sm'>
                     <h2 className='text-2xl font-bold text-dusty-grape-100'>Watched Movies</h2>
                     <div className='flex flex-wrap items-center justify-center gap-4'>
