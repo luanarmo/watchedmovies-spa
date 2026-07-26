@@ -38,10 +38,12 @@ export default function Stats() {
         fetchStats(selectedYear)
     }, [])
 
+    const isAllYears = !selectedYear || selectedYear === ""
+
     const handleYearChange = (year) => {
-        const parsed = parseInt(year, 10)
+        const parsed = year === "" ? "" : parseInt(year, 10)
         setSelectedYear(parsed)
-        fetchStats(parsed)
+        fetchStats(parsed || null)
     }
 
     if (error) {
@@ -100,8 +102,8 @@ export default function Stats() {
                         {/* Runtime */}
                         <RuntimeCard totalMinutes={stats.total_runtime_minutes} />
 
-                        {/* Yearly overview — always all-time */}
-                        <YearlyOverview data={stats.by_year} />
+                        {/* Yearly overview — solo en modo all-years */}
+                        {isAllYears && <YearlyOverview data={stats.by_year} />}
 
                         {/* Genre + Rating side by side */}
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
@@ -109,8 +111,8 @@ export default function Stats() {
                             <RatingDistribution data={stats.by_rating} />
                         </div>
 
-                        {/* Monthly activity */}
-                        <MonthlyActivity data={stats.by_month} />
+                        {/* Monthly activity — solo con año específico */}
+                        {!isAllYears && <MonthlyActivity data={stats.by_month} />}
 
                         {/* Language + Place side by side */}
                         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
