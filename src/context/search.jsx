@@ -4,10 +4,8 @@ export const SearchContext = createContext();
 
 
 export const SearchProvider = ({ children }) => {
-    // Cargar búsqueda desde localStorage o usar valores por defecto
-    const initialSearch = JSON.parse(localStorage.getItem('search')) || {
-        query: ''
-    }
+    const stored = JSON.parse(localStorage.getItem('search'))
+    const initialSearch = typeof stored === 'string' ? stored : ''
 
     const [search, setSearch] = useState(initialSearch)
 
@@ -19,9 +17,7 @@ export const SearchProvider = ({ children }) => {
 
     const deleteSearch = () => {
         localStorage.removeItem('search');
-        setSearch({
-            query: ''
-        });
+        setSearch('');
     }
 
     return (

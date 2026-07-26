@@ -2,61 +2,70 @@ import { Search } from './Search.jsx'
 import { Base } from './Base'
 import { Movies } from './Movies'
 import { MoviesSkeleton } from './MoviesSkeleton.jsx'
-import { useState, useContext, useEffect, useCallback, useRef } from 'react'
+import { Pagination } from './Pagination.jsx'
+import { useState, useContext, useEffect, useCallback } from 'react'
 import { SearchContext } from '../context/search.jsx'
 import { searchMovies } from '../services/search.js'
 import debounce from 'just-debounce-it'
 
 export default function AdvancedSearch() {
-
     const { search, setSearch } = useContext(SearchContext)
 
-    const prevSearch = useRef('')
-
     const [movies, setMovies] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
+    const [page, setPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
 
-
-    const getSearchedMovies = useCallback(async ({ search }) => {
-        setLoading(true)
-        if (prevSearch.current === search) {
-            setLoading(false)
+    const fetchMovies = useCallback(async (query, currentPage) => {
+        if (query === '') {
+            setMovies([])
             return
         }
-
-        const movies = await searchMovies({ query: search })
-        setMovies(movies)
+        setLoading(true)
+        const result = await searchMovies({ query, page: currentPage })
+        if (result) {
+            setMovies(result.movies)
+            setTotalPages(result.totalPages)
+        }
         setLoading(false)
-        prevSearch.current = search
-
     }, [])
 
-    const debouncedGetSearchedMovies = useCallback(debounce(search => getSearchedMovies({ search }), 600), [])
-
+    const debouncedFetch = useCallback(debounce((query) => fetchMovies(query, 1), 600), [])
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        getSearchedMovies({ search })
+        fetchMovies(search, page)
     }
 
     const handleChange = (e) => {
         const newSearch = e.target.value
         setSearch(newSearch)
-        debouncedGetSearchedMovies(newSearch)
-        setLoading(false)
+        setPage(1)
+        debouncedFetch(newSearch)
+    }
+
+    const handlePage = (newPage) => {
+        setPage(newPage)
+        fetchMovies(search, newPage)
     }
 
     useEffect(() => {
-        getSearchedMovies({ search })
+        if (search) fetchMovies(search, 1)
     }, [])
 
     useEffect(() => {
         if (search === '') {
             setMovies([])
             setLoading(false)
+            setPage(1)
+            setTotalPages(1)
         }
-
     }, [search])
+
+    const pagination = {
+        next: page < totalPages ? true : null,
+        previous: page > 1 ? true : null,
+    }
 
     return (
         <div className="items-center text-white bg-slate-950">
@@ -66,7 +75,17 @@ export default function AdvancedSearch() {
                     onSubmit={handleSubmit}
                     search={search}
                 />
-                {loading ? <MoviesSkeleton /> : <Movies movies={movies} />}
+                {loading
+                    ? <MoviesSkeleton />
+                    : (
+                        <>
+                            <Movies movies={movies} />
+                            {totalPages > 1 && (
+                                <Pagination page={page} pagination={pagination} handlePage={handlePage} />
+                            )}
+                        </>
+                    )
+                }
             </Base>
         </div>
     )
