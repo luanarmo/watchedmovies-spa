@@ -21,6 +21,8 @@ export const Navbar = () => {
                         <Link to="/watched" className="text-sm md:text-lg font-medium hover:text-dusty-grape-300 transition-colors hover:underline underline-offset-4"> Watched movies</Link>
                         <FaGripLinesVertical className="text-dusty-grape-600 text-md md:text-2xl" />
                         <Link to="/plan" className="text-sm md:text-lg font-medium hover:text-dusty-grape-300 transition-colors hover:underline underline-offset-4"> Plan to Watch</Link>
+                        <FaGripLinesVertical className="text-dusty-grape-600 text-md md:text-2xl" />
+                        <Link to="/stats" className="text-sm md:text-lg font-medium hover:text-dusty-grape-300 transition-colors hover:underline underline-offset-4">Statistics</Link>
                     </div>}
                 </div>
 
