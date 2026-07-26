@@ -14,10 +14,10 @@ export const useWatched = () => {
 
     const { sesion } = useContext(SesionContext)
 
-    const fetchWatched = useCallback(async (page = 1, ordering, year) => {
+    const fetchWatched = useCallback(async (page = 1, ordering, year, search = "") => {
         try {
             setLoading(true)
-            const { watchedMapped, count, next, previous } = await getWatched({ access: sesion.access, page, ordering, year })
+            const { watchedMapped, count, next, previous } = await getWatched({ access: sesion.access, page, ordering, year, search })
             setWatched(watchedMapped)
             setPagination({ count, next, previous })
         } catch (error) {
@@ -69,7 +69,7 @@ export const useWatched = () => {
                 newYears.unshift(currentYear)
             }
 
-            setYears(newYears)
+            setYears([{ key: "", label: "All years" }, ...newYears])
         } catch (e) {
             console.error(e)
         }

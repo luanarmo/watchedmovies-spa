@@ -1,11 +1,13 @@
 const BASE_API_URL = import.meta.env.VITE_BASE_API_URL
 
 
-export const getWatched = async ({ access, page, ordering, year }) => {
-    // Fetch watched movies from the API
-
+export const getWatched = async ({ access, page, ordering, year, search }) => {
     try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/?page=${page}&ordering=${ordering}&watched_date_year=${year}`, {
+        const params = new URLSearchParams({ page, ordering })
+        if (year) params.append("watched_date_year", year)
+        if (search) params.append("search", search)
+
+        const response = await fetch(`${BASE_API_URL}/api/watched-movies/?${params}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${access}`

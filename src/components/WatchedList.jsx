@@ -5,8 +5,9 @@ import { WatchedMovie } from './WatchedMovie.jsx'
 import { Pagination } from './Pagination.jsx'
 import { OrderOption } from './OrderOption.jsx'
 import { WatchedMovieSkeleton } from './watchedMovieSkeleton.jsx'
-import { useEffect, useContext, useState } from 'react'
+import { useEffect, useContext, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
+import debounce from 'just-debounce-it'
 
 
 export default function Watched() {
@@ -15,6 +16,7 @@ export default function Watched() {
     const { watched, pagination, ordering, loading, years, error, removeWatched, fetchWatched, setOrdering, fetchYears } = useWatched()
     const [page, setPage] = useState(1)
     const [year, setYear] = useState(null)
+    const [search, setSearch] = useState("")
 
     const WatchedDateOptions = [
         {
@@ -27,19 +29,33 @@ export default function Watched() {
 
     const navigate = useNavigate()
 
+    const debouncedSearch = useMemo(() =>
+        debounce((value, currentOrdering, currentYear) => {
+            setPage(1)
+            fetchWatched(1, currentOrdering, currentYear, value)
+        }, 600),
+    [fetchWatched])
+
     const handlePage = (newPage) => {
         setPage(newPage)
-        fetchWatched(newPage, ordering, year)
+        fetchWatched(newPage, ordering, year, search)
     }
 
     const handleOrderChange = (option) => {
         setOrdering(option)
-        fetchWatched(page, option, year)
+        fetchWatched(page, option, year, search)
     }
 
     const handleFilterChange = (option) => {
         setYear(option)
-        fetchWatched(page, ordering, option)
+        setPage(1)
+        fetchWatched(1, ordering, option, search)
+    }
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value
+        setSearch(value)
+        debouncedSearch(value, ordering, year)
     }
 
 
@@ -69,6 +85,16 @@ export default function Watched() {
                     <h2 className='text-2xl font-bold text-dusty-grape-100'>Watched Movies</h2>
                     <div className='flex flex-wrap items-center justify-center gap-4'>
                         <div className='flex items-center gap-2'>
+                            <label className="text-dusty-grape-300 font-medium">Search:</label>
+                            <input
+                                type="text"
+                                value={search}
+                                onChange={handleSearchChange}
+                                placeholder="Search a movie..."
+                                className="px-4 py-2 rounded-full text-dusty-grape-50 bg-dusty-grape-700 border border-dusty-grape-700 hover:bg-dusty-grape-600 transition-colors focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 placeholder-dusty-grape-400"
+                            />
+                        </div>
+                        <div className='flex items-center gap-2'>
                             <label className="text-dusty-grape-300 font-medium">Order by:</label>
                             <OrderOption
                                 className='flex items-center justify-center'
@@ -78,12 +104,11 @@ export default function Watched() {
                             />
                         </div>
                         <div className='flex items-center gap-2'>
-                            <label className='text-dusty-grape-300 font-medium'>Filter by:</label>
+                            <label className='text-dusty-grape-300 font-medium'>Year:</label>
                             <OrderOption
                                 className='flex sm:flex-col items-center justify-center'
                                 options={years}
                                 selectedOption={year || ''}
-                                suffix={'Year'}
                                 handleOrderChange={handleFilterChange}
                             />
                         </div>
