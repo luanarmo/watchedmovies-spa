@@ -9,7 +9,7 @@ export const Navbar = () => {
 
     const navigate = useNavigate()
 
-    const { sesion, setSesion } = useContext(SesionContext)
+    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
 
     return (
         <nav className="bg-dusty-grape-950 py-3 px-4 md:py-6 md:px-8 border-b border-dusty-grape-800 shadow-md">
@@ -31,11 +31,7 @@ export const Navbar = () => {
                         <div className='flex gap-4 items-center'>
                             <Link to="/profile" className="hover:text-dusty-grape-300 transition-colors transform hover:scale-110"> <FaUser title='Profile' className="text-md md:text-2xl" /> </Link>
                             <button onClick={() => {
-                                setSesion({
-                                    auth: false,
-                                    access: null,
-                                    refresh: null
-                                })
+                                deleteSesionExpiredSession()
                                 navigate('/')
                             }} className="hover:text-red-400 transition-colors transform hover:scale-110"> <GoSignOut title='Logout' className="text-md md:text-3xl" /> </button>
                         </div>
