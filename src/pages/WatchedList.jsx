@@ -1,10 +1,10 @@
-import { Base } from './Base.jsx'
+import { Base } from '../components/Base.jsx'
 import { SesionContext } from '../context/sesion.jsx'
 import { useWatched } from '../hooks/useWatched.js'
-import { WatchedMovie } from './WatchedMovie.jsx'
-import { Pagination } from './Pagination.jsx'
-import { OrderOption } from './OrderOption.jsx'
-import { WatchedMovieSkeleton } from './watchedMovieSkeleton.jsx'
+import { WatchedMovie } from '../components/WatchedMovie.jsx'
+import { Pagination } from '../components/Pagination.jsx'
+import { OrderOption } from '../components/OrderOption.jsx'
+import { WatchedMovieSkeleton } from '../components/WatchedMovieSkeleton.jsx'
 import { useEffect, useContext, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import debounce from 'just-debounce-it'
@@ -12,7 +12,7 @@ import debounce from 'just-debounce-it'
 
 export default function Watched() {
 
-    const { sesion } = useContext(SesionContext)
+    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
     const { watched, pagination, ordering, loading, years, error, removeWatched, fetchWatched, setOrdering, fetchYears } = useWatched()
     const [page, setPage] = useState(1)
     const [year, setYear] = useState(null)
@@ -65,7 +65,7 @@ export default function Watched() {
         }
 
         if (isExpired()) {
-            sesion.auth = false
+            deleteSesionExpiredSession()
             navigate('/login')
         }
         const current_year = new Date().getFullYear()

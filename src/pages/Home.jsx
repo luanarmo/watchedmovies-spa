@@ -1,7 +1,7 @@
-import { HomeSearch } from './HomeSearch'
-import { Base } from './Base'
-import { Movies } from './Movies'
-import { MoviesSkeleton } from './MoviesSkeleton.jsx'
+import { HomeSearch } from '../components/HomeSearch'
+import { Base } from '../components/Base'
+import { Movies } from '../components/Movies'
+import { MoviesSkeleton } from '../components/MoviesSkeleton.jsx'
 import { useMovies } from '../hooks/useMovies'
 import { useEffect } from 'react'
 

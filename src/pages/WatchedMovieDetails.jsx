@@ -2,8 +2,8 @@ import { useParams } from 'react-router-dom'
 import { Base } from '../components/Base'
 import { useWatched } from '../hooks/useWatched'
 import { useEffect } from 'react'
-import ViewDetailsList from './ViewDetailsList.jsx'
-import { WatchedMovieDetailsSkeleton } from './WatchedMovieDetailsSkeleton.jsx'
+import ViewDetailsList from '../components/ViewDetailsList.jsx'
+import { WatchedMovieDetailsSkeleton } from '../components/WatchedMovieDetailsSkeleton.jsx'
 
 export default function WatchedMovieDetails() {
 

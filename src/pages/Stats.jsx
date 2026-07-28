@@ -4,22 +4,22 @@ import { FaFilm, FaStar, FaLayerGroup } from 'react-icons/fa'
 import { SesionContext } from '../context/sesion.jsx'
 import { useStats } from '../hooks/useStats.js'
 import { useWatched } from '../hooks/useWatched.js'
-import { Base } from './Base.jsx'
-import { OrderOption } from './OrderOption.jsx'
-import { StatCard } from './stats/StatCard.jsx'
-import { StreakCard } from './stats/StreakCard.jsx'
-import { RuntimeCard } from './stats/RuntimeCard.jsx'
-import { YearlyOverview } from './stats/YearlyOverview.jsx'
-import { GenreChart } from './stats/GenreChart.jsx'
-import { RatingDistribution } from './stats/RatingDistribution.jsx'
-import { MonthlyActivity } from './stats/MonthlyActivity.jsx'
-import { LanguageChart } from './stats/LanguageChart.jsx'
-import { PlaceChart } from './stats/PlaceChart.jsx'
-import { DayOfWeekChart } from './stats/DayOfWeekChart.jsx'
-import { StatsSkeleton } from './stats/StatsSkeleton.jsx'
+import { Base } from '../components/Base.jsx'
+import { OrderOption } from '../components/OrderOption.jsx'
+import { StatCard } from '../components/stats/StatCard.jsx'
+import { StreakCard } from '../components/stats/StreakCard.jsx'
+import { RuntimeCard } from '../components/stats/RuntimeCard.jsx'
+import { YearlyOverview } from '../components/stats/YearlyOverview.jsx'
+import { GenreChart } from '../components/stats/GenreChart.jsx'
+import { RatingDistribution } from '../components/stats/RatingDistribution.jsx'
+import { MonthlyActivity } from '../components/stats/MonthlyActivity.jsx'
+import { LanguageChart } from '../components/stats/LanguageChart.jsx'
+import { PlaceChart } from '../components/stats/PlaceChart.jsx'
+import { DayOfWeekChart } from '../components/stats/DayOfWeekChart.jsx'
+import { StatsSkeleton } from '../components/stats/StatsSkeleton.jsx'
 
 export default function Stats() {
-    const { sesion } = useContext(SesionContext)
+    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
     const navigate = useNavigate()
 
     const { stats, loading, error, fetchStats } = useStats()
@@ -30,7 +30,7 @@ export default function Stats() {
     useEffect(() => {
         const isExpired = () => sesion.expiresAt ? Date.now() > sesion.expiresAt : true
         if (isExpired()) {
-            sesion.auth = false
+            deleteSesionExpiredSession()
             navigate('/login')
             return
         }

@@ -1,4 +1,4 @@
-import { Base } from './Base';
+import { Base } from '../components/Base';
 import { SesionContext } from '../context/sesion.jsx';
 import { useEffect, useContext, useState } from 'react';
 import { useProfile } from '../hooks/useProfile';
@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify'
 
 export default function Profile() {
-    const { sesion } = useContext(SesionContext);
+    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext);
     const { profile, years, loading, updatingProfile, generatingCollage, generatingWrapped, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, fetchWrapped, setProfile } = useProfile();
     const [profileUpdated, setProfileUpdated] = useState(false);
     const navigate = useNavigate();
@@ -22,7 +22,7 @@ export default function Profile() {
         };
 
         if (isExpired()) {
-            sesion.auth = false
+            deleteSesionExpiredSession()
             navigate('/login');
         }
         fetchProfile();

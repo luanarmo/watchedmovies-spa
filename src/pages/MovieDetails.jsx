@@ -8,7 +8,7 @@ import { Modal } from '../components/Modal.jsx'
 import { ViewDetailsForm } from '../components/ViewDetailsForm.jsx'
 import { truncateText } from '../utils/truncateText.js'
 import { SesionContext } from '../context/sesion'
-import { MovieDetailsSkeleton } from './MovieDetailsSkeleton.jsx'
+import { MovieDetailsSkeleton } from '../components/MovieDetailsSkeleton.jsx'
 
 export function Details({ movie }) {
 
