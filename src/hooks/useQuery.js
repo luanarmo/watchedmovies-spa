@@ -8,8 +8,8 @@ export function useQuery() {
 
     useEffect(() => {
         if (isFirstInput.current) {
-            isFirstInput.current = query === ''
-            return
+            if (query === '') return
+            isFirstInput.current = false
         }
 
         if (query === '') {

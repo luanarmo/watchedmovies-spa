@@ -2,18 +2,22 @@ import { useCallback, useState } from 'react'
 import { popularMovies } from '../services/popular.js'
 
 export const useMovies = () => {
-    // Custom hook to fetch popular movies
-
     const [loading, setLoading] = useState(true)
     const [popular, setPopular] = useState([])
-
+    const [error, setError] = useState(null)
 
     const getPopularMovies = useCallback(async () => {
-        setLoading(true)
-        const newMovies = await popularMovies()
-        setPopular(newMovies)
-        setLoading(false)
+        try {
+            setLoading(true)
+            const newMovies = await popularMovies()
+            setPopular(newMovies)
+        } catch (e) {
+            setError('Error fetching popular movies')
+            console.error(e)
+        } finally {
+            setLoading(false)
+        }
     }, [])
 
-    return { popular, getPopularMovies, loading }
+    return { popular, getPopularMovies, loading, error }
 }

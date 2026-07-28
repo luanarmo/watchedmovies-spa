@@ -53,10 +53,11 @@ export const useWatched = () => {
             setLoading(true)
             const watched = await getWatchedDetails({ movieId, access: sesion.access })
             setWatchedDetails(watched)
-            setLoading(false)
         } catch (error) {
             setError("Error fetching watched movie")
             console.error(error)
+        } finally {
+            setLoading(false)
         }
     }, [])
 

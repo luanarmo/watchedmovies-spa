@@ -40,10 +40,11 @@ export const usePlan = () => {
             setLoading(true)
             const plan = await retrievePlanMovie({ id: movieId, access: sesion.access })
             setPlanDetails(plan)
-            setLoading(false)
         } catch (error) {
             setError("Error fetching plan movie")
             console.error(error)
+        } finally {
+            setLoading(false)
         }
     }, [])
 

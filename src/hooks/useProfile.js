@@ -53,7 +53,6 @@ export const useProfile = () => {
     const fetchPoster = useCallback(async ({ year, order }) => {
         try {
             setGeneratingCollage(true);
-            console.log("Generating image");
 
             // Llamar al servicio para obtener el Blob
             const imageBlob = await getPosters({ access: sesion.access, year, order });
