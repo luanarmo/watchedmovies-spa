@@ -1,185 +1,59 @@
-const BASE_API_URL = import.meta.env.VITE_BASE_API_URL
-
+import { apiRequest, apiRequestBlob } from '../api/client.js'
 
 export const getWatched = async ({ access, page, ordering, year, search }) => {
-    try {
-        const params = new URLSearchParams({ page, ordering })
-        if (year) params.append("watched_date_year", year)
-        if (search) params.append("search", search)
+    const params = { page, ordering }
+    if (year) params.watched_date_year = year
+    if (search) params.search = search
 
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/?${params}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`
-            }
-        })
+    const data = await apiRequest('/api/watched-movies/', { token: access, params })
 
-        const data = await response.json()
+    const watchedMapped = data.results.map((movie) => ({
+        id: movie.id,
+        imdb_id: movie.id,
+        title: movie.title,
+        poster_url: movie.poster_url || 'https://placehold.co/500x750?font=roboto',
+        release_date: movie.release_date || 'Unknown',
+        total_views: movie.total_views,
+        average_rating: movie.vote_average || 0,
+    }))
 
-        if (!response.ok) {
-            return []
-        }
-
-        const watchedMapped = data.results.map((movie) => ({
-            id: movie.id,
-            imdb_id: movie.id,
-            title: movie.title,
-            poster_url: movie.poster_url ? movie.poster_url : 'https://placehold.co/500x750?font=roboto',
-            release_date: movie.release_date ? movie.release_date : 'Unknown',
-            total_views: movie.total_views,
-            average_rating: movie.vote_average ? movie.vote_average : 0,
-        }))
-
-        return { watchedMapped, count: data.count, next: data.next, previous: data.previous }
-
-    }
-    catch (e) {
-        throw new Error(`Error fetching watched movies ${e}`)
-    }
-
+    return { watchedMapped, count: data.count, next: data.next, previous: data.previous }
 }
 
 export const getPosters = async ({ access, year, order }) => {
-    // Fetch watched movies from the API
-
-    try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/posters/?ordering=${order}&watched_date_year=${year}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`
-            }
-        })
-
-        if (!response.ok) {
-            throw new Error('Error fetching the image');
-        }
-
-        // Retornar el Blob directamente
-        return await response.blob();
-
-    }
-    catch (e) {
-        throw new Error(`Error fetching watched movies ${e}`)
-    }
-
+    return apiRequestBlob('/api/watched-movies/posters/', {
+        token: access,
+        params: { ordering: order, watched_date_year: year }
+    })
 }
 
 export const getYears = async ({ access }) => {
-    // Fetch watched movies from the API
-
-    try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/years/`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`
-            }
-        })
-
-        if (!response.ok) {
-            throw new Error('Error fetching the years');
-        }
-
-        const data = await response.json()
-
-        return data.years
-
-    }
-    catch (e) {
-        throw new Error(`Error fetching watched movies ${e}`)
-    }
-
+    const data = await apiRequest('/api/watched-movies/years/', { token: access })
+    return data.years
 }
 
 export const getWrappedImage = async ({ access, year }) => {
-    // Fetch watched movies from the API
-
-    try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/wrapped/?watched_date_year=${year}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`
-            }
-        })
-
-        if (!response.ok) {
-            throw new Error('Error fetching the image');
-        }
-
-        // Retornar el Blob directamente
-        return await response.blob();
-
-    }
-    catch (e) {
-        throw new Error(`Error fetching watched movies ${e}`)
-    }
-
+    return apiRequestBlob('/api/watched-movies/wrapped/', {
+        token: access,
+        params: { watched_date_year: year }
+    })
 }
 
 export const addWatched = async ({ movie, payload, access }) => {
-    // remove poster_url and backdrop_url from the movie object
-
-    const pload = {
-        watched_movie: movie,
-        ...payload
-    }
-
-
-    try {
-        const response = await fetch(`${BASE_API_URL}/api/view-details/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`
-            },
-            body: JSON.stringify(pload)
-        })
-        const watched = await response.json()
-
-        return watched
-
-    } catch (e) {
-        throw new Error(`Error fetching watched list ${e}`)
-    }
-
+    return apiRequest('/api/view-details/', {
+        method: 'POST',
+        token: access,
+        body: { watched_movie: movie, ...payload }
+    })
 }
 
 export const removeWatched = async ({ movieId, access }) => {
-
-    try {
-        await fetch(`${BASE_API_URL}/api/watched-movies/${movieId}/`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`
-            }
-        })
-
-    } catch (e) {
-        throw new Error(`Error fetching watched list ${e}`)
-    }
-
+    return apiRequest(`/api/watched-movies/${movieId}/`, {
+        method: 'DELETE',
+        token: access
+    })
 }
 
 export const getWatchedDetails = async ({ movieId, access }) => {
-
-    try {
-        const response = await fetch(`${BASE_API_URL}/api/watched-movies/${movieId}/`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`
-            }
-        })
-
-        if (!response.ok) {
-            return {}
-        }
-
-        const watched = await response.json()
-
-        return watched
-
-    } catch (e) {
-        throw new Error(`Error fetching watched list ${e}`)
-    }
-
+    return apiRequest(`/api/watched-movies/${movieId}/`, { token: access })
 }
