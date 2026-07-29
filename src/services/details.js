@@ -1,7 +1,7 @@
 import { apiRequest } from '../api/client.js'
 
-export const movieDetails = async ({ movieId }) => {
-    const movie = await apiRequest(`/api/tmdb/movie-details/${movieId}/`)
+export const movieDetails = async ({ movieId, token }) => {
+    const movie = await apiRequest(`/api/tmdb/movie-details/${movieId}/`, { token })
     return {
         id: movie.id,
         adult: movie.adult,

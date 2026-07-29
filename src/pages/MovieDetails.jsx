@@ -102,11 +102,11 @@ export function Details({ movie }) {
 export default function MovieDetails() {
     const { movie, getMovieDetails, loading } = useMovieDetails()
     const { movieId } = useParams()
-
+    const { sesion } = useContext(SesionContext)
 
     useEffect(() => {
-        getMovieDetails({ movieId })
-    }, [])
+        getMovieDetails({ movieId, token: sesion.access })
+    }, [movieId])
 
     return (
         <div className='bg-transparent text-dusty-grape-50'>

@@ -6,10 +6,10 @@ export const useMovieDetails = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    const getMovieDetails = useCallback(async ({ movieId }) => {
+    const getMovieDetails = useCallback(async ({ movieId, token }) => {
         try {
             setLoading(true)
-            const newMovie = await movieDetails({ movieId })
+            const newMovie = await movieDetails({ movieId, token })
             setMovie(newMovie)
         } catch (e) {
             setError('Error fetching movie details')
