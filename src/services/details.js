@@ -19,5 +19,7 @@ export const movieDetails = async ({ movieId }) => {
         backdrop_url: movie.backdrop_url || 'https://placehold.co/480x270?font=roboto',
         release_date: movie.release_date,
         vote_average: movie.vote_average,
+        is_watched: movie.is_watched ?? false,
+        is_plan_to_watch: movie.is_plan_to_watch ?? false,
     }
 }
