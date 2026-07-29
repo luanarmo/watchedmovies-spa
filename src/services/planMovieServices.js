@@ -35,10 +35,6 @@ export const addPlanMovie = async ({ movie, access }) => {
     })
 }
 
-export const retrievePlanMovie = async ({ id, access }) => {
-    return apiRequest(`/api/plan-to-watch/${id}/`, { token: access })
-}
-
 export const removePlanMovie = async ({ movieId, access }) => {
     return apiRequest(`/api/plan-to-watch/${movieId}/`, {
         method: 'DELETE',

@@ -1,10 +1,9 @@
 import { SesionContext } from '../context/sesion'
 import { useState, useCallback, useContext } from 'react'
-import { getAllPlanMovies, addPlanMovie, retrievePlanMovie, removePlanMovie } from '../services/planMovieServices'
+import { getAllPlanMovies, addPlanMovie, removePlanMovie } from '../services/planMovieServices'
 
 export const usePlan = () => {
     const [plan, setPlan] = useState([])
-    const [planDetails, setPlanDetails] = useState({})
     const [pagination, setPagination] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -35,19 +34,6 @@ export const usePlan = () => {
         }
     }
 
-    const getPlan = useCallback(async ({ movieId }) => {
-        try {
-            setLoading(true)
-            const plan = await retrievePlanMovie({ id: movieId, access: sesion.access })
-            setPlanDetails(plan)
-        } catch (error) {
-            setError("Error fetching plan movie")
-            console.error(error)
-        } finally {
-            setLoading(false)
-        }
-    }, [])
-
     const removePlan = async (movieId) => {
         try {
             await removePlanMovie({ movieId: movieId, access: sesion.access })
@@ -60,5 +46,5 @@ export const usePlan = () => {
 
 
 
-    return { plan, loading, error, pagination, planDetails, fetchPlan, addPlan, getPlan, removePlan }
+    return { plan, loading, error, pagination, fetchPlan, addPlan, removePlan }
 }   

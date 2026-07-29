@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useMovieDetails } from '../hooks/useMovieDetails'
 import { Base } from '../components/Base'
-import { useEffect, useState, useCallback, useContext } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { useWatched } from '../hooks/useWatched.js'
 import { usePlan } from '../hooks/usePlan.js'
 import { Modal } from '../components/Modal.jsx'
@@ -14,11 +14,11 @@ export function Details({ movie }) {
 
     const MAX_COMMENT_LENGTH = 300;
 
-    const { watchedDetails, loading, error, addWatched, getWatchedMovie } = useWatched()
-    const { planDetails, addPlan, getPlan } = usePlan()
+    const { addWatched } = useWatched()
+    const { addPlan } = usePlan()
 
-    const [isWatched, setIsWatched] = useState(false)
-    const [isPlan, setIsPlan] = useState(false)
+    const [isWatched, setIsWatched] = useState(movie.is_watched)
+    const [isPlan, setIsPlan] = useState(movie.is_plan_to_watch)
 
     const [seeMore, setSeeMore] = useState(false)
 
@@ -40,41 +40,6 @@ export function Details({ movie }) {
     const handleAddPlan = () => {
         addPlan(movie)
         setIsPlan(true)
-    }
-
-    const checkWatched = useCallback(() => {
-        setIsWatched(watchedDetails.id === movie.id)
-    }, [watchedDetails])
-
-    const checkPlan = useCallback(() => {
-        setIsPlan(planDetails !== null)
-    }, [planDetails])
-
-    useEffect(() => {
-        if (sesion.auth) {
-            getWatchedMovie({ movieId: movie.id })
-            getPlan({ movieId: movie.id })
-        }
-    }, [])
-
-    useEffect(() => {
-        if (sesion.auth) {
-            checkWatched()
-        }
-    }, [watchedDetails])
-
-    useEffect(() => {
-        if (sesion.auth) {
-            checkPlan()
-        }
-    }, [planDetails])
-
-    if (loading && sesion.auth) {
-        return <MovieDetailsSkeleton />
-    }
-
-    if (error) {
-        return <div className='text-white'>{error}</div>
     }
 
     return (
