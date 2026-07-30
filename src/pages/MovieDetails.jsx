@@ -91,7 +91,6 @@ export function Details({ movie }) {
 
             </section>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <h2 className='text-2xl font-bold text-dusty-grape-100 mb-4 border-b border-dusty-grape-700 pb-2'>Details of the movie viewed</h2>
                 <ViewDetailsForm movie={movie} onClose={handleCloseModal} onSubmit={handleAddToWatched} />
             </Modal>
 
