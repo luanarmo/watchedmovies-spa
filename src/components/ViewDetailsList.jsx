@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BiCommentX } from "react-icons/bi";
 import { FaRegChartBar } from "react-icons/fa6";
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaHeart } from 'react-icons/fa';
 import { truncateText } from '../utils/truncateText'
 import { useViewDetails } from '../hooks/useViewDetails'
 
@@ -33,7 +33,10 @@ export default function ViewDetailsList({ movieId }) {
                 <li key={viewDetail.id} className='bg-dusty-grape-800 p-4 w-60 rounded-xl border border-dusty-grape-700 shadow-md text-dusty-grape-100 flex flex-col gap-2 relative group'>
                     <div className='flex justify-between items-start'>
                         <span className='px-2 py-1 bg-dusty-grape-700 rounded text-xs font-semibold uppercase tracking-wider'>{viewDetail.place}</span>
-                        <span className='text-sm text-dusty-grape-300'>{viewDetail.watched_date}</span>
+                        <div className='flex items-center gap-2'>
+                            {viewDetail.is_favorite && <FaHeart className='text-red-400' title='Favorite' size={12} />}
+                            <span className='text-sm text-dusty-grape-300'>{viewDetail.watched_date}</span>
+                        </div>
                     </div>
                     <p className='text-sm text-dusty-grape-300'>Language: <span className='text-dusty-grape-100 font-medium uppercase'>{viewDetail.language}</span></p>
 

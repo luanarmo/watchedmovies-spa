@@ -1,8 +1,10 @@
 import { useState } from 'react'
+import { FaHeart, FaRegHeart } from 'react-icons/fa'
 
 export function ViewDetailsForm({ movie, onClose, onSubmit }) {
     const [rating, setRating] = useState('')
     const [showDetails, setShowDetails] = useState(false)
+    const [isFavorite, setIsFavorite] = useState(false)
 
     const getCurrentDate = () => new Date().toISOString().split('T')[0]
 
@@ -16,6 +18,8 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
         } else {
             delete payload.rating
         }
+
+        payload.is_favorite = isFavorite
 
         onSubmit({ payload, movie })
         onClose()
@@ -47,6 +51,15 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                     className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer"
                 />
             </div>
+
+            <button
+                type="button"
+                onClick={() => setIsFavorite(f => !f)}
+                className={`flex items-center gap-2 text-xs font-medium transition-colors w-fit ${isFavorite ? 'text-red-400 hover:text-red-300' : 'text-dusty-grape-400 hover:text-dusty-grape-200'}`}
+            >
+                {isFavorite ? <FaHeart /> : <FaRegHeart />}
+                Mark as favorite
+            </button>
 
             <button
                 type="button"

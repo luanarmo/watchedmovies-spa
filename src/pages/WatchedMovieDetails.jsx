@@ -4,6 +4,7 @@ import { useWatched } from '../hooks/useWatched'
 import { useEffect } from 'react'
 import ViewDetailsList from '../components/ViewDetailsList.jsx'
 import { WatchedMovieDetailsSkeleton } from '../components/WatchedMovieDetailsSkeleton.jsx'
+import { FaHeart } from 'react-icons/fa'
 
 export default function WatchedMovieDetails() {
 
@@ -23,7 +24,10 @@ export default function WatchedMovieDetails() {
                         <WatchedMovieDetailsSkeleton />
                     ) : (
                         <div className='flex flex-col p-4 gap-6 justify-start items-center w-full max-w-4xl mx-auto'>
-                            <h1 className='text-4xl text-center text-dusty-grape-100 font-bold'>{watchedDetails.title}</h1>
+                            <div className='flex items-center gap-3 justify-center'>
+                                <h1 className='text-4xl text-center text-dusty-grape-100 font-bold'>{watchedDetails.title}</h1>
+                                {watchedDetails.is_favorite && <FaHeart className='text-red-400 text-2xl flex-shrink-0' title='Favorite' />}
+                            </div>
                             <div className="relative w-full rounded-xl overflow-hidden shadow-2xl shadow-dusty-grape-950/50 border border-dusty-grape-700">
                                 <img src={watchedDetails.backdrop_url} alt={watchedDetails.title} className='w-full h-auto object-cover' />
                                 <div className="absolute inset-0 bg-gradient-to-t from-dusty-grape-950/90 to-transparent"></div>
