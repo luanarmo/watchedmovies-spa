@@ -2,21 +2,17 @@ import { createContext, useState, useEffect } from 'react';
 
 export const SesionContext = createContext();
 
-export const SesionProvider = ({ children }) => {
-    const [sesion, setSesion] = useState({
-        auth: false,
-        access: null,
-        refresh: null,
-        expiresAt: null
-    });
+const defaultSesion = { auth: false, access: null, refresh: null, expiresAt: null };
 
-    useEffect(() => {
-        const storedSesion = localStorage.getItem('sesion');
-        if (storedSesion) {
-            const parsedSesion = JSON.parse(storedSesion);
-            setSesion(parsedSesion);
+export const SesionProvider = ({ children }) => {
+    const [sesion, setSesion] = useState(() => {
+        try {
+            const stored = localStorage.getItem('sesion');
+            return stored ? JSON.parse(stored) : defaultSesion;
+        } catch {
+            return defaultSesion;
         }
-    }, []); // Solo se ejecuta una vez al montar el componente
+    });
 
     useEffect(() => {
         if (sesion.auth) {
@@ -33,12 +29,7 @@ export const SesionProvider = ({ children }) => {
 
     const deleteSesionExpiredSession = () => {
         localStorage.removeItem('sesion');
-        setSesion({
-            auth: false,
-            access: null,
-            refresh: null,
-            expiresAt: null
-        });
+        setSesion(defaultSesion);
     };
 
     useEffect(() => {
