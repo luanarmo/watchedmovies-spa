@@ -43,8 +43,8 @@
     "postcss": "^8.4.45",
     "standard": "^17.1.0",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.3.0",
-    "vitest": "^5.0.1"
+    "vite": "^8.3.1",
+    "vitest": "^5.0.3"
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
