@@ -5,6 +5,8 @@ import { useEffect } from 'react'
 import ViewDetailsList from '../components/ViewDetailsList.jsx'
 import { WatchedMovieDetailsSkeleton } from '../components/WatchedMovieDetailsSkeleton.jsx'
 import { FaHeart } from 'react-icons/fa'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function WatchedMovieDetails() {
 
@@ -37,13 +39,14 @@ export default function WatchedMovieDetails() {
                                 <h1 className='text-2xl font-bold text-center text-dusty-grape-100 border-b border-dusty-grape-700 pb-2 mb-4'> Viewed times </h1>
                                 <div className="overflow-x-auto w-full custom-scrollbar">
                                     <div className="flex space-x-4 p-2">
-                                        <ViewDetailsList movieId={movieId} />
+                                        <ViewDetailsList movieId={movieId} movie={watchedDetails} />
                                     </div>
                                 </div>
                             </div>
                         </div >
                     )
             }
+            <ToastContainer />
         </Base >
     )
 }
