@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
 
-export function ViewDetailsForm({ movie, onClose, onSubmit }) {
-    const [rating, setRating] = useState('')
-    const [showDetails, setShowDetails] = useState(false)
-    const [isFavorite, setIsFavorite] = useState(false)
+export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
+    const isEdit = Boolean(initialValues)
+    const [rating, setRating] = useState(isEdit && initialValues.rating ? String(initialValues.rating) : '')
+    const [showDetails, setShowDetails] = useState(isEdit)
+    const [isFavorite, setIsFavorite] = useState(isEdit ? initialValues.is_favorite : false)
 
     const getCurrentDate = () => new Date().toISOString().split('T')[0]
 
@@ -15,8 +16,15 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
 
         if (rating) {
             payload.rating = rating
+        } else if (isEdit) {
+            // null clears the stored rating; omitting it would keep the old one
+            payload.rating = null
         } else {
             delete payload.rating
+        }
+
+        if (isEdit && !payload.watched_date) {
+            payload.watched_date = null
         }
 
         payload.is_favorite = isFavorite
@@ -36,7 +44,7 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                     />
                 )}
                 <div>
-                    <p className="text-xs text-dusty-grape-400 uppercase tracking-wide">Registering view</p>
+                    <p className="text-xs text-dusty-grape-400 uppercase tracking-wide">{isEdit ? 'Editing view' : 'Registering view'}</p>
                     <p className="text-dusty-grape-100 font-semibold text-sm leading-tight">{movie.title}</p>
                 </div>
             </div>
@@ -47,7 +55,7 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                     type="date"
                     name="watched_date"
                     id="watched_date"
-                    defaultValue={getCurrentDate()}
+                    defaultValue={isEdit ? initialValues.watched_date ?? '' : getCurrentDate()}
                     className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer"
                 />
             </div>
@@ -95,7 +103,7 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                     <div className="grid grid-cols-2 gap-2">
                         <div className="flex flex-col gap-1">
                             <label htmlFor="language" className="text-dusty-grape-300 text-xs font-medium">Language</label>
-                            <select name="language" id="language" defaultValue={movie.original_language ?? ''} className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
+                            <select name="language" id="language" defaultValue={isEdit ? initialValues.language_code ?? '' : movie.original_language ?? ''} className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
                                 <option value="">—</option>
                                 <option value="en">English</option>
                                 <option value="es">Spanish</option>
@@ -114,7 +122,7 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="place" className="text-dusty-grape-300 text-xs font-medium">Where</label>
-                            <select name="place" id="place" defaultValue={""} className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
+                            <select name="place" id="place" defaultValue={isEdit ? initialValues.place_code ?? '' : ''} className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
                                 <option value="">—</option>
                                 <option value="home">Home</option>
                                 <option value="cinema">Cinema</option>
@@ -132,6 +140,7 @@ export function ViewDetailsForm({ movie, onClose, onSubmit }) {
                             name="comment"
                             id="comment"
                             rows="2"
+                            defaultValue={isEdit ? initialValues.comment : undefined}
                             placeholder="What did you think?"
                             className="resize-none w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors"
                         />

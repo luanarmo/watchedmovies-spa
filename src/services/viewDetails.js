@@ -8,9 +8,9 @@ export const getAllViewDetails = async ({ access, watchedId }) => {
     return data.results
 }
 
-export const updateViewDetails = async ({ payload, access }) => {
-    return apiRequest('/api/view-details/', {
-        method: 'POST',
+export const patchViewDetails = async ({ id, payload, access }) => {
+    return apiRequest(`/api/view-details/${id}/`, {
+        method: 'PATCH',
         token: access,
         body: payload
     })
