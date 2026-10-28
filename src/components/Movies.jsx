@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { Movie } from './Movie.jsx'
 
 export function ListOfMovies({ movies }) {
