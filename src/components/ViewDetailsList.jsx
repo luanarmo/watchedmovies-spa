@@ -6,7 +6,7 @@ import { ViewDetailsForm } from './ViewDetailsForm.jsx'
 import { ViewDetailCard } from './ViewDetailCard.jsx'
 
 
-export default function ViewDetailsList({ movieId, movie }) {
+export default function ViewDetailsList({ movieId, movie, onTierChange }) {
 
     const { viewDetails, loading, error, fetchViewDetails, removeViewDetails, editViewDetails } = useViewDetails()
     const [editing, setEditing] = useState(null)
@@ -14,6 +14,7 @@ export default function ViewDetailsList({ movieId, movie }) {
     const handleEdit = async ({ payload }) => {
         try {
             await editViewDetails(editing.id, payload)
+            onTierChange(payload.tier)
             toast.success('View updated successfully')
         } catch (error) {
             toast.error(error.message)

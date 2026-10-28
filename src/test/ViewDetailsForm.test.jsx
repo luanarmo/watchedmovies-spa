@@ -17,6 +17,63 @@ const viewDetail = {
     is_favorite: true,
 }
 
+describe('ViewDetailsForm tier', () => {
+    it('shows the S, A, B, C, D tier options inside the details', async () => {
+        const user = userEvent.setup()
+        render(<ViewDetailsForm movie={movie} onClose={vi.fn()} onSubmit={vi.fn()} />)
+
+        await user.click(screen.getByRole('button', { name: '+ Add details' }))
+
+        for (const letter of ['S', 'A', 'B', 'C', 'D']) {
+            expect(screen.getByRole('button', { name: letter })).toBeInTheDocument()
+        }
+    })
+
+    it('preselects the movie tier when registering a view', async () => {
+        const user = userEvent.setup()
+        render(<ViewDetailsForm movie={{ ...movie, tier: 4 }} onClose={vi.fn()} onSubmit={vi.fn()} />)
+
+        await user.click(screen.getByRole('button', { name: '+ Add details' }))
+
+        expect(screen.getByRole('button', { name: 'A', pressed: true })).toBeInTheDocument()
+    })
+
+    it('preselects the movie tier when editing a view', () => {
+        render(<ViewDetailsForm movie={{ ...movie, tier: 5 }} initialValues={viewDetail} onClose={vi.fn()} onSubmit={vi.fn()} />)
+
+        expect(screen.getByRole('button', { name: 'S', pressed: true })).toBeInTheDocument()
+    })
+
+    it('submits the selected tier as its numeric value', async () => {
+        const onSubmit = vi.fn()
+        const user = userEvent.setup()
+        render(<ViewDetailsForm movie={movie} onClose={vi.fn()} onSubmit={onSubmit} />)
+
+        await user.click(screen.getByRole('button', { name: '+ Add details' }))
+        await user.click(screen.getByRole('button', { name: 'S' }))
+        await user.click(screen.getByRole('button', { name: 'Save' }))
+
+        expect(onSubmit.mock.calls[0][0].payload.tier).toBe(5)
+    })
+
+    it.each([
+        ['registering', undefined],
+        ['editing', viewDetail],
+    ])('sends a null tier when the tier is deselected while %s', async (_mode, initialValues) => {
+        const onSubmit = vi.fn()
+        const user = userEvent.setup()
+        render(<ViewDetailsForm movie={{ ...movie, tier: 4 }} initialValues={initialValues} onClose={vi.fn()} onSubmit={onSubmit} />)
+
+        if (!initialValues) {
+            await user.click(screen.getByRole('button', { name: '+ Add details' }))
+        }
+        await user.click(screen.getByRole('button', { name: 'A' }))
+        await user.click(screen.getByRole('button', { name: 'Save' }))
+
+        expect(onSubmit.mock.calls[0][0].payload.tier).toBeNull()
+    })
+})
+
 describe('ViewDetailsForm in edit mode', () => {
     it('prefills the fields from initialValues', () => {
         render(<ViewDetailsForm movie={movie} initialValues={viewDetail} onClose={vi.fn()} onSubmit={vi.fn()} />)
@@ -45,6 +102,7 @@ describe('ViewDetailsForm in edit mode', () => {
                 place: 'home',
                 comment: 'Great',
                 rating: '9',
+                tier: null,
                 is_favorite: true,
             },
         })

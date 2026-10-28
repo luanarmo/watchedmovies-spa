@@ -1,9 +1,18 @@
 import { useState } from 'react'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
 
+const TIERS = [
+    { value: 5, letter: 'S' },
+    { value: 4, letter: 'A' },
+    { value: 3, letter: 'B' },
+    { value: 2, letter: 'C' },
+    { value: 1, letter: 'D' },
+]
+
 export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
     const isEdit = Boolean(initialValues)
     const [rating, setRating] = useState(isEdit && initialValues.rating ? String(initialValues.rating) : '')
+    const [tier, setTier] = useState(movie.tier ?? null)
     const [showDetails, setShowDetails] = useState(isEdit)
     const [isFavorite, setIsFavorite] = useState(isEdit ? initialValues.is_favorite : false)
 
@@ -22,6 +31,9 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
         } else {
             delete payload.rating
         }
+
+        // Always sent: the tier is global, so null clears it for the movie
+        payload.tier = tier
 
         if (isEdit && !payload.watched_date) {
             payload.watched_date = null
@@ -95,6 +107,28 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
                                             : 'bg-dusty-grape-700 text-dusty-grape-200 hover:bg-dusty-grape-600'}`}
                                 >
                                     {i + 1}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                        <label className="text-dusty-grape-300 text-xs font-medium">
+                            Tier <span className="text-dusty-grape-500">(optional)</span>
+                        </label>
+                        <div className="flex gap-1 flex-wrap">
+                            {TIERS.map(({ value, letter }) => (
+                                <button
+                                    key={value}
+                                    type="button"
+                                    aria-pressed={tier === value}
+                                    onClick={() => setTier(t => t === value ? null : value)}
+                                    className={`w-8 h-8 rounded-full text-xs font-bold transition-colors
+                                        ${tier === value
+                                            ? 'bg-dusty-grape-500 text-white shadow-md'
+                                            : 'bg-dusty-grape-700 text-dusty-grape-200 hover:bg-dusty-grape-600'}`}
+                                >
+                                    {letter}
                                 </button>
                             ))}
                         </div>

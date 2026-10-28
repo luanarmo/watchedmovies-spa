@@ -76,5 +76,5 @@ export const useWatched = () => {
         }
     })
 
-    return { watched, pagination, ordering, watchedDetails, loading, error, years, addWatched, removeWatched, fetchWatched, getWatchedMovie, setOrdering, fetchYears }
+    return { watched, pagination, ordering, watchedDetails, loading, error, years, addWatched, removeWatched, fetchWatched, getWatchedMovie, setOrdering, fetchYears, setWatchedDetails }
 }
