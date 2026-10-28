@@ -3,7 +3,6 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 const GRAPE = '#6552ad'
 const GRID = '#292145'
 const TICK = '#a397ce'
-const TOOLTIP_BG = '#1a1430'
 
 const CustomTooltip = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null

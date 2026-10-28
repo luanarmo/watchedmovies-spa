@@ -1,5 +1,5 @@
 
-export function Search({ onChange, onSubmit, search, error, children }) {
+export function Search({ onChange, onSubmit, search, children }) {
 
     return (
         <section className="bg-gradient-to-r from-dusty-grape-600 to-dusty-grape-500 p-4 text-white shadow-lg mb-8">

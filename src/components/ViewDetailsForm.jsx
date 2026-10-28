@@ -153,7 +153,7 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
                                 <option value="">—</option>
                                 <option value="home">Home</option>
                                 <option value="cinema">Cinema</option>
-                                <option value="friend">Friends'</option>
+                                <option value="friend">Friends&apos;</option>
                                 <option value="other">Other</option>
                             </select>
                         </div>
