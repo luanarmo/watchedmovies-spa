@@ -1,13 +1,6 @@
 import { useState } from 'react'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
-
-const TIERS = [
-    { value: 5, letter: 'S' },
-    { value: 4, letter: 'A' },
-    { value: 3, letter: 'B' },
-    { value: 2, letter: 'C' },
-    { value: 1, letter: 'D' },
-]
+import { TIERS } from '../utils/tiers.js'
 
 export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
     const isEdit = Boolean(initialValues)
