@@ -19,6 +19,7 @@ export function Details({ movie }) {
 
     const [isWatched, setIsWatched] = useState(movie.is_watched)
     const [isPlan, setIsPlan] = useState(movie.is_plan_to_watch)
+    const [tier, setTier] = useState(movie.tier)
 
     const [seeMore, setSeeMore] = useState(false)
 
@@ -35,6 +36,7 @@ export function Details({ movie }) {
     const handleAddToWatched = ({ payload, movie }) => {
         addWatched(movie, payload)
         setIsWatched(true)
+        setTier(payload.tier)
     }
 
     const handleAddPlan = () => {
@@ -91,7 +93,7 @@ export function Details({ movie }) {
 
             </section>
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <ViewDetailsForm movie={movie} onClose={handleCloseModal} onSubmit={handleAddToWatched} />
+                <ViewDetailsForm movie={{ ...movie, tier }} onClose={handleCloseModal} onSubmit={handleAddToWatched} />
             </Modal>
 
         </div>
