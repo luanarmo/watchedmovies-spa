@@ -5,6 +5,7 @@ import Watched from './pages/WatchedList.jsx'
 import Plan from './pages/PlanList.jsx'
 import Profile from './pages/Profile'
 import Stats from './pages/Stats.jsx'
+import TierList from './pages/TierList.jsx'
 import MovieDetails from './pages/MovieDetails'
 import WatchedMovieDetails from './pages/WatchedMovieDetails'
 import AdvancedSearch from './pages/AdvancedSearch'
@@ -36,6 +37,7 @@ function App() {
         <Route path="/resetPassword/:uid/:token" element={<ResetPassword />} />
         <Route path="/plan" element={<PrivateRoute><Plan /></PrivateRoute>} />
         <Route path="/stats" element={<PrivateRoute><Stats /></PrivateRoute>} />
+        <Route path="/tier-list" element={<PrivateRoute><TierList /></PrivateRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </HashRouter>
