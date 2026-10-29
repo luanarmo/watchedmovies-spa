@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FaFilm, FaStar, FaLayerGroup } from 'react-icons/fa'
+import { FaFilm, FaLayerGroup } from 'react-icons/fa'
 import { SesionContext } from '../context/sesion.jsx'
 import { useStats } from '../hooks/useStats.js'
 import { useWatched } from '../hooks/useWatched.js'
@@ -11,7 +11,6 @@ import { StreakCard } from '../components/stats/StreakCard.jsx'
 import { RuntimeCard } from '../components/stats/RuntimeCard.jsx'
 import { YearlyOverview } from '../components/stats/YearlyOverview.jsx'
 import { GenreChart } from '../components/stats/GenreChart.jsx'
-import { RatingDistribution } from '../components/stats/RatingDistribution.jsx'
 import { MonthlyActivity } from '../components/stats/MonthlyActivity.jsx'
 import { LanguageChart } from '../components/stats/LanguageChart.jsx'
 import { PlaceChart } from '../components/stats/PlaceChart.jsx'
@@ -77,18 +76,12 @@ export default function Stats() {
                 {loading ? <StatsSkeleton /> : stats && (
                     <>
                         {/* Summary cards */}
-                        <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                        <div className='grid grid-cols-2 md:grid-cols-3 gap-4'>
                             <StatCard
                                 title='Total Watched'
                                 value={stats.total_watched}
                                 subtitle={stats.rewatch_count > 0 ? `${stats.rewatch_count} rewatches` : `${stats.total_unique_movies} unique titles`}
                                 icon={<FaFilm />}
-                            />
-                            <StatCard
-                                title='Avg Rating'
-                                value={stats.average_rating ?? '—'}
-                                subtitle='out of 10'
-                                icon={<FaStar />}
                             />
                             <StreakCard streak={stats.max_streak} />
                             <StatCard
@@ -105,11 +98,7 @@ export default function Stats() {
                         {/* Yearly overview — solo en modo all-years */}
                         {isAllYears && <YearlyOverview data={stats.by_year} />}
 
-                        {/* Genre + Rating side by side */}
-                        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                            <GenreChart data={stats.genres} />
-                            <RatingDistribution data={stats.by_rating} />
-                        </div>
+                        <GenreChart data={stats.genres} />
 
                         {/* Monthly activity — solo con año específico */}
                         {!isAllYears && <MonthlyActivity data={stats.by_month} />}
