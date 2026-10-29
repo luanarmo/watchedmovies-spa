@@ -9,10 +9,10 @@ export const useTierList = () => {
 
     const { sesion } = useContext(SesionContext)
 
-    const fetchTierList = useCallback(async () => {
+    const fetchTierList = useCallback(async (year) => {
         try {
             setLoading(true)
-            const data = await getTierList({ access: sesion.access })
+            const data = await getTierList({ access: sesion.access, year })
             setMovies(data)
         } catch (e) {
             setError('Error fetching tier list')

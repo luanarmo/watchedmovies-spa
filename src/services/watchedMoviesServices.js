@@ -32,8 +32,8 @@ export const getYears = async ({ access }) => {
     return data.years
 }
 
-export const getTierList = async ({ access }) => {
-    return apiRequest('/api/watched-movies/tier-list/', { token: access })
+export const getTierList = async ({ access, year }) => {
+    return apiRequest('/api/watched-movies/tier-list/', { token: access, params: { year } })
 }
 
 export const getWrappedImage = async ({ access, year }) => {
