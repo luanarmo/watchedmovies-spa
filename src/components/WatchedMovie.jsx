@@ -1,4 +1,4 @@
-import { FaTrash, FaStar, FaEye, FaEllipsisV, FaHeart } from 'react-icons/fa';
+import { FaTrash, FaEye, FaEllipsisV, FaHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom'
 import { WatchedField } from './WatchedField'
 import { useState } from 'react';
@@ -66,7 +66,6 @@ export const WatchedMovie = ({ movie, onDelete, redirect, showWatchedFields = tr
             {showWatchedFields && (
                 <div className="flex gap-1 md:gap-4 items-center justify-center min-h-[3.5rem] p-2 bg-dusty-grape-800">
                     <WatchedField field={movie.total_views} icon={<FaEye className="text-dusty-grape-300" />} />
-                    <WatchedField field={movie.average_rating} icon={<FaStar className='text-yellow-400' />} />
                     {movie.is_favorite && <FaHeart className="text-red-400" title="Favorite" />}
                 </div>
             )}

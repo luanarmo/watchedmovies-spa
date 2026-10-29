@@ -10,7 +10,6 @@ const CustomTooltip = ({ active, payload, label }) => {
         <div className='bg-dusty-grape-900 border border-dusty-grape-700 rounded-lg px-3 py-2 text-sm'>
             <p className='text-dusty-grape-300 font-semibold'>{label}</p>
             <p className='text-dusty-grape-50'>{payload[0].value} movies</p>
-            {payload[1] && <p className='text-dusty-grape-300'>avg rating: {payload[1].value ?? '—'}</p>}
         </div>
     )
 }

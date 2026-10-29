@@ -7,7 +7,6 @@ const movie = { title: 'Test Movie', original_language: 'en' }
 
 const viewDetail = {
     id: 3,
-    rating: 6,
     comment: 'Great',
     language: 'Spanish',
     language_code: 'es',
@@ -91,7 +90,6 @@ describe('ViewDetailsForm in edit mode', () => {
         render(<ViewDetailsForm movie={movie} initialValues={viewDetail} onClose={vi.fn()} onSubmit={onSubmit} />)
 
         await user.selectOptions(screen.getByLabelText('Where'), 'home')
-        await user.click(screen.getByRole('button', { name: '9' }))
         await user.click(screen.getByRole('button', { name: 'Save' }))
 
         expect(onSubmit).toHaveBeenCalledWith({
@@ -101,21 +99,16 @@ describe('ViewDetailsForm in edit mode', () => {
                 language: 'es',
                 place: 'home',
                 comment: 'Great',
-                rating: '9',
                 tier: null,
                 is_favorite: true,
             },
         })
     })
 
-    it('sends a null rating when the rating is deselected', async () => {
-        const onSubmit = vi.fn()
-        const user = userEvent.setup()
-        render(<ViewDetailsForm movie={movie} initialValues={viewDetail} onClose={vi.fn()} onSubmit={onSubmit} />)
+    it('has no 1-10 rating', () => {
+        render(<ViewDetailsForm movie={movie} initialValues={viewDetail} onClose={vi.fn()} onSubmit={vi.fn()} />)
 
-        await user.click(screen.getByRole('button', { name: '6' }))
-        await user.click(screen.getByRole('button', { name: 'Save' }))
-
-        expect(onSubmit.mock.calls[0][0].payload.rating).toBeNull()
+        expect(screen.queryByText('Rating')).not.toBeInTheDocument()
+        expect(screen.queryByRole('button', { name: '10' })).not.toBeInTheDocument()
     })
 })

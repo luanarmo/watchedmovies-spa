@@ -35,10 +35,6 @@ export const ViewDetailCard = ({ viewDetail, onEdit, onDelete }) => {
             </div>
             <p className='text-sm text-dusty-grape-300'>Language: <span className='text-dusty-grape-100 font-medium uppercase'>{viewDetail.language}</span></p>
 
-            <div className='flex items-center gap-2 mt-2'>
-                <span className='flex items-center gap-1 text-yellow-400 font-bold bg-dusty-grape-900/50 px-2 py-1 rounded'>{viewDetail.rating ? viewDetail.rating : 'N/A'} <span className='text-xs opacity-70'>/ 10</span></span>
-            </div>
-
             <p className='text-sm italic text-dusty-grape-200 mt-2 bg-dusty-grape-900/30 p-2 rounded'>
                 {viewDetail.comment ? truncateText(viewDetail.comment, MAX_COMMENT_LENGTH) : <span className='flex items-center gap-1 text-dusty-grape-500'><BiCommentX /> No comment</span>}
             </p>

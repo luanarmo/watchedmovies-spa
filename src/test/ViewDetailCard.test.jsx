@@ -5,7 +5,6 @@ import { ViewDetailCard } from '../components/ViewDetailCard'
 
 const viewDetail = {
     id: 3,
-    rating: 6,
     comment: 'Great',
     language: 'Spanish',
     place: 'Movie Theater',
@@ -20,6 +19,14 @@ const renderCard = () => {
     render(<ul><ViewDetailCard viewDetail={viewDetail} onEdit={onEdit} onDelete={onDelete} /></ul>)
     return { onEdit, onDelete, user: userEvent.setup() }
 }
+
+describe('ViewDetailCard', () => {
+    it('has no 1-10 rating', () => {
+        renderCard()
+
+        expect(screen.queryByText('/ 10')).not.toBeInTheDocument()
+    })
+})
 
 describe('ViewDetailCard mobile context menu', () => {
     it('toggles the menu with the ellipsis button', async () => {
