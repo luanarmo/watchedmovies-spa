@@ -27,4 +27,13 @@ describe('getTierList', () => {
         expect(fetchMock.mock.calls[0][0]).toBe(`${BASE}/api/watched-movies/tier-list/`)
         expect(result).toEqual(movies)
     })
+
+    it('asks for the given year', async () => {
+        const fetchMock = vi.fn().mockResolvedValue({ ok: true, status: 200, json: () => Promise.resolve([]) })
+        vi.stubGlobal('fetch', fetchMock)
+
+        await getTierList({ access: 'abc123', year: 2020 })
+
+        expect(fetchMock.mock.calls[0][0]).toBe(`${BASE}/api/watched-movies/tier-list/?year=2020`)
+    })
 })
