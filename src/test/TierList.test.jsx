@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within, act, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { SesionContext } from '../context/sesion.jsx'
@@ -8,17 +8,34 @@ import TierList from '../pages/TierList.jsx'
 const BASE = 'http://localhost:8000'
 const THIS_YEAR = new Date().getFullYear()
 
-const respond = (data) => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(data) })
+// jsdom has no layout, so a real drag can't be simulated: keep the real DndContext and grab its props
+const dnd = vi.hoisted(() => ({ props: null }))
+vi.mock('@dnd-kit/core', async (importOriginal) => {
+    const actual = await importOriginal()
+    return {
+        ...actual,
+        DndContext: (props) => {
+            dnd.props = props
+            return <actual.DndContext {...props} />
+        },
+    }
+})
 
-const fakeApi = (url) => {
+const respond = (data) => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(data) })
+const reject = () => Promise.resolve({ ok: false, status: 500, json: () => Promise.resolve({}) })
+
+const fakeApi = (url, options = {}) => {
     const { pathname, searchParams } = new URL(url)
+    if (options.method === 'PATCH') {
+        return respond({ tier: JSON.parse(options.body).tier })
+    }
     if (pathname === '/api/watched-movies/years/') {
         return respond({ years: [THIS_YEAR, 2020] })
     }
     if (searchParams.get('year') === '2020') {
         return respond([{ id: 2, title: 'Old Movie', poster_url: '/old.jpg', tier: 3 }])
     }
-    return respond([{ id: 1, title: 'New Movie', poster_url: '/new.jpg', tier: 5 }])
+    return respond([{ id: 1, title: 'New Movie', poster_url: '/new.jpg', tier: 4 }])
 }
 
 const renderPage = () => render(
@@ -31,6 +48,12 @@ const renderPage = () => render(
         </MemoryRouter>
     </SesionContext.Provider>
 )
+
+const tierRow = (letter) => screen.getByRole('rowheader', { name: letter }).closest('tr')
+
+const dropOnTier = (movieId, tierValue) => act(() => {
+    dnd.props.onDragEnd({ active: { id: movieId }, over: { id: tierValue } })
+})
 
 beforeEach(() => {
     vi.stubEnv('VITE_BASE_API_URL', BASE)
@@ -67,5 +90,31 @@ describe('TierList', () => {
 
         expect(await screen.findByAltText('Old Movie')).toBeInTheDocument()
         expect(screen.queryByAltText('New Movie')).not.toBeInTheDocument()
+    })
+
+    it('moves a poster to the tier it is dropped on and saves the new tier', async () => {
+        renderPage()
+        await screen.findByAltText('New Movie')
+
+        dropOnTier(1, 5)
+
+        expect(within(tierRow('S')).getByAltText('New Movie')).toBeInTheDocument()
+        expect(within(tierRow('A')).queryByAltText('New Movie')).not.toBeInTheDocument()
+        await waitFor(() => expect(fetch).toHaveBeenCalledWith(
+            `${BASE}/api/watched-movies/1/tier/`,
+            expect.objectContaining({ method: 'PATCH', body: JSON.stringify({ tier: 5 }) })
+        ))
+    })
+
+    it('puts the poster back and shows an error when the tier could not be saved', async () => {
+        fetch.mockImplementation((url, options) => options?.method === 'PATCH' ? reject() : fakeApi(url, options))
+        renderPage()
+        await screen.findByAltText('New Movie')
+
+        dropOnTier(1, 5)
+
+        expect(await screen.findByText(/could not move the movie/i)).toBeInTheDocument()
+        expect(within(tierRow('A')).getByAltText('New Movie')).toBeInTheDocument()
+        expect(within(tierRow('S')).queryByAltText('New Movie')).not.toBeInTheDocument()
     })
 })
