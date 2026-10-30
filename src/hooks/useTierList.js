@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from 'react'
+import { useState, useCallback, useContext, useRef } from 'react'
 import { SesionContext } from '../context/sesion'
 import { getTierList, setMovieTier } from '../services/watchedMoviesServices'
 
@@ -8,17 +8,21 @@ export const useTierList = () => {
     const [error, setError] = useState(null)
 
     const { sesion } = useContext(SesionContext)
+    const lastRequest = useRef(0)
 
     const fetchTierList = useCallback(async (year) => {
+        // Only the last request counts: an earlier one that answers later must not overwrite the list
+        const request = ++lastRequest.current
         try {
             setLoading(true)
+            setError(null)
             const data = await getTierList({ access: sesion.access, year })
-            setMovies(data)
+            if (request === lastRequest.current) setMovies(data)
         } catch (e) {
-            setError('Error fetching tier list')
+            if (request === lastRequest.current) setError('Error fetching tier list')
             console.error(e)
         } finally {
-            setLoading(false)
+            if (request === lastRequest.current) setLoading(false)
         }
     }, [sesion.access])
 
