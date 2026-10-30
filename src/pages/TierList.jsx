@@ -1,5 +1,7 @@
 import { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { SesionContext } from '../context/sesion.jsx'
 import { useTierList } from '../hooks/useTierList.js'
 import { useWatched } from '../hooks/useWatched.js'
@@ -12,7 +14,7 @@ export default function TierList() {
     const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
     const navigate = useNavigate()
 
-    const { movies, loading, error, fetchTierList } = useTierList()
+    const { movies, loading, error, fetchTierList, moveMovie } = useTierList()
     const { years, fetchYears } = useWatched()
 
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
@@ -37,6 +39,10 @@ export default function TierList() {
         fetchTierList(parsed)
     }
 
+    const handleMoveMovie = (movieId, tier) => {
+        moveMovie(movieId, tier).catch(() => toast.error('Could not move the movie, try again'))
+    }
+
     return (
         <Base>
             <div className='mx-auto flex flex-col gap-6 p-4 w-full min-h-screen'>
@@ -55,8 +61,9 @@ export default function TierList() {
 
                 {error ? <p className='text-center text-dusty-grape-400'>{error}</p>
                     : loading ? <Loading />
-                        : <TierListTable movies={movies} />}
+                        : <TierListTable movies={movies} onMoveMovie={handleMoveMovie} />}
             </div>
+            <ToastContainer />
         </Base>
     )
 }
