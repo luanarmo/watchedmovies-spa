@@ -2,6 +2,7 @@ import { useContext, useState, useCallback } from 'react'
 import { getProfile, updateProfile } from '../services/profile'
 import { getPosters, getYears, getWrappedImage } from '../services/watchedMoviesServices.js'
 import { SesionContext } from '../context/sesion.jsx'
+import { downloadBlob } from '../utils/download.js'
 
 export const useProfile = () => {
     // Custom hook to fetch user profile
@@ -57,17 +58,8 @@ export const useProfile = () => {
             // Llamar al servicio para obtener el Blob
             const imageBlob = await getPosters({ access: sesion.access, year, order });
 
-            // Crear un objeto URL para el Blob
-            const url = URL.createObjectURL(imageBlob);
             const currentDate = new Date().toISOString().split('T')[0]
-            // Crear un enlace temporal para descargar la imagen
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `collage-${currentDate}.jpeg`; // Nombre del archivo
-            a.click();
-
-            // Liberar la memoria del objeto URL
-            URL.revokeObjectURL(url);
+            downloadBlob(imageBlob, `collage-${currentDate}.jpeg`)
         } catch (e) {
             console.error(e)
         } finally {
@@ -88,14 +80,8 @@ export const useProfile = () => {
         try {
             setGeneratingWrapped(true)
             const image = await getWrappedImage({ access: sesion.access, year })
-            const url = URL.createObjectURL(image);
             const currentDate = new Date().toISOString().split('T')[0]
-            const a = document.createElement('a');
-
-            a.href = url;
-            a.download = `wrapped-${currentDate}.png`;
-            a.click();
-            URL.revokeObjectURL(url);
+            downloadBlob(image, `wrapped-${currentDate}.png`)
 
         } catch (e) {
             console.error(e)
