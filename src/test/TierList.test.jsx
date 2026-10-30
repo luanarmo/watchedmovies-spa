@@ -211,6 +211,41 @@ describe('TierList', () => {
         expect(await screen.findByText('No movies with a tier yet.')).toBeInTheDocument()
     })
 
+    it('ignores a new move of a poster while its previous move is still being saved', async () => {
+        let finishSaving
+        const slowSave = new Promise(resolve => { finishSaving = resolve })
+        fetch.mockImplementation((url, options) => options?.method === 'PATCH' ? slowSave : fakeApi(url, options))
+        renderPage()
+        await screen.findByAltText('New Movie')
+
+        dropOnTier(1, 5)
+        dropOnTier(1, 2)
+
+        const saves = fetch.mock.calls.filter(([, options]) => options?.method === 'PATCH')
+        expect(saves).toHaveLength(1)
+        expect(within(tierRow('S')).getByAltText('New Movie')).toBeInTheDocument()
+        await act(async () => finishSaving(await respond({ tier: 5 })))
+    })
+
+    it('lets a poster be moved again once its previous move is saved', async () => {
+        renderPage()
+        await screen.findByAltText('New Movie')
+        dropOnTier(1, 5)
+        await waitFor(() => expect(fetch).toHaveBeenCalledWith(
+            `${BASE}/api/watched-movies/1/tier/`,
+            expect.objectContaining({ body: JSON.stringify({ tier: 5 }) })
+        ))
+        await act(async () => {})
+
+        dropOnTier(1, 3)
+
+        expect(within(tierRow('B')).getByAltText('New Movie')).toBeInTheDocument()
+        await waitFor(() => expect(fetch).toHaveBeenCalledWith(
+            `${BASE}/api/watched-movies/1/tier/`,
+            expect.objectContaining({ body: JSON.stringify({ tier: 3 }) })
+        ))
+    })
+
     it('puts the poster back and shows an error when the tier could not be saved', async () => {
         fetch.mockImplementation((url, options) => options?.method === 'PATCH' ? reject() : fakeApi(url, options))
         renderPage()
