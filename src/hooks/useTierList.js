@@ -9,6 +9,7 @@ export const useTierList = () => {
 
     const { sesion } = useContext(SesionContext)
     const lastRequest = useRef(0)
+    const savingMovies = useRef(new Set())
 
     const fetchTierList = useCallback(async (year) => {
         // Only the last request counts: an earlier one that answers later must not overwrite the list
@@ -30,8 +31,11 @@ export const useTierList = () => {
         setMovies(current => current.map(movie => movie.id === movieId ? { ...movie, tier } : movie))
     }
 
-    // Moves the poster right away and puts it back in its tier if the API rejects the change
+    // Moves the poster right away and puts it back in its tier if the API rejects the change.
+    // A poster that is still being saved can't be moved again, so two saves never overlap
     const moveMovie = useCallback(async (movieId, tier) => {
+        if (savingMovies.current.has(movieId)) return
+        savingMovies.current.add(movieId)
         const previousTier = movies.find(movie => movie.id === movieId)?.tier
         changeTier(movieId, tier)
         try {
@@ -39,6 +43,8 @@ export const useTierList = () => {
         } catch (e) {
             changeTier(movieId, previousTier)
             throw e
+        } finally {
+            savingMovies.current.delete(movieId)
         }
     }, [movies, sesion.access])
 
