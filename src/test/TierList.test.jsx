@@ -111,6 +111,62 @@ describe('TierList', () => {
         expect(fetch).toHaveBeenCalledWith(`${BASE}/api/watched-movies/tier-list/?year=all`, expect.anything())
     })
 
+    it('keeps the list of the last chosen year when an earlier request answers later', async () => {
+        let answerAllYears
+        const slowAllYears = new Promise(resolve => { answerAllYears = resolve })
+        fetch.mockImplementation((url, options) => (
+            new URL(url).searchParams.get('year') === 'all' ? slowAllYears : fakeApi(url, options)
+        ))
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByRole('option', { name: /2020/ })
+
+        await user.selectOptions(screen.getByRole('combobox'), '')
+        await user.selectOptions(screen.getByRole('combobox'), '2020')
+        await screen.findByAltText('Old Movie')
+        await act(async () => answerAllYears(await respond([
+            { id: 1, title: 'New Movie', poster_url: '/new.jpg', tier: 4 },
+            { id: 2, title: 'Old Movie', poster_url: '/old.jpg', tier: 3 },
+        ])))
+
+        expect(screen.getByRole('heading', { name: 'Tier List – 2020' })).toBeInTheDocument()
+        expect(screen.queryByAltText('New Movie')).not.toBeInTheDocument()
+    })
+
+    it('ignores an earlier request that fails after the last one succeeded', async () => {
+        let answerAllYears
+        const slowAllYears = new Promise(resolve => { answerAllYears = resolve })
+        fetch.mockImplementation((url, options) => (
+            new URL(url).searchParams.get('year') === 'all' ? slowAllYears : fakeApi(url, options)
+        ))
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByRole('option', { name: /2020/ })
+
+        await user.selectOptions(screen.getByRole('combobox'), '')
+        await user.selectOptions(screen.getByRole('combobox'), '2020')
+        await screen.findByAltText('Old Movie')
+        await act(async () => answerAllYears(await reject()))
+
+        expect(screen.queryByText('Error fetching tier list')).not.toBeInTheDocument()
+        expect(screen.getByAltText('Old Movie')).toBeInTheDocument()
+    })
+
+    it('shows the list of another year after a failed load', async () => {
+        fetch.mockImplementation((url, options) => (
+            new URL(url).searchParams.get('year') === String(THIS_YEAR) ? reject() : fakeApi(url, options)
+        ))
+        const user = userEvent.setup()
+        renderPage()
+        expect(await screen.findByText('Error fetching tier list')).toBeInTheDocument()
+        await screen.findByRole('option', { name: /2020/ })
+
+        await user.selectOptions(screen.getByRole('combobox'), '2020')
+
+        expect(await screen.findByAltText('Old Movie')).toBeInTheDocument()
+        expect(screen.queryByText('Error fetching tier list')).not.toBeInTheDocument()
+    })
+
     it('moves a poster to the tier it is dropped on and saves the new tier', async () => {
         renderPage()
         await screen.findByAltText('New Movie')
