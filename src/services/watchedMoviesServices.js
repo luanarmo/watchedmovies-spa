@@ -35,6 +35,10 @@ export const getTierList = async ({ access, year }) => {
     return apiRequest('/api/watched-movies/tier-list/', { token: access, params: { year } })
 }
 
+export const getTierListImage = async ({ access, year }) => {
+    return apiRequest('/api/watched-movies/tier-list-image/', { token: access, params: { year } })
+}
+
 export const setMovieTier = async ({ access, movieId, tier }) => {
     return apiRequest(`/api/watched-movies/${movieId}/tier/`, { method: 'PATCH', token: access, body: { tier } })
 }

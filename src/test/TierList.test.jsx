@@ -32,6 +32,9 @@ const fakeApi = (url, options = {}) => {
     if (pathname === '/api/watched-movies/years/') {
         return respond({ years: [THIS_YEAR, 2020] })
     }
+    if (pathname === '/api/watched-movies/tier-list-image/') {
+        return respond({ image: 'iVBORw0KGgo=' })
+    }
     if (searchParams.get('year') === 'all') {
         return respond([
             { id: 1, title: 'New Movie', poster_url: '/new.jpg', tier: 4 },
@@ -61,9 +64,27 @@ const dropOnTier = (movieId, tierValue) => act(() => {
     dnd.props.onDragEnd({ active: { id: movieId }, over: { id: tierValue } })
 })
 
+// jsdom doesn't download anything: record the link that gets clicked instead
+const captureDownloads = () => {
+    const downloads = []
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(function () {
+        downloads.push({ href: this.href, download: this.download })
+    })
+    return downloads
+}
+
+const slowTierList = (year) => (url, options) => {
+    const { pathname, searchParams } = new URL(url)
+    const isThatList = pathname === '/api/watched-movies/tier-list/' && searchParams.get('year') === year
+    return isThatList ? new Promise(() => {}) : fakeApi(url, options)
+}
+
 beforeEach(() => {
     vi.stubEnv('VITE_BASE_API_URL', BASE)
     vi.stubGlobal('fetch', vi.fn(fakeApi))
+    // jsdom has no object URLs either
+    URL.createObjectURL = vi.fn(() => 'blob:tier-list')
+    URL.revokeObjectURL = vi.fn()
 })
 
 afterEach(() => {
@@ -256,5 +277,133 @@ describe('TierList', () => {
         expect(await screen.findByText(/could not move the movie/i)).toBeInTheDocument()
         expect(within(tierRow('A')).getByAltText('New Movie')).toBeInTheDocument()
         expect(within(tierRow('S')).queryByAltText('New Movie')).not.toBeInTheDocument()
+    })
+
+    it('shows the "Download image" button when there are movies', async () => {
+        renderPage()
+        await screen.findByAltText('New Movie')
+
+        expect(screen.getByRole('button', { name: 'Download image' })).toBeInTheDocument()
+    })
+
+    it('hides the "Download image" button when there are no movies', async () => {
+        fetch.mockImplementation((url, options) => (
+            new URL(url).pathname === '/api/watched-movies/tier-list/' ? respond([]) : fakeApi(url, options)
+        ))
+        renderPage()
+        await screen.findByText('No movies with a tier yet.')
+
+        expect(screen.queryByRole('button', { name: 'Download image' })).not.toBeInTheDocument()
+    })
+
+    it('downloads the image of the selected year as tier-list-<year>.png', async () => {
+        const downloads = captureDownloads()
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByAltText('New Movie')
+
+        await user.click(screen.getByRole('button', { name: 'Download image' }))
+
+        await waitFor(() => expect(downloads).toHaveLength(1))
+        expect(fetch).toHaveBeenCalledWith(`${BASE}/api/watched-movies/tier-list-image/?year=${THIS_YEAR}`, expect.anything())
+        expect(downloads[0]).toEqual({
+            href: 'blob:tier-list',
+            download: `tier-list-${THIS_YEAR}.png`,
+        })
+        const blob = URL.createObjectURL.mock.calls[0][0]
+        expect(blob.type).toBe('image/png')
+        expect(blob.size).toBe(8)
+    })
+
+    it('hides the "Download image" button while another year is loading', async () => {
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByAltText('New Movie')
+        await screen.findByRole('option', { name: /2020/ })
+        fetch.mockImplementation(slowTierList('2020'))
+
+        await user.selectOptions(screen.getByRole('combobox'), '2020')
+
+        expect(screen.queryByRole('button', { name: 'Download image' })).not.toBeInTheDocument()
+    })
+
+    it('hides the "Download image" button when the list of another year could not be loaded', async () => {
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByAltText('New Movie')
+        await screen.findByRole('option', { name: /2020/ })
+        fetch.mockImplementation((url, options) => (
+            new URL(url).searchParams.get('year') === '2020' ? reject() : fakeApi(url, options)
+        ))
+
+        await user.selectOptions(screen.getByRole('combobox'), '2020')
+
+        expect(await screen.findByText('Error fetching tier list')).toBeInTheDocument()
+        expect(screen.queryByRole('button', { name: 'Download image' })).not.toBeInTheDocument()
+    })
+
+    it('downloads the image of every year as tier-list-all.png', async () => {
+        const downloads = captureDownloads()
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByRole('option', { name: /All years/ })
+        await user.selectOptions(screen.getByRole('combobox'), '')
+        await screen.findByAltText('Old Movie')
+
+        await user.click(screen.getByRole('button', { name: 'Download image' }))
+
+        await waitFor(() => expect(downloads).toHaveLength(1))
+        expect(fetch).toHaveBeenCalledWith(`${BASE}/api/watched-movies/tier-list-image/?year=all`, expect.anything())
+        expect(downloads[0].download).toBe('tier-list-all.png')
+    })
+
+    it('disables the "Download image" button while the image is being generated', async () => {
+        let finishGenerating
+        const slowImage = new Promise(resolve => { finishGenerating = resolve })
+        fetch.mockImplementation((url, options) => (
+            new URL(url).pathname === '/api/watched-movies/tier-list-image/' ? slowImage : fakeApi(url, options)
+        ))
+        const downloads = captureDownloads()
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByAltText('New Movie')
+
+        await user.click(screen.getByRole('button', { name: 'Download image' }))
+
+        expect(screen.getByRole('button', { name: 'Generating…' })).toBeDisabled()
+        await act(async () => finishGenerating(await respond({ image: 'iVBORw0KGgo=' })))
+        expect(screen.getByRole('button', { name: 'Download image' })).toBeEnabled()
+        expect(downloads).toHaveLength(1)
+    })
+
+    it('shows an error and lets the user try again when the image could not be generated', async () => {
+        fetch.mockImplementation((url, options) => (
+            new URL(url).pathname === '/api/watched-movies/tier-list-image/' ? reject() : fakeApi(url, options)
+        ))
+        const downloads = captureDownloads()
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByAltText('New Movie')
+
+        await user.click(screen.getByRole('button', { name: 'Download image' }))
+
+        expect(await screen.findByText(/could not generate the image/i)).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Download image' })).toBeEnabled()
+        expect(downloads).toHaveLength(0)
+    })
+
+    it('shows an error instead of downloading a corrupt file when the API sends no image', async () => {
+        fetch.mockImplementation((url, options) => (
+            new URL(url).pathname === '/api/watched-movies/tier-list-image/' ? respond({}) : fakeApi(url, options)
+        ))
+        const downloads = captureDownloads()
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByAltText('New Movie')
+
+        await user.click(screen.getByRole('button', { name: 'Download image' }))
+
+        expect(await screen.findByText(/could not generate the image/i)).toBeInTheDocument()
+        expect(downloads).toHaveLength(0)
     })
 })

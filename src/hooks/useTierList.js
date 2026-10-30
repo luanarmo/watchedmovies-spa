@@ -1,11 +1,14 @@
 import { useState, useCallback, useContext, useRef } from 'react'
 import { SesionContext } from '../context/sesion'
-import { getTierList, setMovieTier } from '../services/watchedMoviesServices'
+import { getTierList, getTierListImage, setMovieTier } from '../services/watchedMoviesServices'
+import { base64ToBlob, downloadBlob } from '../utils/download'
+import { toYearParam } from '../utils/years'
 
 export const useTierList = () => {
     const [movies, setMovies] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [generatingImage, setGeneratingImage] = useState(false)
 
     const { sesion } = useContext(SesionContext)
     const lastRequest = useRef(0)
@@ -17,7 +20,7 @@ export const useTierList = () => {
         try {
             setLoading(true)
             setError(null)
-            const data = await getTierList({ access: sesion.access, year })
+            const data = await getTierList({ access: sesion.access, year: toYearParam(year) })
             if (request === lastRequest.current) setMovies(data)
         } catch (e) {
             if (request === lastRequest.current) setError('Error fetching tier list')
@@ -48,5 +51,18 @@ export const useTierList = () => {
         }
     }, [movies, sesion.access])
 
-    return { movies, loading, error, fetchTierList, moveMovie }
+    // The API sends the image in base64: it is turned into a Blob because big data URLs can fail to download
+    const downloadImage = useCallback(async (year) => {
+        const yearParam = toYearParam(year)
+        try {
+            setGeneratingImage(true)
+            const { image } = await getTierListImage({ access: sesion.access, year: yearParam })
+            if (!image) throw new Error('The API did not send the image')
+            downloadBlob(base64ToBlob(image, 'image/png'), `tier-list-${yearParam}.png`)
+        } finally {
+            setGeneratingImage(false)
+        }
+    }, [sesion.access])
+
+    return { movies, loading, error, generatingImage, fetchTierList, moveMovie, downloadImage }
 }

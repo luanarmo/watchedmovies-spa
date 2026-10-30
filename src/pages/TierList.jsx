@@ -14,7 +14,7 @@ export default function TierList() {
     const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
     const navigate = useNavigate()
 
-    const { movies, loading, error, fetchTierList, moveMovie } = useTierList()
+    const { movies, loading, error, generatingImage, fetchTierList, moveMovie, downloadImage } = useTierList()
     const { years, fetchYears } = useWatched()
 
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
@@ -30,15 +30,19 @@ export default function TierList() {
         fetchTierList(selectedYear)
     }, [])
 
-    // The "All years" option of the selector has an empty key
     const handleYearChange = (year) => {
         const parsed = year === '' ? '' : parseInt(year, 10)
         setSelectedYear(parsed)
-        fetchTierList(parsed === '' ? 'all' : parsed)
+        fetchTierList(parsed)
     }
 
     const handleMoveMovie = (movieId, tier) => {
         moveMovie(movieId, tier).catch(() => toast.error('Could not move the movie, try again'))
+    }
+
+    const handleDownloadImage = () => {
+        downloadImage(selectedYear)
+            .catch(() => toast.error('Could not generate the image, try again'))
     }
 
     return (
@@ -54,6 +58,17 @@ export default function TierList() {
                             suffix='Year'
                             handleOrderChange={handleYearChange}
                         />
+                        {/* Only when the list on screen is the one of the selected year */}
+                        {!loading && !error && movies.length > 0 && (
+                            <button
+                                type='button'
+                                onClick={handleDownloadImage}
+                                disabled={generatingImage}
+                                className='px-4 py-2 bg-dusty-grape-600 text-white rounded-lg hover:bg-dusty-grape-500 transition-colors shadow-md font-semibold disabled:opacity-60 disabled:cursor-not-allowed'
+                            >
+                                {generatingImage ? 'Generating…' : 'Download image'}
+                            </button>
+                        )}
                     </div>
                 </div>
 
