@@ -32,6 +32,12 @@ const fakeApi = (url, options = {}) => {
     if (pathname === '/api/watched-movies/years/') {
         return respond({ years: [THIS_YEAR, 2020] })
     }
+    if (searchParams.get('year') === 'all') {
+        return respond([
+            { id: 1, title: 'New Movie', poster_url: '/new.jpg', tier: 4 },
+            { id: 2, title: 'Old Movie', poster_url: '/old.jpg', tier: 3 },
+        ])
+    }
     if (searchParams.get('year') === '2020') {
         return respond([{ id: 2, title: 'Old Movie', poster_url: '/old.jpg', tier: 3 }])
     }
@@ -73,12 +79,12 @@ describe('TierList', () => {
         expect(screen.getByRole('combobox')).toHaveValue(String(THIS_YEAR))
     })
 
-    it('offers only the years with records, without "All years"', async () => {
+    it('offers "All years" and the years with records', async () => {
         renderPage()
 
         await screen.findByRole('option', { name: /2020/ })
         const years = screen.getAllByRole('option').map(option => option.value)
-        expect(years).toEqual([String(THIS_YEAR), '2020'])
+        expect(years).toEqual(['', String(THIS_YEAR), '2020'])
     })
 
     it('shows the tier list of the chosen year', async () => {
@@ -90,6 +96,19 @@ describe('TierList', () => {
 
         expect(await screen.findByAltText('Old Movie')).toBeInTheDocument()
         expect(screen.queryByAltText('New Movie')).not.toBeInTheDocument()
+    })
+
+    it('shows the movies of every year under an "All years" title', async () => {
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByRole('option', { name: /All years/ })
+
+        await user.selectOptions(screen.getByRole('combobox'), '')
+
+        expect(await screen.findByAltText('Old Movie')).toBeInTheDocument()
+        expect(screen.getByAltText('New Movie')).toBeInTheDocument()
+        expect(screen.getByRole('heading', { name: 'Tier List – All years' })).toBeInTheDocument()
+        expect(fetch).toHaveBeenCalledWith(`${BASE}/api/watched-movies/tier-list/?year=all`, expect.anything())
     })
 
     it('moves a poster to the tier it is dropped on and saves the new tier', async () => {
@@ -104,6 +123,36 @@ describe('TierList', () => {
             `${BASE}/api/watched-movies/1/tier/`,
             expect.objectContaining({ method: 'PATCH', body: JSON.stringify({ tier: 5 }) })
         ))
+    })
+
+    it('moves a poster to another tier from the "All years" list and saves the new tier', async () => {
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByRole('option', { name: /All years/ })
+        await user.selectOptions(screen.getByRole('combobox'), '')
+        await screen.findByAltText('Old Movie')
+
+        dropOnTier(2, 5)
+
+        expect(within(tierRow('S')).getByAltText('Old Movie')).toBeInTheDocument()
+        expect(within(tierRow('B')).queryByAltText('Old Movie')).not.toBeInTheDocument()
+        await waitFor(() => expect(fetch).toHaveBeenCalledWith(
+            `${BASE}/api/watched-movies/2/tier/`,
+            expect.objectContaining({ method: 'PATCH', body: JSON.stringify({ tier: 5 }) })
+        ))
+    })
+
+    it('says there are no movies with a tier when "All years" has none', async () => {
+        fetch.mockImplementation((url, options) => (
+            new URL(url).searchParams.get('year') === 'all' ? respond([]) : fakeApi(url, options)
+        ))
+        const user = userEvent.setup()
+        renderPage()
+        await screen.findByRole('option', { name: /All years/ })
+
+        await user.selectOptions(screen.getByRole('combobox'), '')
+
+        expect(await screen.findByText('No movies with a tier yet.')).toBeInTheDocument()
     })
 
     it('puts the poster back and shows an error when the tier could not be saved', async () => {
