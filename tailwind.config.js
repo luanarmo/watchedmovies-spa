@@ -16,7 +16,9 @@ export default {
           800: '#292145',
           900: '#141023',
           950: '#0e0b18',
-        }
+        },
+        // Accent for the active tab, the segmented control and the add button
+        'coral': '#ff8a65',
       }
     },
   },
