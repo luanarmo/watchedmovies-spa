@@ -12,7 +12,8 @@ export const Navbar = () => {
     const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
 
     return (
-        <nav className="bg-dusty-grape-950 py-3 px-4 md:py-6 md:px-8 border-b border-dusty-grape-800 shadow-md">
+        // With a session, below lg the bottom tab bar replaces the navbar (Home is "Explore", logout lives in Profile)
+        <nav className={`${sesion.auth ? 'hidden lg:block' : ''} bg-dusty-grape-950 py-3 px-4 md:py-6 md:px-8 border-b border-dusty-grape-800 shadow-md`}>
             <div className="container mx-auto flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-x-4 gap-y-2">
                 {/* below lg: Home joins the top row and the links drop to their own row (display: contents) */}
                 <div className="contents lg:flex items-center gap-1 md:gap-4 w-auto text-dusty-grape-50">
