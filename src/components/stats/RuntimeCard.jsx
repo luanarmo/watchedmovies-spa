@@ -23,7 +23,7 @@ export const RuntimeCard = ({ totalMinutes }) => {
                     <button
                         key={u}
                         onClick={() => setUnit(u)}
-                        className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors border ${
+                        className={`min-h-[44px] px-4 py-1 rounded-lg text-sm font-medium transition-colors border ${
                             unit === u
                                 ? 'bg-dusty-grape-600 border-dusty-grape-500 text-dusty-grape-50'
                                 : 'bg-dusty-grape-900 border-dusty-grape-700 text-dusty-grape-300 hover:border-dusty-grape-500'

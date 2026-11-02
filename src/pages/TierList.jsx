@@ -7,7 +7,7 @@ import { useTierList } from '../hooks/useTierList.js'
 import { useWatched } from '../hooks/useWatched.js'
 import { Base } from '../components/Base.jsx'
 import { Loading } from '../components/Loading.jsx'
-import { OrderOption } from '../components/OrderOption.jsx'
+import { YearFilter } from '../components/YearFilter.jsx'
 import { TierListTable } from '../components/TierListTable.jsx'
 import { DiaryTabs } from '../components/DiaryTabs.jsx'
 
@@ -54,7 +54,7 @@ export default function TierList() {
                     <h2 className='text-2xl font-bold text-dusty-grape-100'>Tier List – {selectedYear === '' ? 'All years' : selectedYear}</h2>
                     <div className='flex flex-wrap items-center gap-2'>
                         <label className='hidden md:block text-dusty-grape-300 font-medium'>Year:</label>
-                        <OrderOption
+                        <YearFilter
                             options={years}
                             selectedOption={selectedYear}
                             suffix='Year'

@@ -5,7 +5,7 @@ import { SesionContext } from '../context/sesion.jsx'
 import { useStats } from '../hooks/useStats.js'
 import { useWatched } from '../hooks/useWatched.js'
 import { Base } from '../components/Base.jsx'
-import { OrderOption } from '../components/OrderOption.jsx'
+import { YearFilter } from '../components/YearFilter.jsx'
 import { StatCard } from '../components/stats/StatCard.jsx'
 import { StreakCard } from '../components/stats/StreakCard.jsx'
 import { RuntimeCard } from '../components/stats/RuntimeCard.jsx'
@@ -57,14 +57,14 @@ export default function Stats() {
 
     return (
         <Base>
-            <div className='mx-auto flex flex-col gap-6 p-4 w-full min-h-screen'>
+            <div className='mx-auto flex flex-col gap-4 md:gap-6 p-4 w-full min-h-screen'>
 
                 {/* Header */}
-                <div className='flex flex-col md:flex-row items-center justify-between gap-4 bg-dusty-grape-800/50 p-4 rounded-xl border border-dusty-grape-700 backdrop-blur-sm'>
+                <div className='flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:bg-dusty-grape-800/50 md:p-4 md:rounded-xl md:border md:border-dusty-grape-700 md:backdrop-blur-sm'>
                     <h2 className='text-2xl font-bold text-dusty-grape-100'>Statistics</h2>
-                    <div className='flex items-center gap-2'>
-                        <label className='text-dusty-grape-300 font-medium'>Year:</label>
-                        <OrderOption
+                    <div className='flex items-center gap-2 min-w-0'>
+                        <label className='hidden md:block text-dusty-grape-300 font-medium'>Year:</label>
+                        <YearFilter
                             options={years}
                             selectedOption={selectedYear || ''}
                             suffix='Year'
@@ -84,12 +84,15 @@ export default function Stats() {
                                 icon={<FaFilm />}
                             />
                             <StreakCard streak={stats.max_streak} />
-                            <StatCard
-                                title='Top Genre'
-                                value={stats.favorite_genre ?? '—'}
-                                subtitle={stats.most_active_month ? `Most active: ${stats.most_active_month}` : null}
-                                icon={<FaLayerGroup />}
-                            />
+                            {/* Full width on phones so the third card does not sit alone in a half row */}
+                            <div className='col-span-2 md:col-span-1 grid'>
+                                <StatCard
+                                    title='Top Genre'
+                                    value={stats.favorite_genre ?? '—'}
+                                    subtitle={stats.most_active_month ? `Most active: ${stats.most_active_month}` : null}
+                                    icon={<FaLayerGroup />}
+                                />
+                            </div>
                         </div>
 
                         {/* Runtime */}

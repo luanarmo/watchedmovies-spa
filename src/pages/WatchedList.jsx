@@ -5,6 +5,7 @@ import { WatchedMovie } from '../components/WatchedMovie.jsx'
 import { Pagination } from '../components/Pagination.jsx'
 import { OrderOption } from '../components/OrderOption.jsx'
 import { DiaryTabs } from '../components/DiaryTabs.jsx'
+import { YearFilter } from '../components/YearFilter.jsx'
 import { AddMovieFab } from '../components/AddMovieFab.jsx'
 import { WatchedMovieSkeleton } from '../components/WatchedMovieSkeleton.jsx'
 import { useEffect, useContext, useState, useMemo } from 'react'
@@ -107,10 +108,9 @@ export default function Watched() {
                                 handleOrderChange={handleOrderChange}
                             />
                         </div>
-                        <div className='flex items-center gap-2'>
+                        <div className='flex items-center gap-2 w-full min-w-0 md:w-auto'>
                             <label className='hidden md:block text-dusty-grape-300 font-medium'>Year:</label>
-                            <OrderOption
-                                className='flex sm:flex-col items-center justify-center'
+                            <YearFilter
                                 options={years}
                                 selectedOption={year || ''}
                                 handleOrderChange={handleFilterChange}
