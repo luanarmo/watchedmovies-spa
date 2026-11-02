@@ -12,11 +12,10 @@ const viewDetail = {
     is_favorite: false,
 }
 
-// Desktop and mobile actions are both rendered (CSS decides which one shows), so the mobile one is the last match
-const renderCard = () => {
+const renderCard = (detail = viewDetail) => {
     const onEdit = vi.fn()
     const onDelete = vi.fn()
-    render(<ul><ViewDetailCard viewDetail={viewDetail} onEdit={onEdit} onDelete={onDelete} /></ul>)
+    render(<ul><ViewDetailCard viewDetail={detail} onEdit={onEdit} onDelete={onDelete} /></ul>)
     return { onEdit, onDelete, user: userEvent.setup() }
 }
 
@@ -26,34 +25,32 @@ describe('ViewDetailCard', () => {
 
         expect(screen.queryByText('/ 10')).not.toBeInTheDocument()
     })
+
+    it('shows the comment', () => {
+        renderCard()
+        expect(screen.getByText('Great')).toBeInTheDocument()
+    })
+
+    it('shows "No comment" without a comment', () => {
+        renderCard({ ...viewDetail, comment: '' })
+
+        expect(screen.getByText('No comment')).toBeInTheDocument()
+    })
 })
 
-describe('ViewDetailCard mobile context menu', () => {
-    it('toggles the menu with the ellipsis button', async () => {
-        const { user } = renderCard()
-        const toggle = screen.getByRole('button', { name: 'More actions' })
-
-        expect(toggle).toHaveAttribute('aria-expanded', 'false')
-        await user.click(toggle)
-        expect(toggle).toHaveAttribute('aria-expanded', 'true')
-    })
-
-    it('edits from the menu and closes it', async () => {
+describe('ViewDetailCard actions', () => {
+    it('edits the view with the always visible edit button', async () => {
         const { user, onEdit } = renderCard()
-        const toggle = screen.getByRole('button', { name: 'More actions' })
 
-        await user.click(toggle)
-        await user.click(screen.getAllByRole('button', { name: 'Edit view' }).at(-1))
+        await user.click(screen.getByRole('button', { name: 'Edit view' }))
 
         expect(onEdit).toHaveBeenCalledWith(viewDetail)
-        expect(toggle).toHaveAttribute('aria-expanded', 'false')
     })
 
-    it('removes from the menu', async () => {
+    it('removes the view with the always visible remove button', async () => {
         const { user, onDelete } = renderCard()
 
-        await user.click(screen.getByRole('button', { name: 'More actions' }))
-        await user.click(screen.getAllByRole('button', { name: 'Remove view' }).at(-1))
+        await user.click(screen.getByRole('button', { name: 'Remove view' }))
 
         expect(onDelete).toHaveBeenCalledWith(viewDetail.id)
     })

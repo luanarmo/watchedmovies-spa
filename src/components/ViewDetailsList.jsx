@@ -38,7 +38,7 @@ export default function ViewDetailsList({ movieId, movie, onTierChange }) {
 
     return (
         <>
-        <ul className='flex flex-row gap-4 p-2 flex-wrap'>
+        <ul className='flex flex-col lg:flex-row gap-3 lg:gap-4 lg:p-2 lg:flex-wrap'>
             {viewDetails.map(viewDetail => (
                 <ViewDetailCard
                     key={viewDetail.id}
