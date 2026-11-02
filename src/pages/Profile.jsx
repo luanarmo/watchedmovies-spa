@@ -7,6 +7,7 @@ import { ProfileSkeleton } from '../components/ProfileSkeleton.jsx';
 import { useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaBirthdayCake, FaUser } from 'react-icons/fa';
 import { BiSolidMessageSquare } from "react-icons/bi";
+import { GoSignOut } from "react-icons/go";
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify'
 
@@ -190,6 +191,18 @@ export default function Profile() {
                         </button>
                     </div>
                 </form>
+
+                {/* Below lg the navbar is gone, so the logout lives here; on desktop it is in the navbar */}
+                <button
+                    type="button"
+                    onClick={() => {
+                        deleteSesionExpiredSession()
+                        navigate('/')
+                    }}
+                    className="lg:hidden w-full max-w-lg min-h-[44px] flex items-center justify-center gap-2 rounded-xl border border-red-400/60 text-red-400 font-semibold hover:bg-dusty-grape-800 transition-colors"
+                >
+                    <GoSignOut aria-hidden='true' /> Sign out
+                </button>
 
             </section>
 
