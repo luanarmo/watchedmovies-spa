@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DndContext, DragOverlay, PointerSensor, pointerWithin, useDraggable, useDroppable, useSensor, useSensors } from '@dnd-kit/core'
-import { TIERS } from '../utils/tiers.js'
+import { TIERS, TIER_BG } from '../utils/tiers.js'
 
 const POSTER_PLACEHOLDER = 'https://placehold.co/500x750?font=roboto'
 
@@ -34,7 +34,7 @@ function TierRow({ tier, movies }) {
 
     return (
         <tr ref={setNodeRef}>
-            <th scope='row' className='w-16 md:w-20 rounded-l-xl bg-dusty-grape-500 text-white text-2xl md:text-3xl font-bold'>
+            <th scope='row' className={`w-16 md:w-20 rounded-l-xl ${TIER_BG[tier.value]} text-dusty-grape-950 text-2xl md:text-3xl font-bold`}>
                 {tier.letter}
             </th>
             <td className={`rounded-r-xl border p-2 ${isOver ? 'bg-dusty-grape-700/60 border-dusty-grape-400' : 'bg-dusty-grape-800/50 border-dusty-grape-700'}`}>

@@ -7,4 +7,13 @@ export const TIERS = [
     { value: 1, letter: 'D' },
 ]
 
+// Background of each tier, 5 = S ... 1 = D; they differ in lightness, not only in hue (used with dark text)
+export const TIER_BG = {
+    5: 'bg-[#f6d365]',
+    4: 'bg-coral',
+    3: 'bg-[#9ad1d4]',
+    2: 'bg-dusty-grape-200',
+    1: 'bg-[#a9adbd]',
+}
+
 export const getTierLetter = (value) => TIERS.find(tier => tier.value === value)?.letter

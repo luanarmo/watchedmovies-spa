@@ -47,7 +47,7 @@ export const WatchedMovie = ({ movie, onDelete, redirect, showWatchedFields = tr
             </Link>
 
             {/* Tier of the movie, only on the diary row */}
-            {showWatchedFields && <div className="md:hidden flex-none"><TierBadge tier={movie.tier} /></div>}
+            {showWatchedFields && <div className="md:hidden flex-none"><TierBadge tier={movie.tier} compact /></div>}
 
             {/* Mobile delete: always visible, 44px target (no hidden context menu) */}
             <button
