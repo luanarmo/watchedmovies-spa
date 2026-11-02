@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
-import { TIERS } from '../utils/tiers.js'
+import { TIERS, TIER_BG } from '../utils/tiers.js'
 
 export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
     const isEdit = Boolean(initialValues)
@@ -29,7 +29,7 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-72">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full md:w-72">
             <div className="flex items-center gap-3 pb-3 border-b border-dusty-grape-700">
                 {movie.poster_url && (
                     <img
@@ -51,14 +51,14 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
                     name="watched_date"
                     id="watched_date"
                     defaultValue={isEdit ? initialValues.watched_date ?? '' : getCurrentDate()}
-                    className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer"
+                    className="w-full min-h-[48px] md:min-h-0 p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded-xl md:rounded focus:border-dusty-grape-500 focus:outline-none text-base md:text-sm transition-colors cursor-pointer"
                 />
             </div>
 
             <button
                 type="button"
                 onClick={() => setIsFavorite(f => !f)}
-                className={`flex items-center gap-2 text-xs font-medium transition-colors w-fit ${isFavorite ? 'text-red-400 hover:text-red-300' : 'text-dusty-grape-400 hover:text-dusty-grape-200'}`}
+                className={`flex items-center gap-2 min-h-[44px] md:min-h-0 text-sm md:text-xs font-medium transition-colors w-fit${isFavorite ? 'text-red-400 hover:text-red-300' : 'text-dusty-grape-400 hover:text-dusty-grape-200'}`}
             >
                 {isFavorite ? <FaHeart /> : <FaRegHeart />}
                 Mark as favorite
@@ -67,7 +67,7 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
             <button
                 type="button"
                 onClick={() => setShowDetails(d => !d)}
-                className="text-dusty-grape-400 hover:text-dusty-grape-200 text-xs font-medium text-left transition-colors"
+                className="min-h-[44px] md:min-h-0 text-dusty-grape-300 md:text-dusty-grape-400 hover:text-dusty-grape-200 text-sm md:text-xs font-medium text-left transition-colors"
             >
                 {showDetails ? '− Hide details' : '+ Add details'}
             </button>
@@ -78,16 +78,16 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
                         <label className="text-dusty-grape-300 text-xs font-medium">
                             Tier <span className="text-dusty-grape-500">(optional)</span>
                         </label>
-                        <div className="flex gap-1 flex-wrap">
+                        <div className="grid grid-cols-5 gap-2 md:flex md:gap-1 md:flex-wrap">
                             {TIERS.map(({ value, letter }) => (
                                 <button
                                     key={value}
                                     type="button"
                                     aria-pressed={tier === value}
                                     onClick={() => setTier(t => t === value ? null : value)}
-                                    className={`w-8 h-8 rounded-full text-xs font-bold transition-colors
+                                    className={`h-12 rounded-xl text-xl md:w-8 md:h-8 md:rounded-full md:text-xs font-bold transition-colors
                                         ${tier === value
-                                            ? 'bg-dusty-grape-500 text-white shadow-md'
+                                            ? `${TIER_BG[value]} text-dusty-grape-950 shadow-md`
                                             : 'bg-dusty-grape-700 text-dusty-grape-200 hover:bg-dusty-grape-600'}`}
                                 >
                                     {letter}
@@ -99,7 +99,7 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
                     <div className="grid grid-cols-2 gap-2">
                         <div className="flex flex-col gap-1">
                             <label htmlFor="language" className="text-dusty-grape-300 text-xs font-medium">Language</label>
-                            <select name="language" id="language" defaultValue={isEdit ? initialValues.language_code ?? '' : movie.original_language ?? ''} className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
+                            <select name="language" id="language" defaultValue={isEdit ? initialValues.language_code ?? '' : movie.original_language ?? ''} className="w-full min-h-[48px] md:min-h-0 p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded-xl md:rounded focus:border-dusty-grape-500 focus:outline-none text-base md:text-sm transition-colors cursor-pointer">
                                 <option value="">—</option>
                                 <option value="en">English</option>
                                 <option value="es">Spanish</option>
@@ -118,7 +118,7 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
                         </div>
                         <div className="flex flex-col gap-1">
                             <label htmlFor="place" className="text-dusty-grape-300 text-xs font-medium">Where</label>
-                            <select name="place" id="place" defaultValue={isEdit ? initialValues.place_code ?? '' : ''} className="w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors cursor-pointer">
+                            <select name="place" id="place" defaultValue={isEdit ? initialValues.place_code ?? '' : ''} className="w-full min-h-[48px] md:min-h-0 p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded-xl md:rounded focus:border-dusty-grape-500 focus:outline-none text-base md:text-sm transition-colors cursor-pointer">
                                 <option value="">—</option>
                                 <option value="home">Home</option>
                                 <option value="cinema">Cinema</option>
@@ -138,7 +138,7 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
                             rows="2"
                             defaultValue={isEdit ? initialValues.comment : undefined}
                             placeholder="What did you think?"
-                            className="resize-none w-full p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded focus:border-dusty-grape-500 focus:outline-none text-sm transition-colors"
+                            className="resize-none w-full min-h-[48px] md:min-h-0 p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded-xl md:rounded focus:border-dusty-grape-500 focus:outline-none text-base md:text-sm transition-colors"
                         />
                     </div>
                 </div>
@@ -147,13 +147,13 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
             <div className='flex gap-3 mt-1'>
                 <button
                     type="submit"
-                    className='flex-1 bg-dusty-grape-600 text-white px-4 py-2 rounded hover:bg-dusty-grape-500 transition-colors font-semibold shadow-md text-sm'
+                    className='flex-1 min-h-[48px] md:min-h-0 bg-coral text-dusty-grape-950 md:bg-dusty-grape-600 md:text-white px-4 py-2 rounded-full md:rounded hover:brightness-110 md:hover:bg-dusty-grape-500 transition-colors font-bold md:font-semibold shadow-md text-base md:text-sm'
                 >
                     Save
                 </button>
                 <button
                     type="button"
-                    className='flex-1 bg-dusty-grape-700 text-dusty-grape-100 px-4 py-2 rounded hover:bg-dusty-grape-600 transition-colors font-semibold shadow-md border border-dusty-grape-600 text-sm'
+                    className='flex-1 min-h-[48px] md:min-h-0 bg-dusty-grape-700 text-dusty-grape-100 px-4 py-2 rounded-full md:rounded hover:bg-dusty-grape-600 transition-colors font-semibold shadow-md border border-dusty-grape-600 text-base md:text-sm'
                     onClick={onClose}
                 >
                     Cancel
