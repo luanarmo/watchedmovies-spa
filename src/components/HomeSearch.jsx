@@ -30,7 +30,7 @@ export function HomeSearch() {
             onChange={handleChange}
             onSubmit={handleSubmit}
         >
-            <h1 className="text-4xl font-bold mb-4 ">Welcome!</h1>
+            <h1 className="text-3xl md:text-4xl font-bold md:mb-4">Welcome!</h1>
         </Search>
 
     )
