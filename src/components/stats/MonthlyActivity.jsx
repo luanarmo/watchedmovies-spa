@@ -20,7 +20,8 @@ export const MonthlyActivity = ({ data }) => (
         <ResponsiveContainer width='100%' height={220}>
             <BarChart data={data || []} margin={{ top: 4, right: 8, left: -10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray='3 3' stroke={GRID} />
-                <XAxis dataKey='month' tick={{ fill: TICK, fontSize: 12 }} />
+                {/* interval 0 keeps all 12 months on phones; the 3-letter label is what fits */}
+                <XAxis dataKey='month' interval={0} tickFormatter={(month) => String(month).slice(0, 3)} tick={{ fill: TICK, fontSize: 11 }} />
                 <YAxis tick={{ fill: TICK, fontSize: 12 }} allowDecimals={false} />
                 <Tooltip content={<CustomTooltip />} cursor={{ fill: '#3d316820' }} />
                 <Bar dataKey='count' fill={GRAPE} radius={[4, 4, 0, 0]} />
