@@ -4,7 +4,7 @@ export const OrderOption = ({ options, selectedOption, handleOrderChange, suffix
             <select
                 value={selectedOption}
                 onChange={(e) => handleOrderChange(e.target.value)}
-                className="px-4 py-2 rounded-full text-dusty-grape-50 bg-dusty-grape-700 hover:bg-dusty-grape-600 transition-colors focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 cursor-pointer"
+                className="min-h-[44px] px-4 py-2 text-base rounded-full text-dusty-grape-50 bg-dusty-grape-700 hover:bg-dusty-grape-600 transition-colors focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 cursor-pointer"
             >
                 {options.map((option) => {
                     // Verifica si la opción es un objeto o un string

@@ -4,6 +4,9 @@ import { useWatched } from '../hooks/useWatched.js'
 import { WatchedMovie } from '../components/WatchedMovie.jsx'
 import { Pagination } from '../components/Pagination.jsx'
 import { OrderOption } from '../components/OrderOption.jsx'
+import { DiaryTabs } from '../components/DiaryTabs.jsx'
+import { YearFilter } from '../components/YearFilter.jsx'
+import { AddMovieFab } from '../components/AddMovieFab.jsx'
 import { WatchedMovieSkeleton } from '../components/WatchedMovieSkeleton.jsx'
 import { useEffect, useContext, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -80,22 +83,24 @@ export default function Watched() {
 
     return (
         <Base>
-            <div className=' mx-auto flex flex-col gap-6 p-4 w-full min-h-screen'>
-                <div className='flex flex-col md:flex-row items-center justify-between gap-4 bg-dusty-grape-800/50 p-4 rounded-xl border border-dusty-grape-700 backdrop-blur-sm'>
+            <div className=' mx-auto flex flex-col gap-4 md:gap-6 p-4 w-full min-h-screen'>
+                <DiaryTabs current='/watched' />
+                <div className='flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 md:bg-dusty-grape-800/50 md:p-4 md:rounded-xl md:border md:border-dusty-grape-700 md:backdrop-blur-sm'>
                     <h2 className='text-2xl font-bold text-dusty-grape-100'>Watched Movies</h2>
-                    <div className='flex flex-wrap items-center justify-center gap-4'>
-                        <div className='flex items-center gap-2'>
-                            <label className="text-dusty-grape-300 font-medium">Search:</label>
+                    <div className='flex flex-wrap items-center gap-3 md:gap-4 md:justify-center'>
+                        <div className='flex items-center gap-2 w-full md:w-auto'>
+                            <label htmlFor='watched-search' className="hidden md:block text-dusty-grape-300 font-medium">Search:</label>
                             <input
+                                id='watched-search'
                                 type="text"
                                 value={search}
                                 onChange={handleSearchChange}
                                 placeholder="Search a movie..."
-                                className="px-4 py-2 rounded-full text-dusty-grape-50 bg-dusty-grape-700 border border-dusty-grape-700 hover:bg-dusty-grape-600 transition-colors focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 placeholder-dusty-grape-400"
+                                className="w-full min-h-[44px] px-4 py-2 text-base rounded-full text-dusty-grape-50 bg-dusty-grape-700 border border-dusty-grape-700 hover:bg-dusty-grape-600 transition-colors focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 placeholder-dusty-grape-400"
                             />
                         </div>
                         <div className='flex items-center gap-2'>
-                            <label className="text-dusty-grape-300 font-medium">Order by:</label>
+                            <label className="hidden md:block text-dusty-grape-300 font-medium">Order by:</label>
                             <OrderOption
                                 className='flex items-center justify-center'
                                 options={WatchedDateOptions}
@@ -103,10 +108,9 @@ export default function Watched() {
                                 handleOrderChange={handleOrderChange}
                             />
                         </div>
-                        <div className='flex items-center gap-2'>
-                            <label className='text-dusty-grape-300 font-medium'>Year:</label>
-                            <OrderOption
-                                className='flex sm:flex-col items-center justify-center'
+                        <div className='flex items-center gap-2 w-full min-w-0 md:w-auto'>
+                            <label className='hidden md:block text-dusty-grape-300 font-medium'>Year:</label>
+                            <YearFilter
                                 options={years}
                                 selectedOption={year || ''}
                                 handleOrderChange={handleFilterChange}
@@ -115,7 +119,7 @@ export default function Watched() {
                     </div>
                 </div>
                 {loading ? (
-                    <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
+                    <ul className='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 md:gap-6'>
                         {Array.from({ length: 25 }).map((_, index) => <WatchedMovieSkeleton key={index} />)}
                     </ul>
                 ) : (
@@ -124,7 +128,7 @@ export default function Watched() {
                             <p className='text-xl text-dusty-grape-400'>No watched movies recorded for this year.</p>
                         </div>
                     ) : (
-                        <ul className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-6'>
+                        <ul className='grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 md:gap-6'>
                             {watched.map((movie) => (
                                 <WatchedMovie
                                     key={movie.id}
@@ -141,6 +145,7 @@ export default function Watched() {
                     <Pagination page={page} pagination={pagination} handlePage={handlePage} />
                 </div>
             </div>
+            <AddMovieFab />
         </Base>
     )
 }

@@ -14,6 +14,9 @@ export const getWatched = async ({ access, page, ordering, year, search }) => {
         poster_url: movie.poster_url || 'https://placehold.co/500x750?font=roboto',
         release_date: movie.release_date || 'Unknown',
         total_views: movie.total_views,
+        is_favorite: movie.is_favorite,
+        first_watched_date: movie.first_watched_date,
+        tier: movie.tier,
     }))
 
     return { watchedMapped, count: data.count, next: data.next, previous: data.previous }
