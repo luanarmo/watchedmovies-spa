@@ -13,11 +13,12 @@ export const Navbar = () => {
 
     return (
         <nav className="bg-dusty-grape-950 py-3 px-4 md:py-6 md:px-8 border-b border-dusty-grape-800 shadow-md">
-            <div className="container mx-auto flex flex-row items-center justify-between gap-4">
-                <div className="flex items-center justify-self-center gap-1 md:gap-4 w-auto text-dusty-grape-50">
+            <div className="container mx-auto flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-x-4 gap-y-2">
+                {/* below lg: Home joins the top row and the links drop to their own row (display: contents) */}
+                <div className="contents lg:flex items-center gap-1 md:gap-4 w-auto text-dusty-grape-50">
                     <Link to="/"> <FaHome title='Inicio' className="text-md md:text-3xl hover:text-dusty-grape-300 transition-colors transform hover:scale-110" /> </Link>
-                    {sesion.auth && <div className='flex flex-row gap-1 md:gap-4 justify-center items-center ml-2 md:ml-4'>
-                        <FaGripLinesVertical className="text-dusty-grape-600 text-md md:text-2xl" />
+                    {sesion.auth && <div className='flex flex-row flex-wrap lg:flex-nowrap order-last w-full lg:order-none lg:w-auto gap-1 md:gap-4 justify-center items-center text-dusty-grape-50 lg:ml-4'>
+                        <FaGripLinesVertical className="hidden lg:block text-dusty-grape-600 text-md md:text-2xl" />
                         <Link to="/watched" className="text-sm md:text-lg font-medium hover:text-dusty-grape-300 transition-colors hover:underline underline-offset-4"> Watched movies</Link>
                         <FaGripLinesVertical className="text-dusty-grape-600 text-md md:text-2xl" />
                         <Link to="/plan" className="text-sm md:text-lg font-medium hover:text-dusty-grape-300 transition-colors hover:underline underline-offset-4"> Plan to Watch</Link>
