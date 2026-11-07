@@ -1,7 +1,7 @@
 import { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaFilm, FaLayerGroup } from 'react-icons/fa'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import { useStats } from '../hooks/useStats.js'
 import { useWatched } from '../hooks/useWatched.js'
 import { Base } from '../components/Base.jsx'
@@ -18,7 +18,7 @@ import { DayOfWeekChart } from '../components/stats/DayOfWeekChart.jsx'
 import { StatsSkeleton } from '../components/stats/StatsSkeleton.jsx'
 
 export default function Stats() {
-    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
+    const { session, deleteExpiredSession } = useContext(SessionContext)
     const navigate = useNavigate()
 
     const { stats, loading, error, fetchStats } = useStats()
@@ -27,9 +27,9 @@ export default function Stats() {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
 
     useEffect(() => {
-        const isExpired = () => sesion.expiresAt ? Date.now() > sesion.expiresAt : true
+        const isExpired = () => session.expiresAt ? Date.now() > session.expiresAt : true
         if (isExpired()) {
-            deleteSesionExpiredSession()
+            deleteExpiredSession()
             navigate('/login')
             return
         }

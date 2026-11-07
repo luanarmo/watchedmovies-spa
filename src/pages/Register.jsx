@@ -1,5 +1,5 @@
 import { Base } from '../components/Base'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import { useState, useEffect, useRef, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
@@ -11,7 +11,7 @@ const CAPTCHA_SITE_KEY = import.meta.env.VITE_CAPTCHA_SITE_KEY
 
 export default function Register() {
 
-    const { sesion } = useContext(SesionContext)
+    const { session } = useContext(SessionContext)
 
     const navigate = useNavigate();
 
@@ -42,10 +42,10 @@ export default function Register() {
     const captchaRef = useRef(null)
 
     useEffect(() => {
-        if (sesion.auth) {
+        if (session.auth) {
             navigate('/')
         }
-    }, [sesion.auth, navigate])
+    }, [session.auth, navigate])
 
     useEffect(() => {
 

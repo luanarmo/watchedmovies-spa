@@ -1,16 +1,16 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Routes, Route } from 'react-router-dom'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import { PrivateRoute } from '../components/PrivateRoute.jsx'
 
 const FUTURE_EXPIRY = Date.now() + 3600000
 const PAST_EXPIRY = Date.now() - 1000
 
-function renderWithSession(sesion) {
-    const deleteSesionExpiredSession = vi.fn()
+function renderWithSession(session) {
+    const deleteExpiredSession = vi.fn()
     render(
-        <SesionContext.Provider value={{ sesion, deleteSesionExpiredSession }}>
+        <SessionContext.Provider value={{ session, deleteExpiredSession }}>
             <MemoryRouter initialEntries={['/protected']}>
                 <Routes>
                     <Route path="/login" element={<div>Login Page</div>} />
@@ -24,9 +24,9 @@ function renderWithSession(sesion) {
                     />
                 </Routes>
             </MemoryRouter>
-        </SesionContext.Provider>
+        </SessionContext.Provider>
     )
-    return { deleteSesionExpiredSession }
+    return { deleteExpiredSession }
 }
 
 describe('PrivateRoute', () => {
@@ -47,8 +47,8 @@ describe('PrivateRoute', () => {
         expect(screen.queryByText('Protected Content')).toBeNull()
     })
 
-    it('calls deleteSesionExpiredSession when not authenticated', () => {
-        const { deleteSesionExpiredSession } = renderWithSession({ auth: false, expiresAt: FUTURE_EXPIRY })
-        expect(deleteSesionExpiredSession).toHaveBeenCalledOnce()
+    it('calls deleteExpiredSession when not authenticated', () => {
+        const { deleteExpiredSession } = renderWithSession({ auth: false, expiresAt: FUTURE_EXPIRY })
+        expect(deleteExpiredSession).toHaveBeenCalledOnce()
     })
 })

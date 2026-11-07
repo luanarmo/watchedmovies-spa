@@ -1,5 +1,5 @@
 import { useState, useCallback, useContext } from 'react'
-import { SesionContext } from '../context/sesion'
+import { SessionContext } from '../context/session'
 import { getStats } from '../services/statsServices'
 
 export const useStats = () => {
@@ -7,12 +7,12 @@ export const useStats = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    const { sesion } = useContext(SesionContext)
+    const { session } = useContext(SessionContext)
 
     const fetchStats = useCallback(async (year) => {
         try {
             setLoading(true)
-            const data = await getStats({ access: sesion.access, year })
+            const data = await getStats({ access: session.access, year })
             setStats(data)
         } catch (e) {
             setError('Error fetching statistics')
@@ -20,7 +20,7 @@ export const useStats = () => {
         } finally {
             setLoading(false)
         }
-    }, [sesion.access])
+    }, [session.access])
 
     return { stats, loading, error, fetchStats }
 }

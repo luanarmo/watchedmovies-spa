@@ -2,7 +2,7 @@ import { useEffect, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import { useTierList } from '../hooks/useTierList.js'
 import { useWatched } from '../hooks/useWatched.js'
 import { Base } from '../components/Base.jsx'
@@ -12,7 +12,7 @@ import { TierListTable } from '../components/TierListTable.jsx'
 import { DiaryTabs } from '../components/DiaryTabs.jsx'
 
 export default function TierList() {
-    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
+    const { session, deleteExpiredSession } = useContext(SessionContext)
     const navigate = useNavigate()
 
     const { movies, loading, error, generatingImage, fetchTierList, moveMovie, downloadImage } = useTierList()
@@ -21,9 +21,9 @@ export default function TierList() {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
 
     useEffect(() => {
-        const isExpired = () => sesion.expiresAt ? Date.now() > sesion.expiresAt : true
+        const isExpired = () => session.expiresAt ? Date.now() > session.expiresAt : true
         if (isExpired()) {
-            deleteSesionExpiredSession()
+            deleteExpiredSession()
             navigate('/login')
             return
         }

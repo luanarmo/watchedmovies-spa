@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, within, act, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import TierList from '../pages/TierList.jsx'
 
 const BASE = 'http://localhost:8000'
@@ -48,14 +48,14 @@ const fakeApi = (url, options = {}) => {
 }
 
 const renderPage = () => render(
-    <SesionContext.Provider value={{
-        sesion: { auth: true, access: 'abc123', expiresAt: Date.now() + 3600000 },
-        deleteSesionExpiredSession: vi.fn(),
+    <SessionContext.Provider value={{
+        session: { auth: true, access: 'abc123', expiresAt: Date.now() + 3600000 },
+        deleteExpiredSession: vi.fn(),
     }}>
         <MemoryRouter>
             <TierList />
         </MemoryRouter>
-    </SesionContext.Provider>
+    </SessionContext.Provider>
 )
 
 const tierRow = (letter) => screen.getByRole('rowheader', { name: letter }).closest('tr')

@@ -1,5 +1,5 @@
 import { Base } from '../components/Base'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../services/login.js'
@@ -12,7 +12,7 @@ const CAPTCHA_SITE_KEY = import.meta.env.VITE_CAPTCHA_SITE_KEY
 
 export default function Login() {
 
-    const { sesion, setSesion } = useContext(SesionContext)
+    const { session, setSession } = useContext(SessionContext)
 
     const navigate = useNavigate();
 
@@ -41,10 +41,10 @@ export default function Login() {
 
 
     useEffect(() => {
-        if (sesion.auth) {
+        if (session.auth) {
             navigate('/')
         }
-    }, [sesion.auth, navigate])
+    }, [session.auth, navigate])
 
     useEffect(() => {
 
@@ -134,8 +134,8 @@ export default function Login() {
             const { exp } = jwtDecode(response.access)
             const expirationTime = exp * 1000
 
-            setSesion({
-                ...sesion,
+            setSession({
+                ...session,
                 access: response.access,
                 refresh: response.refresh,
                 auth: true,
