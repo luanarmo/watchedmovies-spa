@@ -13,7 +13,7 @@ export const Pagination = ({ page, pagination, handlePage }) => {
                 }}
                 disabled={page <= 1}
             >
-                Before
+                Previous
             </button>
             <p className="text-xl text-dusty-grape-100 font-bold w-8 text-center">
                 {page}
