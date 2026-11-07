@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import { TIERS, TIER_BG } from '../utils/tiers.js'
+import { PLACES } from '../utils/places.js'
 
 export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
     const isEdit = Boolean(initialValues)
@@ -120,10 +121,9 @@ export function ViewDetailsForm({ movie, initialValues, onClose, onSubmit }) {
                             <label htmlFor="place" className="text-dusty-grape-300 text-xs font-medium">Where</label>
                             <select name="place" id="place" defaultValue={isEdit ? initialValues.place_code ?? '' : ''} className="w-full min-h-[48px] md:min-h-0 p-2.5 border bg-dusty-grape-100 text-dusty-grape-900 border-dusty-grape-300 rounded-xl md:rounded focus:border-dusty-grape-500 focus:outline-none text-base md:text-sm transition-colors cursor-pointer">
                                 <option value="">—</option>
-                                <option value="home">Home</option>
-                                <option value="cinema">Cinema</option>
-                                <option value="friend">Friends&apos;</option>
-                                <option value="other">Other</option>
+                                {PLACES.map(place => (
+                                    <option key={place.value} value={place.value}>{place.label}</option>
+                                ))}
                             </select>
                         </div>
                     </div>
