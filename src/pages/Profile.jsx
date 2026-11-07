@@ -5,11 +5,13 @@ import { useProfile } from '../hooks/useProfile';
 import { Loading } from '../components/Loading';
 import { ProfileSkeleton } from '../components/ProfileSkeleton.jsx';
 import { useNavigate } from 'react-router-dom';
-import { FaEnvelope, FaBirthdayCake, FaUser } from 'react-icons/fa';
-import { BiSolidMessageSquare } from "react-icons/bi";
 import { GoSignOut } from "react-icons/go";
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer, toast } from 'react-toastify'
+
+const labelClass = 'text-xs md:text-sm font-medium uppercase tracking-wider text-dusty-grape-300'
+const fieldClass = 'w-full min-h-[44px] px-4 py-2 text-base rounded-full text-dusty-grape-50 bg-dusty-grape-700 border border-dusty-grape-700 hover:bg-dusty-grape-600 transition-colors focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 placeholder-dusty-grape-400'
+const cardClass = 'bg-dusty-grape-800/50 backdrop-blur-sm border border-dusty-grape-700 rounded-xl p-4 md:p-6 flex flex-col gap-4 md:gap-5 min-w-0'
 
 export default function Profile() {
     const { sesion, deleteSesionExpiredSession } = useContext(SesionContext);
@@ -78,119 +80,128 @@ export default function Profile() {
 
     return (
         <Base>
-            <section className="flex flex-col lg:flex-row p-6 gap-6 items-center lg:items-start justify-center min-h-[80vh] w-full">
-                <form className="bg-dusty-grape-800/80 backdrop-blur-sm p-8 rounded-xl shadow-xl w-full max-w-lg flex flex-col gap-6 border border-dusty-grape-700" onSubmit={handleOnSubmit}>
-                    <h2 className="text-3xl font-bold text-dusty-grape-100 border-b border-dusty-grape-700 pb-2">{profile.name || 'Profile'}</h2>
-                    <div className="flex items-center gap-4">
-                        <FaEnvelope className="text-dusty-grape-300 h-6 w-6" title='email' />
-                        <h2 className="text-lg font-semibold text-dusty-grape-200">{profile.email}</h2>
-                    </div>
+            <div className="mx-auto flex flex-col gap-4 md:gap-6 p-4 w-full max-w-5xl min-h-screen">
+                {/* Header, same bar as Watched and Statistics */}
+                <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2 md:gap-4 md:bg-dusty-grape-800/50 md:p-4 md:rounded-xl md:border md:border-dusty-grape-700 md:backdrop-blur-sm">
+                    <h2 className="text-2xl font-bold text-dusty-grape-100">Profile</h2>
+                    <span className="hidden md:block text-sm text-dusty-grape-300">{profile.email}</span>
+                </div>
 
-                    <div className="flex items-center gap-4">
-                        <FaUser className="text-dusty-grape-300 h-6 w-6" title='name' />
-                        <input
-                            id='name'
-                            name='name'
-                            className="w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 transition-colors"
-                            type="text" value={profile.name}
-                            onChange={handleOnChangeNameEvent}
-                        />
-                    </div>
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6 md:items-start">
+                    <form className={`${cardClass} md:flex-1`} onSubmit={handleOnSubmit}>
+                        <div className="flex items-center gap-4">
+                            <div
+                                aria-hidden="true"
+                                className="flex-none h-14 w-14 md:h-16 md:w-16 rounded-full bg-dusty-grape-600 text-dusty-grape-50 flex items-center justify-center text-2xl md:text-3xl font-bold"
+                            >
+                                {(profile.name || profile.email || '?').charAt(0).toUpperCase()}
+                            </div>
+                            <div className="flex flex-col min-w-0">
+                                <span className="text-lg md:text-xl font-bold text-dusty-grape-50 break-words">{profile.name || 'Profile'}</span>
+                                <span className="text-sm text-dusty-grape-300 break-all">{profile.email}</span>
+                            </div>
+                        </div>
 
-                    <div className="flex items-center gap-4">
-                        <BiSolidMessageSquare className="text-dusty-grape-300 h-6 w-6" title='biography' />
-                        <input
-                            id='bio'
-                            name='bio'
-                            className="w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 transition-colors"
-                            type="text" value={profile.profile.bio}
-                            onChange={handleProfileOnChangeEvent}
-                        />
-                    </div>
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="name" className={labelClass}>Name</label>
+                            <input
+                                id='name'
+                                name='name'
+                                className={fieldClass}
+                                type="text" value={profile.name}
+                                onChange={handleOnChangeNameEvent}
+                            />
+                        </div>
 
-                    <div className="flex items-center gap-4">
-                        <FaBirthdayCake className="text-dusty-grape-300 h-6 w-6" title='birth date' />
-                        <input
-                            id='birth_date'
-                            name='birth_date'
-                            className='w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 transition-colors'
-                            type="date"
-                            value={profile.profile.birth_date}
-                            onChange={handleProfileOnChangeEvent}
-                        />
-                    </div>
-                    <>
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="bio" className={labelClass}>Bio</label>
+                            <input
+                                id='bio'
+                                name='bio'
+                                className={fieldClass}
+                                type="text" value={profile.profile.bio}
+                                onChange={handleProfileOnChangeEvent}
+                            />
+                        </div>
+
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="birth_date" className={labelClass}>Birth date</label>
+                            <input
+                                id='birth_date'
+                                name='birth_date'
+                                className={fieldClass}
+                                type="date"
+                                value={profile.profile.birth_date}
+                                onChange={handleProfileOnChangeEvent}
+                            />
+                        </div>
+
                         <button
                             type="submit"
-                            className={profileUpdated ?
-                                'bg-dusty-grape-600 text-white px-6 py-3 rounded-lg hover:bg-dusty-grape-500 transition-colors font-bold shadow-md' :
-                                'bg-dusty-grape-900 text-dusty-grape-500 px-6 py-3 rounded-lg cursor-not-allowed border border-dusty-grape-800'}
+                            className={`min-h-[44px] px-6 rounded-full font-bold md:self-start transition-colors ${profileUpdated ?
+                                'bg-coral text-dusty-grape-900 hover:opacity-90' :
+                                'bg-dusty-grape-900 text-dusty-grape-500 cursor-not-allowed border border-dusty-grape-800'}`}
                         >
                             {updatingProfile ? <Loading /> : 'Update profile'}
                         </button>
                         <ToastContainer />
-                    </>
-                </form>
-                <form
-                    className="bg-dusty-grape-800/80 backdrop-blur-sm p-8 rounded-xl shadow-xl w-full max-w-lg flex flex-col gap-6 border border-dusty-grape-700"
-                    onSubmit={(e) => {
-                        e.preventDefault()
-                        const formData = new FormData(e.target)
-                        const payload = Object.fromEntries(formData)
-                        const action = e.nativeEvent.submitter.name
+                    </form>
 
-                        if (action === 'poster') {
-                            handleGenerateImage(payload)
-                        } else if (action === 'wrapped') {
-                            fetchWrapped({ year: payload.year })
-                        }
-                    }}
-                >
-                    <h2 className="text-2xl font-bold text-dusty-grape-100 border-b border-dusty-grape-700 pb-2">Generators</h2>
-                    <div className='flex flex-col gap-2'>
-                        <label htmlFor="year" className="text-lg font-medium text-dusty-grape-200">
-                            Select Year:
-                        </label>
+                    <form
+                        className={`${cardClass} md:flex-1`}
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            const formData = new FormData(e.target)
+                            const payload = Object.fromEntries(formData)
+                            const action = e.nativeEvent.submitter.name
 
-                        <select name="year" id="year"
-                            className="w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 cursor-pointer"
-                        >
-                            {years.map((year) => (
-                                <option key={year} value={year} className="bg-dusty-grape-800">{year}</option>
-                            ))}
-                        </select>
-                    </div>
+                            if (action === 'poster') {
+                                handleGenerateImage(payload)
+                            } else if (action === 'wrapped') {
+                                fetchWrapped({ year: payload.year })
+                            }
+                        }}
+                    >
+                        <div className="flex flex-col gap-1">
+                            <span className={labelClass}>Generators</span>
+                            <span className="text-sm text-dusty-grape-400">Build a poster collage or your yearly wrapped from what you watched.</span>
+                        </div>
 
-                    <div className='flex flex-col gap-2'>
-                        <label htmlFor="order" className="text-lg font-medium text-dusty-grape-200">
-                            Order by:
-                        </label>
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="year" className={labelClass}>Year</label>
+                            <select name="year" id="year" className={`${fieldClass} cursor-pointer`}>
+                                {years.map((year) => (
+                                    <option key={year} value={year} className="bg-dusty-grape-800">{year}</option>
+                                ))}
+                            </select>
+                        </div>
 
-                        <select name="order" id="order"
-                            className="w-full px-4 py-2 rounded-lg bg-dusty-grape-700 text-dusty-grape-50 border border-dusty-grape-600 focus:outline-none focus:ring-2 focus:ring-dusty-grape-500 cursor-pointer"
-                        >
-                            <option value="-first_watched_date" className="bg-dusty-grape-800">Watched date (desc)</option>
-                            <option value="first_watched_date" className="bg-dusty-grape-800">Watched date (asc)</option>
-                        </select>
-                    </div>
+                        <div className="flex flex-col gap-1.5">
+                            <label htmlFor="order" className={labelClass}>Order by</label>
+                            <select name="order" id="order" className={`${fieldClass} cursor-pointer`}>
+                                <option value="-first_watched_date" className="bg-dusty-grape-800">Watched date (desc)</option>
+                                <option value="first_watched_date" className="bg-dusty-grape-800">Watched date (asc)</option>
+                            </select>
+                        </div>
 
-                    <div className="flex gap-4 mt-2">
-                        <button
-                            type="submit"
-                            name="poster"
-                            className="flex-1 px-4 py-2 bg-dusty-grape-600 text-white rounded-lg hover:bg-dusty-grape-500 transition-colors shadow-md font-semibold"
-                        >
-                            {generatingCollage ? <Loading /> : 'Generate Poster'}
-                        </button>
-                        <button
-                            type='submit'
-                            name="wrapped"
-                            className="flex-1 px-4 py-2 bg-dusty-grape-500 text-white rounded-lg hover:bg-dusty-grape-400 transition-colors shadow-md font-semibold"
-                        >
-                            {generatingWrapped ? <Loading /> : 'Generate Wrapped'}
-                        </button>
-                    </div>
-                </form>
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <button
+                                type="submit"
+                                name="poster"
+                                className="flex-1 min-h-[44px] px-4 rounded-full bg-dusty-grape-600 text-white hover:bg-dusty-grape-500 transition-colors font-semibold"
+                            >
+                                {generatingCollage ? <Loading /> : 'Generate poster'}
+                            </button>
+                            <button
+                                type='submit'
+                                name="wrapped"
+                                className="flex-1 min-h-[44px] px-4 rounded-full border border-coral text-coral hover:bg-coral/10 transition-colors font-semibold"
+                            >
+                                {generatingWrapped ? <Loading /> : 'Generate wrapped'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
                 {/* Below lg the navbar is gone, so the logout lives here; on desktop it is in the navbar */}
                 <button
@@ -199,13 +210,11 @@ export default function Profile() {
                         deleteSesionExpiredSession()
                         navigate('/')
                     }}
-                    className="lg:hidden w-full max-w-lg min-h-[44px] flex items-center justify-center gap-2 rounded-xl border border-red-400/60 text-red-400 font-semibold hover:bg-dusty-grape-800 transition-colors"
+                    className="lg:hidden w-full min-h-[44px] flex items-center justify-center gap-2 rounded-xl border border-red-400/60 text-red-400 font-semibold hover:bg-dusty-grape-800 transition-colors"
                 >
                     <GoSignOut aria-hidden='true' /> Sign out
                 </button>
-
-            </section>
-
+            </div>
         </Base>
     );
 }
