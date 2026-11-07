@@ -9,7 +9,7 @@ import { usePlan } from '../hooks/usePlan.js'
 import { Modal } from '../components/Modal.jsx'
 import { ViewDetailsForm } from '../components/ViewDetailsForm.jsx'
 import { truncateText } from '../utils/truncateText.js'
-import { SesionContext } from '../context/sesion'
+import { SessionContext } from '../context/session'
 import { MovieDetailsSkeleton } from '../components/MovieDetailsSkeleton.jsx'
 
 export function Details({ movie }) {
@@ -27,7 +27,7 @@ export function Details({ movie }) {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const { sesion } = useContext(SesionContext)
+    const { session } = useContext(SessionContext)
 
     const handleOpenModal = () => setIsModalOpen(true)
     const handleCloseModal = () => setIsModalOpen(false)
@@ -69,7 +69,7 @@ export function Details({ movie }) {
                     }
                 </div>
 
-                {sesion.auth && (
+                {session.auth && (
                     // Pinned above the bottom tab bar on phones, so the actions stay under the thumb
                     <div className="fixed lg:static inset-x-0 bottom-[calc(72px+env(safe-area-inset-bottom))] z-30 lg:z-auto flex gap-3 w-full px-5 py-3 lg:p-0 lg:mt-4 bg-dusty-grape-950 lg:bg-transparent border-t border-dusty-grape-800 lg:border-0">
                         {isWatched ? (
@@ -120,10 +120,10 @@ export function Details({ movie }) {
 export default function MovieDetails() {
     const { movie, getMovieDetails, loading } = useMovieDetails()
     const { movieId } = useParams()
-    const { sesion } = useContext(SesionContext)
+    const { session } = useContext(SessionContext)
 
     useEffect(() => {
-        getMovieDetails({ movieId, token: sesion.access })
+        getMovieDetails({ movieId, token: session.access })
     }, [movieId])
 
     return (

@@ -1,13 +1,13 @@
 import { useContext, useState, useCallback } from 'react'
 import { getProfile, updateProfile } from '../services/profile'
 import { getPosters, getYears, getWrappedImage } from '../services/watchedMoviesServices.js'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import { downloadBlob } from '../utils/download.js'
 
 export const useProfile = () => {
     // Custom hook to fetch user profile
 
-    const { sesion } = useContext(SesionContext)
+    const { session } = useContext(SessionContext)
 
     const [profile, setProfile] = useState({
         email: '',
@@ -29,7 +29,7 @@ export const useProfile = () => {
     const fetchProfile = useCallback(async () => {
         try {
             setLoading(true)
-            const profile = await getProfile({ access: sesion.access })
+            const profile = await getProfile({ access: session.access })
             setProfile(profile)
         } catch (e) {
             console.error(e)
@@ -41,14 +41,14 @@ export const useProfile = () => {
     const partialUpdateProfile = useCallback(async (payload) => {
         try {
             setUpdatingProfile(true)
-            const profile = await updateProfile({ access: sesion.access, payload })
+            const profile = await updateProfile({ access: session.access, payload })
             setProfile(profile)
         } catch (e) {
             console.error(e)
         } finally {
             setUpdatingProfile(false)
         }
-    }, [sesion.access])
+    }, [session.access])
 
 
     const fetchPoster = useCallback(async ({ year, order }) => {
@@ -56,7 +56,7 @@ export const useProfile = () => {
             setGeneratingCollage(true);
 
             // Llamar al servicio para obtener el Blob
-            const imageBlob = await getPosters({ access: sesion.access, year, order });
+            const imageBlob = await getPosters({ access: session.access, year, order });
 
             const currentDate = new Date().toISOString().split('T')[0]
             downloadBlob(imageBlob, `collage-${currentDate}.jpeg`)
@@ -69,7 +69,7 @@ export const useProfile = () => {
 
     const fetchYears = useCallback(async () => {
         try {
-            const newYears = await getYears({ access: sesion.access })
+            const newYears = await getYears({ access: session.access })
             setYears(newYears)
         } catch (e) {
             console.error(e)
@@ -79,7 +79,7 @@ export const useProfile = () => {
     const fetchWrapped = useCallback(async ({ year }) => {
         try {
             setGeneratingWrapped(true)
-            const image = await getWrappedImage({ access: sesion.access, year })
+            const image = await getWrappedImage({ access: session.access, year })
             const currentDate = new Date().toISOString().split('T')[0]
             downloadBlob(image, `wrapped-${currentDate}.png`)
 

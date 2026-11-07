@@ -1,4 +1,4 @@
-import { SesionContext } from '../context/sesion'
+import { SessionContext } from '../context/session'
 import { useState, useCallback, useContext } from 'react'
 import { getWatched, addWatched as addWatchedMovie, removeWatched as removeWatchedMovie, getWatchedDetails } from '../services/watchedMoviesServices'
 import { getYears } from '../services/watchedMoviesServices'
@@ -12,12 +12,12 @@ export const useWatched = () => {
     const [watchedDetails, setWatchedDetails] = useState({})
     const [years, setYears] = useState([])
 
-    const { sesion } = useContext(SesionContext)
+    const { session } = useContext(SessionContext)
 
     const fetchWatched = useCallback(async (page = 1, ordering, year, search = "") => {
         try {
             setLoading(true)
-            const { watchedMapped, count, next, previous } = await getWatched({ access: sesion.access, page, ordering, year, search })
+            const { watchedMapped, count, next, previous } = await getWatched({ access: session.access, page, ordering, year, search })
             setWatched(watchedMapped)
             setPagination({ count, next, previous })
         } catch (error) {
@@ -26,11 +26,11 @@ export const useWatched = () => {
         } finally {
             setLoading(false)
         }
-    }, [sesion.access])
+    }, [session.access])
 
     const addWatched = async (movie, payload) => {
         try {
-            await addWatchedMovie({ movie, payload, access: sesion.access })
+            await addWatchedMovie({ movie, payload, access: session.access })
             setWatched([...watched, movie])
         } catch (error) {
             console.error(error)
@@ -40,7 +40,7 @@ export const useWatched = () => {
 
     const removeWatched = async (movieId) => {
         try {
-            await removeWatchedMovie({ movieId: movieId, access: sesion.access })
+            await removeWatchedMovie({ movieId: movieId, access: session.access })
             setWatched(watched.filter((watchedMovie) => watchedMovie.id !== movieId))
         } catch (error) {
             console.error(error)
@@ -51,7 +51,7 @@ export const useWatched = () => {
     const getWatchedMovie = useCallback(async ({ movieId }) => {
         try {
             setLoading(true)
-            const watched = await getWatchedDetails({ movieId, access: sesion.access })
+            const watched = await getWatchedDetails({ movieId, access: session.access })
             setWatchedDetails(watched)
         } catch (error) {
             setError("Error fetching watched movie")
@@ -63,7 +63,7 @@ export const useWatched = () => {
 
     const fetchYears = useCallback(async () => {
         try {
-            const newYears = await getYears({ access: sesion.access })
+            const newYears = await getYears({ access: session.access })
             const currentYear = new Date().getFullYear()
 
             if (!newYears.includes(currentYear)) {

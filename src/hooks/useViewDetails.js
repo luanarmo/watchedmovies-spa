@@ -1,9 +1,9 @@
 import { useState, useContext, useCallback } from 'react'
 import { deleteViewDetails, getAllViewDetails, patchViewDetails } from '../services/viewDetails'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 
 export const useViewDetails = () => {
-    const { sesion } = useContext(SesionContext)
+    const { session } = useContext(SessionContext)
     const [viewDetails, setViewDetails] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -12,7 +12,7 @@ export const useViewDetails = () => {
 
     const fetchViewDetails = useCallback(async (movieId) => {
         try {
-            const viewDetails = await getAllViewDetails({ access: sesion.access, watchedId: movieId })
+            const viewDetails = await getAllViewDetails({ access: session.access, watchedId: movieId })
             setViewDetails(viewDetails)
         } catch (error) {
             setError("Error fetching view details")
@@ -20,11 +20,11 @@ export const useViewDetails = () => {
         } finally {
             setLoading(false)
         }
-    }, [sesion.access])
+    }, [session.access])
 
     const removeViewDetails = async (viewDetailId) => {
         try {
-            await deleteViewDetails({ viewDetailsId: viewDetailId, access: sesion.access })
+            await deleteViewDetails({ viewDetailsId: viewDetailId, access: session.access })
             setViewDetails(viewDetails.filter(viewDetail => viewDetail.id !== viewDetailId))
         } catch (error) {
             setError("Error deleting view details")
@@ -36,7 +36,7 @@ export const useViewDetails = () => {
     const editViewDetails = async (viewDetailId, payload) => {
         setUpdating(true)
         try {
-            const updated = await patchViewDetails({ id: viewDetailId, payload, access: sesion.access })
+            const updated = await patchViewDetails({ id: viewDetailId, payload, access: session.access })
             setViewDetails(current => current.map(viewDetail => viewDetail.id === viewDetailId ? updated : viewDetail))
             return updated
         } finally {

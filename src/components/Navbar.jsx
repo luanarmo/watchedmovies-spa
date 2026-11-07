@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import { useContext } from 'react'
 import { FaHome, FaGripLinesVertical } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
@@ -9,16 +9,16 @@ export const Navbar = () => {
 
     const navigate = useNavigate()
 
-    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
+    const { session, deleteExpiredSession } = useContext(SessionContext)
 
     return (
         // With a session, below lg the bottom tab bar replaces the navbar (Home is "Explore", logout lives in Profile)
-        <nav className={`${sesion.auth ? 'hidden lg:block' : ''} bg-dusty-grape-950 py-3 px-4 md:py-6 md:px-8 border-b border-dusty-grape-800 shadow-md`}>
+        <nav className={`${session.auth ? 'hidden lg:block' : ''} bg-dusty-grape-950 py-3 px-4 md:py-6 md:px-8 border-b border-dusty-grape-800 shadow-md`}>
             <div className="container mx-auto flex flex-row flex-wrap lg:flex-nowrap items-center justify-between gap-x-4 gap-y-2">
                 {/* below lg: Home joins the top row and the links drop to their own row (display: contents) */}
                 <div className="contents lg:flex items-center gap-1 md:gap-4 w-auto text-dusty-grape-50">
                     <Link to="/" aria-label="Home" className="flex items-center justify-center min-w-[44px] min-h-[44px] lg:min-w-0 lg:min-h-0"> <FaHome title='Inicio' className="text-2xl md:text-3xl hover:text-dusty-grape-300 transition-colors transform hover:scale-110" /> </Link>
-                    {sesion.auth && <div className='hidden lg:flex flex-row flex-wrap lg:flex-nowrap order-last w-full lg:order-none lg:w-auto gap-1 md:gap-4 justify-center items-center text-dusty-grape-50 lg:ml-4'>
+                    {session.auth && <div className='hidden lg:flex flex-row flex-wrap lg:flex-nowrap order-last w-full lg:order-none lg:w-auto gap-1 md:gap-4 justify-center items-center text-dusty-grape-50 lg:ml-4'>
                         <FaGripLinesVertical className="hidden lg:block text-dusty-grape-600 text-md md:text-2xl" />
                         <Link to="/watched" className="text-sm md:text-lg font-medium hover:text-dusty-grape-300 transition-colors hover:underline underline-offset-4"> Watched movies</Link>
                         <FaGripLinesVertical className="text-dusty-grape-600 text-md md:text-2xl" />
@@ -31,12 +31,12 @@ export const Navbar = () => {
                 </div>
 
                 <div className="w-auto text-dusty-grape-50 flex flex-row gap-1 md:gap-4" >
-                    {sesion.auth ?
+                    {session.auth ?
                         <div className='flex gap-4 items-center'>
                             {/* Below lg the profile lives in the bottom tab bar */}
                             <Link to="/profile" className="hidden lg:block hover:text-dusty-grape-300 transition-colors transform hover:scale-110"> <FaUser title='Profile' className="text-md md:text-2xl" /> </Link>
                             <button aria-label="Logout" onClick={() => {
-                                deleteSesionExpiredSession()
+                                deleteExpiredSession()
                                 navigate('/')
                             }} className="flex items-center justify-center min-w-[44px] min-h-[44px] lg:min-w-0 lg:min-h-0 hover:text-red-400 transition-colors transform hover:scale-110"> <GoSignOut title='Logout' className="text-2xl md:text-3xl" /> </button>
                         </div>

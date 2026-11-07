@@ -1,5 +1,5 @@
 import { Base } from '../components/Base.jsx'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 import { usePlan } from '../hooks/usePlan.js'
 import { WatchedMovie } from '../components/WatchedMovie.jsx'
 import { Pagination } from '../components/Pagination.jsx'
@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function PlanList() {
 
-    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
+    const { session, deleteExpiredSession } = useContext(SessionContext)
     const { plan, loading, error, pagination, fetchPlan, removePlan } = usePlan()
     const [page, setPage] = useState(1)
 
@@ -25,11 +25,11 @@ export default function PlanList() {
 
     useEffect(() => {
         const isExpired = () => {
-            return sesion.expiresAt ? Date.now() > sesion.expiresAt : true;
+            return session.expiresAt ? Date.now() > session.expiresAt : true;
         }
 
         if (isExpired()) {
-            deleteSesionExpiredSession()
+            deleteExpiredSession()
             navigate('/login')
         }
         fetchPlan(page)

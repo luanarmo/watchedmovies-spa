@@ -1,18 +1,18 @@
 import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { SesionContext } from '../context/sesion.jsx'
+import { SessionContext } from '../context/session.jsx'
 
 export function PrivateRoute({ children }) {
-    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext)
+    const { session, deleteExpiredSession } = useContext(SessionContext)
     const navigate = useNavigate()
 
     useEffect(() => {
-        const isExpired = () => sesion.expiresAt ? Date.now() > sesion.expiresAt : true
-        if (!sesion.auth || isExpired()) {
-            deleteSesionExpiredSession()
+        const isExpired = () => session.expiresAt ? Date.now() > session.expiresAt : true
+        if (!session.auth || isExpired()) {
+            deleteExpiredSession()
             navigate('/login')
         }
     }, [])
 
-    return sesion.auth ? children : null
+    return session.auth ? children : null
 }

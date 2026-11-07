@@ -1,5 +1,5 @@
 import { Base } from '../components/Base';
-import { SesionContext } from '../context/sesion.jsx';
+import { SessionContext } from '../context/session.jsx';
 import { useEffect, useContext, useState } from 'react';
 import { useProfile } from '../hooks/useProfile';
 import { Loading } from '../components/Loading';
@@ -14,18 +14,18 @@ const fieldClass = 'w-full min-h-[44px] px-4 py-2 text-base rounded-full text-du
 const cardClass = 'bg-dusty-grape-800/50 backdrop-blur-sm border border-dusty-grape-700 rounded-xl p-4 md:p-6 flex flex-col gap-4 md:gap-5 min-w-0'
 
 export default function Profile() {
-    const { sesion, deleteSesionExpiredSession } = useContext(SesionContext);
+    const { session, deleteExpiredSession } = useContext(SessionContext);
     const { profile, years, loading, updatingProfile, generatingCollage, generatingWrapped, fetchProfile, partialUpdateProfile, fetchPoster, fetchYears, fetchWrapped, setProfile } = useProfile();
     const [profileUpdated, setProfileUpdated] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const isExpired = () => {
-            return sesion.expiresAt ? Date.now() > sesion.expiresAt : true;
+            return session.expiresAt ? Date.now() > session.expiresAt : true;
         };
 
         if (isExpired()) {
-            deleteSesionExpiredSession()
+            deleteExpiredSession()
             navigate('/login');
         }
         fetchProfile();
@@ -207,7 +207,7 @@ export default function Profile() {
                 <button
                     type="button"
                     onClick={() => {
-                        deleteSesionExpiredSession()
+                        deleteExpiredSession()
                         navigate('/')
                     }}
                     className="lg:hidden w-full min-h-[44px] flex items-center justify-center gap-2 rounded-xl border border-red-400/60 text-red-400 font-semibold hover:bg-dusty-grape-800 transition-colors"
