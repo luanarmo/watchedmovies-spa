@@ -6,7 +6,7 @@ import { SessionContext } from '../context/session.jsx'
 import { useTierList } from '../hooks/useTierList.js'
 import { useWatched } from '../hooks/useWatched.js'
 import { Base } from '../components/Base.jsx'
-import { Loading } from '../components/Loading.jsx'
+import { TierListSkeleton } from '../components/TierListSkeleton.jsx'
 import { YearFilter } from '../components/YearFilter.jsx'
 import { TierListTable } from '../components/TierListTable.jsx'
 import { DiaryTabs } from '../components/DiaryTabs.jsx'
@@ -75,7 +75,7 @@ export default function TierList() {
                 </div>
 
                 {error ? <p className='text-center text-dusty-grape-400'>{error}</p>
-                    : loading ? <Loading />
+                    : loading ? <TierListSkeleton />
                         : <TierListTable movies={movies} onMoveMovie={handleMoveMovie} />}
             </div>
             <ToastContainer />

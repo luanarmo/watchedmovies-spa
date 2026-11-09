@@ -327,6 +327,20 @@ describe('TierList', () => {
         expect(screen.queryByRole('button', { name: 'Download image' })).not.toBeInTheDocument()
     })
 
+    it('shows a skeleton of the tier list while a year is loading, and removes it afterwards', async () => {
+        const user = userEvent.setup()
+        renderPage()
+        expect(screen.getByRole('status', { name: 'Loading tier list' })).toBeInTheDocument()
+        await screen.findByAltText('New Movie')
+        expect(screen.queryByRole('status', { name: 'Loading tier list' })).not.toBeInTheDocument()
+        await screen.findByRole('option', { name: /2020/ })
+        fetch.mockImplementation(slowTierList('2020'))
+
+        await user.selectOptions(screen.getByRole('combobox'), '2020')
+
+        expect(screen.getByRole('status', { name: 'Loading tier list' })).toBeInTheDocument()
+    })
+
     it('hides the "Download image" button when the list of another year could not be loaded', async () => {
         const user = userEvent.setup()
         renderPage()
