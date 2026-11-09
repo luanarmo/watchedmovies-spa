@@ -6,6 +6,7 @@ import ViewDetailsList from '../components/ViewDetailsList.jsx'
 import { TierBadge } from '../components/TierBadge.jsx'
 import { BackButton } from '../components/BackButton.jsx'
 import { WatchedMovieDetailsSkeleton } from '../components/WatchedMovieDetailsSkeleton.jsx'
+import { MovieDirector } from '../components/MovieDirector.jsx'
 import { FaHeart } from 'react-icons/fa'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -42,6 +43,7 @@ export default function WatchedMovieDetails() {
                             </div>
                             <div className="order-3 hidden lg:block"><TierBadge tier={watchedDetails.tier} /></div>
                             <div className="order-4 px-5 lg:px-6 lg:py-6 lg:bg-dusty-grape-800/50 lg:rounded-xl lg:border border-dusty-grape-700 lg:backdrop-blur-sm w-full lg:w-3/4">
+                                <MovieDirector directors={watchedDetails.directors} className='mb-4' />
                                 <p className='lg:text-justify text-dusty-grape-100 text-base lg:text-lg leading-relaxed mb-6'>{watchedDetails.overview}</p>
                                 <h2 className='text-xl lg:text-2xl font-bold lg:text-center text-dusty-grape-100 border-t lg:border-t-0 lg:border-b border-dusty-grape-800 lg:border-dusty-grape-700 pt-4 lg:pt-0 pb-2 mb-4'> Viewed times </h2>
                                 <div className="w-full">

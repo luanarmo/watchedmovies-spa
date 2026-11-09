@@ -22,5 +22,6 @@ export const movieDetails = async ({ movieId, token }) => {
         is_watched: movie.is_watched ?? false,
         is_plan_to_watch: movie.is_plan_to_watch ?? false,
         tier: movie.tier ?? null,
+        directors: movie.directors ?? [],
     }
 }
