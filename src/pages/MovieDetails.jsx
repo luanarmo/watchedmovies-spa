@@ -11,6 +11,7 @@ import { ViewDetailsForm } from '../components/ViewDetailsForm.jsx'
 import { truncateText } from '../utils/truncateText.js'
 import { SessionContext } from '../context/session'
 import { MovieDetailsSkeleton } from '../components/MovieDetailsSkeleton.jsx'
+import { MovieDirector } from '../components/MovieDirector.jsx'
 
 export function Details({ movie }) {
 
@@ -60,6 +61,7 @@ export function Details({ movie }) {
                 <div className="absolute inset-0 bg-gradient-to-t from-dusty-grape-950 lg:from-dusty-grape-950/90 to-transparent"></div>
             </div>
             <section className='order-3 flex flex-col gap-4 items-center w-full lg:w-3/4 px-5 lg:px-6 lg:py-6 lg:bg-dusty-grape-800/50 lg:rounded-xl lg:border border-dusty-grape-700 lg:backdrop-blur-sm'>
+                <MovieDirector directors={movie.directors} />
                 <div className="text-dusty-grape-100 text-base lg:text-lg leading-relaxed lg:text-justify">
                     {movie.overview.length > MAX_COMMENT_LENGTH ?
                         seeMore ?
