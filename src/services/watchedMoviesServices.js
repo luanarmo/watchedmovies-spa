@@ -29,9 +29,28 @@ export const getPosters = async ({ access, year, order }) => {
     })
 }
 
+// Every page asks for the years on mount, so the request is shared: the promise is cached
+// (which also merges simultaneous calls) until a mutation changes them or the TTL runs out.
+const YEARS_TTL_MS = 5 * 60 * 1000
+let yearsCache = null
+
+export const invalidateYears = () => {
+    yearsCache = null
+}
+
 export const getYears = async ({ access }) => {
-    const data = await apiRequest('/api/watched-movies/years/', { token: access })
-    return data.years
+    if (!yearsCache || yearsCache.access !== access || yearsCache.expires < Date.now()) {
+        const promise = apiRequest('/api/watched-movies/years/', { token: access }).then((data) => data.years)
+        const entry = { access, expires: Date.now() + YEARS_TTL_MS, promise }
+        yearsCache = entry
+        // a failed request must not stay cached
+        promise.catch(() => {
+            if (yearsCache === entry) yearsCache = null
+        })
+    }
+    const { promise } = yearsCache
+    // callers mutate the list (useWatched adds the current year), so each one gets its own copy
+    return [...(await promise)]
 }
 
 export const getTierList = async ({ access, year }) => {
@@ -54,18 +73,22 @@ export const getWrappedImage =async ({ access, year }) => {
 }
 
 export const addWatched = async ({ movie, payload, access }) => {
-    return apiRequest('/api/view-details/', {
+    const data = await apiRequest('/api/view-details/', {
         method: 'POST',
         token: access,
         body: { watched_movie: movie, ...payload }
     })
+    invalidateYears()
+    return data
 }
 
 export const removeWatched = async ({ movieId, access }) => {
-    return apiRequest(`/api/watched-movies/${movieId}/`, {
+    const data = await apiRequest(`/api/watched-movies/${movieId}/`, {
         method: 'DELETE',
         token: access
     })
+    invalidateYears()
+    return data
 }
 
 export const getWatchedDetails = async ({ movieId, access }) => {
